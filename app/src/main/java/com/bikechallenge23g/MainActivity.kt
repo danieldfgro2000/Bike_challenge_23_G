@@ -1,16 +1,15 @@
 package com.bikechallenge23g
 
+
+import android.content.res.Resources.Theme
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.bikechallenge23g.ui.BikeApp
 import com.bikechallenge23g.ui.MainViewModel
 import com.bikechallenge23g.ui.theme.BikeChallenge23GTheme
@@ -18,35 +17,12 @@ import com.bikechallenge23g.ui.theme.BikeChallenge23GTheme
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        window.statusBarColor = Color.BLACK
         setContent {
-            BikeChallenge23GTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    BikeApp(viewModel)
-                }
-            }
+            BikeApp(viewModel)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-            text = "Hello $name!",
-            modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BikeChallenge23GTheme {
-        Greeting("Android")
     }
 }

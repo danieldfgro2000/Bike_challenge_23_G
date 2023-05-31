@@ -1,13 +1,19 @@
 package com.bikechallenge23g.ui
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,6 +25,7 @@ import com.bikechallenge23g.ui.composables.BottomMenuItem
 import com.bikechallenge23g.ui.screen.BikeScreen
 import com.bikechallenge23g.ui.screen.RideScreen
 import com.bikechallenge23g.ui.screen.SettingScreen
+import com.bikechallenge23g.ui.theme.BikeChallenge23GTheme
 
 @Composable
 fun BikeApp(mainViewModel: MainViewModel) {
@@ -38,13 +45,19 @@ fun MainScreen(
     scrollState: ScrollState,
     mainViewModel: MainViewModel
 ) {
-    Scaffold(bottomBar = { BottomMenu(navController = navController) }) {
-        Navigation(
-            navController = navController,
-            scrollState = scrollState,
-            paddingValues = it,
-            viewModel = mainViewModel
-        )
+    BikeChallenge23GTheme {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Scaffold(
+                bottomBar = { BottomMenu(navController = navController) }
+            ) {
+                Navigation(
+                    navController = navController,
+                    scrollState = scrollState,
+                    paddingValues = it,
+                    viewModel = mainViewModel
+                )
+            }
+        }
     }
 }
 
@@ -80,5 +93,4 @@ fun NavGraphBuilder.bottomNavigation(
     composable(BottomMenuItem.Settings.route) {
         SettingScreen(navController = navController, viewModel = viewModel)
     }
-
 }

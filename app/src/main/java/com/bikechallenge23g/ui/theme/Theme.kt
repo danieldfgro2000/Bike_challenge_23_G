@@ -2,6 +2,7 @@ package com.bikechallenge23g.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -19,14 +20,21 @@ private val DarkColorScheme = darkColorScheme(
     primary = AppDarkGrey,
     secondary = AppMediumGrey,
     tertiary = AppLightGrey,
-    background = AppDarkGrey
+    onBackground = AppBlue,
+    background = AppDarkGrey,
+    surface = AppMediumGrey,
+    inverseSurface = AppCappuccino
+
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = AppDarkGrey,
     secondary = AppMediumGrey,
     tertiary = AppLightGrey,
-    background = AppDarkGrey
+    onBackground = AppBlue,
+    background = AppLightGrey,
+    surface = AppMediumGrey,
+    inverseSurface = AppCappuccino
 
         /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -52,8 +60,14 @@ fun BikeChallenge23GTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> {
+            Log.e("TAG", "darktheme")
+            DarkColorScheme
+        }
+        else -> {
+            Log.e("TAG", "lightTheme")
+            LightColorScheme
+        }
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
