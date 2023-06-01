@@ -1,9 +1,9 @@
-package com.bikechallenge23g.ui.screen
+package com.bikechallenge23g.presentation.ui.screen
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.bikechallenge23g.ui.MainViewModel
+import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 
 @Composable
 fun RideScreen(

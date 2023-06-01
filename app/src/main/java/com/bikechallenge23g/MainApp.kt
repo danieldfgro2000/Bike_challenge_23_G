@@ -1,6 +1,7 @@
 package com.bikechallenge23g
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class MainApp: Application() {
-}
+@HiltAndroidApp
+class MainApp: Application()

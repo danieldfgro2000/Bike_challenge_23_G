@@ -1,4 +1,4 @@
-package com.bikechallenge23g.ui.theme
+package com.bikechallenge23g.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.bikechallenge23g.ui.theme
+package com.bikechallenge23g.theme
 
 import android.app.Activity
 import android.os.Build

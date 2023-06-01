@@ -1,4 +1,4 @@
-package com.bikechallenge23g.ui.composables
+package com.bikechallenge23g.presentation.ui.composables
 
 import android.provider.Settings.Global.getString
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.bikechallenge23g.ui.theme
+package com.bikechallenge23g.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
