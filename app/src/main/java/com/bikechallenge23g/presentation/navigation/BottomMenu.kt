@@ -1,4 +1,4 @@
-package com.bikechallenge23g.presentation.ui.composables
+package com.bikechallenge23g.presentation.navigation
 
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.bikechallenge23g.R
-import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 
 @Composable
 fun BottomMenu(navController: NavController) {

@@ -9,6 +9,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -16,8 +21,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bikechallenge23g.presentation.navigation.BottomMenu
 import com.bikechallenge23g.presentation.navigation.BottomMenuItem
-import com.bikechallenge23g.presentation.ui.composables.BottomMenu
+import com.bikechallenge23g.presentation.navigation.NavigationRoutes
+import com.bikechallenge23g.presentation.ui.screen.AddBikeScreen
 import com.bikechallenge23g.presentation.ui.screen.BikeScreen
 import com.bikechallenge23g.presentation.ui.screen.RideScreen
 import com.bikechallenge23g.presentation.ui.screen.SettingScreen
@@ -27,9 +34,10 @@ import com.bikechallenge23g.theme.BikeChallenge23GTheme
 @Composable
 fun BikeApp(mainViewModel: MainViewModel) {
     val scrollState = rememberScrollState()
-    val navController = rememberNavController()
+    val bottomNavController = rememberNavController()
+
     MainScreen(
-        navController = navController,
+        bottomNavController = bottomNavController,
         scrollState = scrollState,
         mainViewModel = mainViewModel
     )
@@ -38,17 +46,29 @@ fun BikeApp(mainViewModel: MainViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    navController: NavHostController,
+    bottomNavController: NavHostController,
     scrollState: ScrollState,
     mainViewModel: MainViewModel
 ) {
+    var showBottomMenu by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        bottomNavController.addOnDestinationChangedListener { _, _, _ ->
+            showBottomMenu =
+                bottomNavController.currentDestination?.route != NavigationRoutes.AddBike.route
+        }
+    }
     BikeChallenge23GTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             Scaffold(
-                bottomBar = { BottomMenu(navController = navController) }
+                bottomBar = {
+                    if (showBottomMenu) {
+                        BottomMenu(navController = bottomNavController)
+                    }
+                }
             ) {
                 Navigation(
-                    navController = navController,
+                    bottomNavController = bottomNavController,
                     scrollState = scrollState,
                     paddingValues = it,
                     viewModel = mainViewModel
@@ -60,18 +80,22 @@ fun MainScreen(
 
 @Composable
 fun Navigation(
-    navController: NavHostController,
+    bottomNavController: NavHostController,
     scrollState: ScrollState,
     paddingValues: PaddingValues,
     viewModel: MainViewModel
 ) {
     NavHost(
-        navController = navController,
+        navController = bottomNavController,
         startDestination = BottomMenuItem.Bikes.route,
         modifier = Modifier.padding(paddingValues = paddingValues)
     ) {
         bottomNavigation(
-            navController = navController,
+            navController = bottomNavController,
+            viewModel = viewModel
+        )
+        extendedNavigation(
+            navController = bottomNavController,
             viewModel = viewModel
         )
     }
@@ -89,5 +113,14 @@ fun NavGraphBuilder.bottomNavigation(
     }
     composable(BottomMenuItem.Settings.route) {
         SettingScreen(navController = navController, viewModel = viewModel)
+    }
+}
+
+fun NavGraphBuilder.extendedNavigation(
+    navController: NavController,
+    viewModel: MainViewModel
+) {
+    composable(NavigationRoutes.AddBike.route) {
+        AddBikeScreen(navController = navController, viewModel = viewModel)
     }
 }

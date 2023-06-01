@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.DistanceUnits
-import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import com.bikechallenge23g.presentation.ui.composables.CustomSwitch
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
 import com.bikechallenge23g.presentation.ui.composables.TextCard
 import com.bikechallenge23g.presentation.ui.composables.TextLabel
+import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 
 @Composable
 fun SettingScreen(
@@ -38,23 +38,31 @@ fun SettingScreen(
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
-        topBar = { TextLabel(inputText = stringResource(id = R.string.settings), textStyle = MaterialTheme.typography.titleLarge) },
+        topBar = {
+            TextLabel(
+                inputText = stringResource(id = R.string.settings),
+                textStyle = MaterialTheme.typography.titleLarge
+            )
+        },
         content = { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                ) {
 
                     TextLabel(inputText = stringResource(id = R.string.distance_units))
                     DropdownSelector(
                         DistanceUnits.values().map { it.name },
-                        selectedItem = selectedDistanceUnit.value) {
+                        selectedItem = selectedDistanceUnit.value
+                    ) {
                         selectedDistanceUnit.value = it
                     }
 
                     TextLabel(inputText = stringResource(id = R.string.service_reminder))
                     Row(modifier = Modifier.fillMaxWidth()) {
-                        TextCard(serviceReminder, modifier=Modifier.weight(1f))
+                        TextCard(serviceReminder, modifier = Modifier.weight(1f))
                         CustomSwitch()
                     }
                     if (bikes.isNotEmpty()) {

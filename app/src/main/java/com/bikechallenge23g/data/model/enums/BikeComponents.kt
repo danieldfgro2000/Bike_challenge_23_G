@@ -5,3 +5,8 @@ enum class BikeComponents(val category: String) {
     MIDDLE("Middle"),
     UNDER("Under")
 }
+
+enum class BikeWheels(val size: String) {
+    BIG("Big"),
+    SMALL("Small")
+}
