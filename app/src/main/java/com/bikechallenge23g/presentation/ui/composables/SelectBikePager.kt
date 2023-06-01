@@ -18,13 +18,15 @@ import com.bikechallenge23g.data.model.enums.BikeWheels
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SelectBike(
+fun SelectBikePager(
     bikeTypes: Array<BikeTypes>,
     wheels: BikeWheels,
-    bikeColors: BikeColors
+    bikeColors: BikeColors,
+    defaultBikeType: BikeTypes,
+    onBikeTypeSelected: (BikeTypes) -> Unit
 ) {
     val pagerState = rememberPagerState(
-        initialPage = 1,
+        initialPage = defaultBikeType.ordinal,
         initialPageOffsetFraction = -0.16f
     ) { bikeTypes.size }
 
@@ -36,6 +38,7 @@ fun SelectBike(
         pageSize = PageSize.Fixed(300.dp)
     ) { page ->
         bikeType = bikeTypes[page]
+        onBikeTypeSelected(bikeType)
         BikeCard(
             bikeTypes = bikeType,
             wheelSize = wheels,
@@ -47,9 +50,10 @@ fun SelectBike(
 @Preview(showBackground = false)
 @Composable
 fun PreviewSelectBike() {
-    SelectBike(
+    SelectBikePager(
         bikeTypes = BikeTypes.values(),
         wheels = BikeWheels.BIG,
-        bikeColors = BikeColors.BLUE
-    )
+        bikeColors = BikeColors.BLUE,
+        defaultBikeType = BikeTypes.ELECTRIC
+    ) {}
 }

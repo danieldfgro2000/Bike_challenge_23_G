@@ -63,7 +63,7 @@ fun SettingScreen(
                     TextLabel(inputText = stringResource(id = R.string.service_reminder))
                     Row(modifier = Modifier.fillMaxWidth()) {
                         TextCard(serviceReminder, modifier = Modifier.weight(1f))
-                        CustomSwitch()
+                        CustomSwitch {}
                     }
                     if (bikes.isNotEmpty()) {
                         TextLabel(inputText = stringResource(id = R.string.default_bike))

@@ -24,7 +24,7 @@ import com.bikechallenge23g.data.model.enums.BikeColors
 
 @Composable
 fun ColorRow(
-    onSelected: (color: Color) -> Unit
+    onSelected: (color: BikeColors) -> Unit
 ) {
     val scrollState = rememberScrollState()
     var selectedColor by remember { mutableStateOf(Color.Red) }
@@ -41,7 +41,7 @@ fun ColorRow(
                     .size(20.dp)
                     .clickable {
                         selectedColor = color.color
-                        onSelected(color.color)
+                        onSelected(color)
                     },
                 shape = CircleShape,
                 color = color.color,

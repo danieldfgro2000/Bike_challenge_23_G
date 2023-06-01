@@ -6,7 +6,7 @@ enum class BikeComponents(val category: String) {
     UNDER("Under")
 }
 
-enum class BikeWheels(val size: String) {
-    BIG("Big"),
-    SMALL("Small")
+enum class BikeWheels(val nick: String, val size: String) {
+    BIG("Big", "29\""),
+    SMALL("Small", "26\"")
 }

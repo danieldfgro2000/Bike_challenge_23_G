@@ -16,4 +16,8 @@
     <string name="bike_wheels">Bike wheels\n</string>
     <string name="bike_over">Bike Over\n</string>
     <string name="bike_middle">Bike Over</string>
+    <string name="bike_name">Bike Name\n</string>
+    <string name="required_field">Required Field</string>
+    <string name="wheel_size">Wheel Size</string>
+    <string name="service_interval">Service In</string>
 </resources>
