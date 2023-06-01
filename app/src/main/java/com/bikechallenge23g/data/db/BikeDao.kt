@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.Flow
 interface BikeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(bike: Bike)
+    fun save(bike: Bike)
 
     @Query("SELECT * FROM bikes")
     fun getAllBikes() : Flow<List<Bike>>
 
     @Delete
-    suspend fun deleteBike(bike: Bike)
+    fun deleteBike(bike: Bike)
 }

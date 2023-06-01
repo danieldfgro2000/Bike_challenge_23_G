@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface BikeRepository {
     fun getSavedBikes(): Flow<List<Bike>>
+    fun saveBike(bike: Bike)
+    fun deleteBike(bike: Bike)
 }

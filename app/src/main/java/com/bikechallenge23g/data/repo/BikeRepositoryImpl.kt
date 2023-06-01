@@ -9,4 +9,8 @@ class BikeRepositoryImpl(
     private val bikeLocalDataSource: BikeLocalDataSource
 ) : BikeRepository {
     override fun getSavedBikes(): Flow<List<Bike>> = bikeLocalDataSource.getSavedBikes()
+
+    override fun saveBike(bike: Bike) = bikeLocalDataSource.deleteBikeFromDb(bike)
+
+    override fun deleteBike(bike: Bike) = bikeLocalDataSource.deleteBikeFromDb(bike)
 }

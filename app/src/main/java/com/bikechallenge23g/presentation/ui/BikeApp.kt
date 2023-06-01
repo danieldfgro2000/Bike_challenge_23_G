@@ -16,13 +16,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 import com.bikechallenge23g.presentation.ui.composables.BottomMenu
-import com.bikechallenge23g.presentation.ui.composables.BottomMenuItem
 import com.bikechallenge23g.presentation.ui.screen.BikeScreen
 import com.bikechallenge23g.presentation.ui.screen.RideScreen
 import com.bikechallenge23g.presentation.ui.screen.SettingScreen
-import com.bikechallenge23g.theme.BikeChallenge23GTheme
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
+import com.bikechallenge23g.theme.BikeChallenge23GTheme
 
 @Composable
 fun BikeApp(mainViewModel: MainViewModel) {

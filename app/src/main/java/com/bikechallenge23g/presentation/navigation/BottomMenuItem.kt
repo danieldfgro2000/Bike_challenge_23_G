@@ -1,4 +1,4 @@
-package com.bikechallenge23g.presentation.ui.composables
+package com.bikechallenge23g.presentation.navigation
 
 import com.bikechallenge23g.R
 

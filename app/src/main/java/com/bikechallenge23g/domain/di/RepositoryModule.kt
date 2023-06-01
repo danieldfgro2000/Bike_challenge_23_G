@@ -6,10 +6,11 @@ import com.bikechallenge23g.domain.repository.BikeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn
+@InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
     @Singleton

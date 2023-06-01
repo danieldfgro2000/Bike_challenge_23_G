@@ -1,19 +1,42 @@
 package com.bikechallenge23g.presentation.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.bikechallenge23g.data.model.Bike
+import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
+import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    application: Application,
-    getBikesUseCase: GetBikesUseCase
-): AndroidViewModel(application) {
+    private val application: Application,
+    private val saveBikeUseCase: SaveBikeUseCase,
+    private val deleteBikeUseCase: DeleteBikeUseCase,
+    private val getBikesUseCase: GetBikesUseCase
+) : AndroidViewModel(application) {
+
+    init {
+//        getAllBikes()
+    }
+
+    private fun getAllBikes() = runBlocking(IO) {
+        getBikesUseCase.execute().collect { bikes ->
+            bikes.let {
+                Log.e("Bikes= ", "$bikes")
+                if (bikes.isNotEmpty()) {
+                    _bikes.value = it
+                }
+            }
+        }
+    }
+
     private val _bikes = MutableStateFlow(listOf<Bike>())
     val bikes: StateFlow<List<Bike>>
         get() = _bikes
