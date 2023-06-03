@@ -48,6 +48,7 @@ class MainViewModel @Inject constructor(
     val newBike: StateFlow<Bike>
         get() = _newBike
 
+    fun saveNewBike() = saveBikeUseCase.execute(newBike.value)
     fun updateNewBike(
         bikeType: BikeTypes = newBike.value.type,
         isDefault: Boolean = newBike.value.isDefault,

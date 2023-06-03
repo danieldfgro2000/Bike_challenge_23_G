@@ -16,12 +16,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DropdownSelector(
+    modifier: Modifier = Modifier,
     items: List<String>,
     selectedItem: String,
     onItemSelected: (String) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-    Surface {
+    Surface(modifier = modifier) {
         ClickableCardWithDropDown(selectedItem) { expanded.value = true }
         DropdownMenu(
             modifier = Modifier

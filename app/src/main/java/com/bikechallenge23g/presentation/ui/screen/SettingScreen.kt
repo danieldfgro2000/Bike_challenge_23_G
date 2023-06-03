@@ -54,7 +54,7 @@ fun SettingScreen(
 
                     TextLabel(inputText = stringResource(id = R.string.distance_units))
                     DropdownSelector(
-                        DistanceUnits.values().map { it.name },
+                        items = DistanceUnits.values().map { it.name },
                         selectedItem = selectedDistanceUnit.value
                     ) {
                         selectedDistanceUnit.value = it
@@ -68,7 +68,7 @@ fun SettingScreen(
                     if (bikes.isNotEmpty()) {
                         TextLabel(inputText = stringResource(id = R.string.default_bike))
                         DropdownSelector(
-                            bikes.map { it.type.name },
+                            items = bikes.map { it.type.name },
                             selectedItem = selectedDistanceUnit.value
                         ) {
                             selectedDistanceUnit.value = it

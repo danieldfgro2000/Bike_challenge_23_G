@@ -37,6 +37,7 @@ import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.BikeTypes
 import com.bikechallenge23g.data.model.enums.BikeWheels
 import com.bikechallenge23g.presentation.ui.composables.ColorRow
+import com.bikechallenge23g.presentation.ui.composables.CustomButton
 import com.bikechallenge23g.presentation.ui.composables.CustomSwitch
 import com.bikechallenge23g.presentation.ui.composables.CustomTextField
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
@@ -66,6 +67,10 @@ fun AddBikeScreen(
     var bikeNameError by remember { mutableStateOf<String?>(null) }
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
     val errorMessage = stringResource(id = R.string.required_field)
+
+    val newBike = viewModel.newBike.collectAsState().value
+    val isInputValid: Boolean =
+        newBike.model.isNotBlank() && newBike.dueService.isNotBlank()
 
     LaunchedEffect(key1 = pagerState.currentPage) {
         viewModel.updateNewBike(bikeType = BikeTypes.values()[pagerState.currentPage])
@@ -108,8 +113,8 @@ fun AddBikeScreen(
                 wheels = viewModel.newBike.collectAsState().value.wheelSize,
                 bikeColors = viewModel.newBike.collectAsState().value.bikeColor
             )
-
             TextLabel(
+                modifier = Modifier.padding(horizontal = 5.dp),
                 inputText = stringResource(id = R.string.bike_name),
                 isRequired = true
             )
@@ -117,7 +122,7 @@ fun AddBikeScreen(
                 value = viewModel.newBike.collectAsState().value.model,
                 error = bikeNameError,
                 modifier = Modifier
-                    .padding(horizontal = 20.dp, vertical = 10.dp)
+                    .padding(10.dp)
                     .onGloballyPositioned {
                         coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
                     }
@@ -126,26 +131,31 @@ fun AddBikeScreen(
                 viewModel.updateNewBike(model = newBikeName)
             }
             TextLabel(
+                modifier = Modifier.padding(horizontal = 5.dp),
                 inputText = stringResource(id = R.string.wheel_size),
                 isRequired = true
             )
             DropdownSelector(
+                modifier = Modifier.padding(10.dp),
                 items = BikeWheels.values().map { wheel -> wheel.size },
                 selectedItem = viewModel.newBike.collectAsState().value.wheelSize.size,
                 onItemSelected = { selectedWheel ->
                     viewModel.updateNewBike(
-
                         wheelSize = BikeWheels.values()
                             .find { available -> available.size == selectedWheel }!!
-
                     )
                 }
             )
-            TextLabel(inputText = stringResource(id = R.string.service_interval), isRequired = true)
+            TextLabel(
+                modifier = Modifier.padding(horizontal = 5.dp),
+                inputText = stringResource(id = R.string.service_interval),
+                isRequired = true
+            )
             CustomTextField(
                 value = viewModel.newBike.collectAsState().value.dueService,
                 error = bikeServiceIntervalError,
                 modifier = Modifier
+                    .padding(10.dp)
                     .onGloballyPositioned {
                         coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
                     }
@@ -158,10 +168,24 @@ fun AddBikeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextLabel(inputText = stringResource(id = R.string.default_bike))
+                TextLabel(
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    inputText = stringResource(id = R.string.default_bike)
+                )
                 Spacer(modifier = Modifier.weight(1f))
                 CustomSwitch { changeDefault -> viewModel.updateNewBike(isDefault = changeDefault) }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            CustomButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                text = stringResource(id = R.string.add_bike),
+                enabled = isInputValid
+            ) {
+                viewModel.saveNewBike()
             }
         }
     }
 }
+

@@ -3,7 +3,6 @@ package com.bikechallenge23g.presentation.ui.composables
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
@@ -34,14 +33,15 @@ fun TitleTextLabel(
 
 @Composable
 fun TextLabel(
+    modifier: Modifier = Modifier,
     inputText: String,
     isRequired: Boolean = false,
     height: Dp = 18.dp,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium
 ) {
-    Row(modifier = Modifier.padding(10.dp)) {
+    Row(modifier = modifier) {
         Text(
-            modifier = Modifier.height(height),
+            modifier = modifier.height(height),
             textAlign = TextAlign.Center,
             text = inputText,
             style = textStyle,
