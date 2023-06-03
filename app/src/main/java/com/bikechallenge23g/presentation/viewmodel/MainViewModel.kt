@@ -93,6 +93,4 @@ class MainViewModel @Inject constructor(
     fun updateDistanceUnit(newDistanceUnit: DistanceUnits) {
         _distanceUnit.value = newDistanceUnit
     }
-
-
 }

@@ -10,12 +10,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.bikechallenge23g.R
+import com.bikechallenge23g.presentation.navigation.NavigationRoutes
 import com.bikechallenge23g.presentation.ui.composables.NoBikePlaceholder
+import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun BikeScreen (
+fun BikeScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
@@ -28,6 +31,16 @@ fun BikeScreen (
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopBar(
+                title = R.string.bikes,
+                icon = R.drawable.icon_add,
+                iconDescription = R.string.add_bike,
+                showIconDescription = true
+            ) {
+                navController.navigate(NavigationRoutes.AddBike.route)
+            }
+        },
         content = {
 
             if (bikes.isEmpty()) {

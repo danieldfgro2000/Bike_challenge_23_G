@@ -1,11 +1,12 @@
 package com.bikechallenge23g.presentation.ui.screen
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -21,7 +22,7 @@ import com.bikechallenge23g.presentation.ui.composables.CustomSwitch
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
 import com.bikechallenge23g.presentation.ui.composables.TextCard
 import com.bikechallenge23g.presentation.ui.composables.TextLabel
-import com.bikechallenge23g.presentation.ui.composables.TitleTextLabel
+import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 
 @Composable
@@ -29,44 +30,58 @@ fun SettingScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
+    val scrollState = rememberScrollState()
     val serviceReminder by viewModel.serviceReminder.collectAsState()
-    val defaultBike by viewModel.defaultBike.collectAsState()
-    val bikes by viewModel.bikes.collectAsState()
+    val bikes = viewModel.bikes.collectAsState().value
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TitleTextLabel(inputText = stringResource(id = R.string.settings))
-        },
+        topBar = { TopBar(title = R.string.settings) {} },
         content = { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding)) {
-                Column(
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(innerPadding)
+                    .verticalScroll(scrollState)
+            ) {
+                TextLabel(
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    inputText = stringResource(id = R.string.distance_units),
+                    isRequired = true
+                )
+                DropdownSelector(
+                    modifier = Modifier.padding(10.dp),
+                    items = DistanceUnits.values().map { it.name },
+                    selectedItem = viewModel.distanceUnit.collectAsState().value.name
+                ) {
+                    viewModel.updateDistanceUnit(DistanceUnits.valueOf(it))
+                }
+                TextLabel(
+                    modifier = Modifier.padding(horizontal = 5.dp),
+                    inputText = stringResource(id = R.string.service_reminder)
+                )
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        .padding(10.dp)
                 ) {
-
-                    TextLabel(inputText = stringResource(id = R.string.distance_units))
-                    DropdownSelector(
-                        items = DistanceUnits.values().map { it.name },
-                        selectedItem = viewModel.distanceUnit.collectAsState().value.name
-                    ) {
-                        viewModel.updateDistanceUnit(DistanceUnits.valueOf(it))
-                    }
-
-                    TextLabel(inputText = stringResource(id = R.string.service_reminder))
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        TextCard(serviceReminder, modifier = Modifier.weight(1f))
-                        CustomSwitch {}
-                    }
-                    if (bikes.isNotEmpty()) {
-                        TextLabel(inputText = stringResource(id = R.string.default_bike))
-//                        DropdownSelector(
-//                            items = bikes.map { it.type.name },
-//                            selectedItem = selectedDistanceUnit.value
-//                        ) {
-//                            selectedDistanceUnit.value = it
-//                        }
+                    TextCard(serviceReminder, modifier = Modifier.weight(1f))
+                    CustomSwitch {}
+                }
+                if (bikes.isNotEmpty()) {
+                    TextLabel(
+                        modifier = Modifier.padding(horizontal = 5.dp),
+                        inputText = stringResource(id = R.string.default_bike),
+                        isRequired = true
+                    )
+                    bikes.firstOrNull { it.isDefault }?.model?.let {
+                        DropdownSelector(
+                            modifier = Modifier.padding(10.dp),
+                            items = bikes.map { name -> name.model },
+                            selectedItem = it
+                        ) {
+                            //                            viewModel.updateDefaultBike()
+                        }
                     }
                 }
             }
