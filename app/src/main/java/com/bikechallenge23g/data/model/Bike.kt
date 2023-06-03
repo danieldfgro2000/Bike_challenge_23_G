@@ -2,6 +2,7 @@ package com.bikechallenge23g.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.bikechallenge23g.data.model.enums.BikeColors
 import com.bikechallenge23g.data.model.enums.BikeTypes
 import com.bikechallenge23g.data.model.enums.BikeWheels
 import java.io.Serializable
@@ -10,11 +11,11 @@ import java.io.Serializable
 data class Bike(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val type: BikeTypes,
+    val type: BikeTypes = BikeTypes.ELECTRIC,
     val isDefault: Boolean = false,
-    val model: String,
-    val Color: String,
-    val wheelSize: BikeWheels,
-    val dueService: String,
-    val distance: String
+    val model: String = "",
+    val bikeColor: BikeColors = BikeColors.BLUE,
+    val wheelSize: BikeWheels = BikeWheels.BIG,
+    val dueService: String = "100",
+    val distance: Double = 0.0
 ) : Serializable

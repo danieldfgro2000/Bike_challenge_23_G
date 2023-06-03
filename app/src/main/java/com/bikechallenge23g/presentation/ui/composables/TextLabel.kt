@@ -1,11 +1,13 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,14 +23,15 @@ fun TextLabel(
     isRequired: Boolean = false,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium
 ) {
-    Row {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
-            modifier = modifier.height(20.dp),
+            modifier = modifier,
             text = inputText,
             style = textStyle,
-            color = MaterialTheme.colorScheme.inverseSurface
+            color = MaterialTheme.colorScheme.onBackground
         )
         if (isRequired) {
+            Spacer(modifier = Modifier.width(2.dp))
             Icon(
                 painter = painterResource(id = R.drawable.icon_required),
                 contentDescription = stringResource(

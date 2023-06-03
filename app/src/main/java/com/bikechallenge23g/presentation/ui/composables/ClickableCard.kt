@@ -28,7 +28,7 @@ fun ClickableCardWithDropDown(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { expand() },
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary)
     ) {
         Row(

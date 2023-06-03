@@ -79,9 +79,11 @@ fun BikeCard(
                 )
 
             }
-            TextLabel(inputText = bikeTypes.type)
+            TextLabel(
+                inputText = bikeTypes.type,
+                textStyle = MaterialTheme.typography.labelLarge
+            )
         }
-
     }
 }
 

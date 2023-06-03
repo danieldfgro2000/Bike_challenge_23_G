@@ -4,6 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.bikechallenge23g.data.model.Bike
+import com.bikechallenge23g.data.model.enums.BikeColors
+import com.bikechallenge23g.data.model.enums.BikeTypes
+import com.bikechallenge23g.data.model.enums.BikeWheels
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
@@ -40,6 +43,32 @@ class MainViewModel @Inject constructor(
     private val _bikes = MutableStateFlow(listOf<Bike>())
     val bikes: StateFlow<List<Bike>>
         get() = _bikes
+
+    private var _newBike = MutableStateFlow(Bike())
+    val newBike: StateFlow<Bike>
+        get() = _newBike
+
+    fun updateNewBike(
+        bikeType: BikeTypes = newBike.value.type,
+        isDefault: Boolean = newBike.value.isDefault,
+        model: String = newBike.value.model,
+        bikeColor: BikeColors = newBike.value.bikeColor,
+        wheelSize: BikeWheels = newBike.value.wheelSize,
+        dueService: String = newBike.value.dueService,
+        distance: Double = newBike.value.distance
+    ) {
+        _newBike.value = Bike(
+            id = null,
+            bikeType,
+            isDefault,
+            model,
+            bikeColor,
+            wheelSize,
+            dueService,
+            distance
+        )
+        Log.e("New bike = ", "${_newBike.value}")
+    }
 
     private val _defaultBike = MutableStateFlow(bikes.value.map { it.type.name }.firstOrNull())
     val defaultBike: MutableStateFlow<String?>
