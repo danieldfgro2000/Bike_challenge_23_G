@@ -60,6 +60,7 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.5.1'
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+
     implementation 'com.google.accompanist:accompanist-pager:0.31.3-beta'
     implementation "com.google.accompanist:accompanist-insets-ui:0.24.7-alpha"
 

@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 class BikeRepositoryImpl(
     private val bikeLocalDataSource: BikeLocalDataSource
 ) : BikeRepository {
-    override fun getSavedBikes(): Flow<List<Bike>> = bikeLocalDataSource.getSavedBikes()
+    override suspend fun getSavedBikes(): Flow<List<Bike>> = bikeLocalDataSource.getSavedBikes()
 
-    override fun saveBike(bike: Bike) = bikeLocalDataSource.deleteBikeFromDb(bike)
+    override suspend fun saveBike(bike: Bike) = bikeLocalDataSource.saveBikeToDb(bike)
 
-    override fun deleteBike(bike: Bike) = bikeLocalDataSource.deleteBikeFromDb(bike)
+    override suspend fun deleteBike(bike: Bike) = bikeLocalDataSource.deleteBikeFromDb(bike)
 }

@@ -3,10 +3,12 @@ package com.bikechallenge23g.presentation.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.data.model.enums.BikeColors
 import com.bikechallenge23g.data.model.enums.BikeTypes
 import com.bikechallenge23g.data.model.enums.BikeWheels
+import com.bikechallenge23g.data.model.enums.DistanceUnits
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
@@ -14,7 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,10 +28,10 @@ class MainViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     init {
-//        getAllBikes()
+        getAllBikes()
     }
 
-    private fun getAllBikes() = runBlocking(IO) {
+    fun getAllBikes() = viewModelScope.launch(IO) {
         getBikesUseCase.execute().collect { bikes ->
             bikes.let {
                 Log.e("Bikes= ", "$bikes")
@@ -48,7 +50,12 @@ class MainViewModel @Inject constructor(
     val newBike: StateFlow<Bike>
         get() = _newBike
 
-    fun saveNewBike() = saveBikeUseCase.execute(newBike.value)
+    fun saveNewBike() = viewModelScope.launch(IO) {
+        Log.e("Saving bike", "${newBike.value}")
+        saveBikeUseCase.execute(newBike.value)
+        Log.e("bike saved", "${newBike.value}")
+    }
+
     fun updateNewBike(
         bikeType: BikeTypes = newBike.value.type,
         isDefault: Boolean = newBike.value.isDefault,
@@ -78,6 +85,14 @@ class MainViewModel @Inject constructor(
     private val _serviceReminder = MutableStateFlow("100km")
     val serviceReminder: StateFlow<String>
         get() = _serviceReminder
+
+    private val _distanceUnit = MutableStateFlow(DistanceUnits.KM)
+    val distanceUnit: StateFlow<DistanceUnits>
+        get() = _distanceUnit
+
+    fun updateDistanceUnit(newDistanceUnit: DistanceUnits) {
+        _distanceUnit.value = newDistanceUnit
+    }
 
 
 }

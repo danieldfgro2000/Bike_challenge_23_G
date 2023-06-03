@@ -4,7 +4,7 @@ import com.bikechallenge23g.data.model.Bike
 import kotlinx.coroutines.flow.Flow
 
 interface BikeRepository {
-    fun getSavedBikes(): Flow<List<Bike>>
-    fun saveBike(bike: Bike)
-    fun deleteBike(bike: Bike)
+    suspend fun getSavedBikes(): Flow<List<Bike>>
+    suspend fun saveBike(bike: Bike)
+    suspend fun deleteBike(bike: Bike)
 }

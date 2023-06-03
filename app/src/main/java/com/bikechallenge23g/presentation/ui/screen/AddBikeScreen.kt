@@ -1,6 +1,7 @@
 package com.bikechallenge23g.presentation.ui.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -64,9 +65,9 @@ fun AddBikeScreen(
         initialPageOffsetFraction = -0.16f
     ) { BikeTypes.values().size }
 
-    var bikeNameError by remember { mutableStateOf<String?>(null) }
-    var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
     val errorMessage = stringResource(id = R.string.required_field)
+    var bikeNameError by remember { mutableStateOf<String?>(errorMessage) }
+    var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
 
     val newBike = viewModel.newBike.collectAsState().value
     val isInputValid: Boolean =
@@ -158,18 +159,21 @@ fun AddBikeScreen(
                     .padding(10.dp)
                     .onGloballyPositioned {
                         coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
-                    }
+                    },
+                displayUnit = true,
+                unit = viewModel.distanceUnit.collectAsState().value
             ) { newServiceInterval ->
                 bikeServiceIntervalError = if (newServiceInterval.isBlank()) errorMessage else null
                 viewModel.updateNewBike(dueService = newServiceInterval)
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextLabel(
-                    modifier = Modifier.padding(horizontal = 5.dp),
                     inputText = stringResource(id = R.string.default_bike)
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -183,6 +187,7 @@ fun AddBikeScreen(
                 text = stringResource(id = R.string.add_bike),
                 enabled = isInputValid
             ) {
+                Log.e("Custom", "onClick")
                 viewModel.saveNewBike()
             }
         }

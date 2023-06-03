@@ -5,8 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BikeLocalDataSource {
 
-    fun saveBikeToDb(bike: Bike)
-    fun getSavedBikes(): Flow<List<Bike>>
-
-    fun deleteBikeFromDb(bike: Bike)
+    suspend fun saveBikeToDb(bike: Bike)
+    suspend fun getSavedBikes(): Flow<List<Bike>>
+    suspend fun deleteBikeFromDb(bike: Bike)
 }

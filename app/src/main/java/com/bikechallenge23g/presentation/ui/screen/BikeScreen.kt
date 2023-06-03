@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,6 +21,9 @@ fun BikeScreen (
 ) {
 
     val bikes by viewModel.bikes.collectAsState()
+    LaunchedEffect(key1 = bikes) {
+        viewModel.getAllBikes()
+    }
 
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
