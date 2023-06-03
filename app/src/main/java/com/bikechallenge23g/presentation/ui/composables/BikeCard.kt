@@ -30,8 +30,8 @@ fun BikeCard(
 ) {
     Card(
         modifier = Modifier
-            .width(500.dp)
-            .height(250.dp),
+            .width(300.dp)
+            .height(200.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
@@ -39,13 +39,13 @@ fun BikeCard(
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = Arrangement.Center
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Image(
                     modifier = Modifier
-                        .width(500.dp)
-                        .height(220.dp),
+                        .width(300.dp)
+                        .height(160.dp),
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
@@ -55,8 +55,8 @@ fun BikeCard(
                 )
                 Image(
                     modifier = Modifier
-                        .width(500.dp)
-                        .height(220.dp),
+                        .width(300.dp)
+                        .height(160.dp),
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
@@ -68,8 +68,8 @@ fun BikeCard(
                 )
                 Image(
                     modifier = Modifier
-                        .width(500.dp)
-                        .height(220.dp),
+                        .width(300.dp)
+                        .height(160.dp),
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
@@ -80,6 +80,7 @@ fun BikeCard(
 
             }
             TextLabel(
+                height = 22.dp,
                 inputText = bikeTypes.type,
                 textStyle = MaterialTheme.typography.labelLarge
             )

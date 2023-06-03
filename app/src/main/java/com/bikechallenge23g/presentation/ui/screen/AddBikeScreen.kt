@@ -1,7 +1,6 @@
 package com.bikechallenge23g.presentation.ui.screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -43,6 +42,7 @@ import com.bikechallenge23g.presentation.ui.composables.CustomTextField
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
 import com.bikechallenge23g.presentation.ui.composables.SelectBikePager
 import com.bikechallenge23g.presentation.ui.composables.TextLabel
+import com.bikechallenge23g.presentation.ui.composables.TitleTextLabel
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -53,6 +53,8 @@ fun AddBikeScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp
+    val screenWidth = LocalConfiguration.current.screenHeightDp
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
@@ -61,8 +63,6 @@ fun AddBikeScreen(
         initialPageOffsetFraction = -0.16f
     ) { BikeTypes.values().size }
 
-    val screenHeight = LocalConfiguration.current.screenHeightDp
-
     var bikeNameError by remember { mutableStateOf<String?>(null) }
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
     val errorMessage = stringResource(id = R.string.required_field)
@@ -70,22 +70,18 @@ fun AddBikeScreen(
     LaunchedEffect(key1 = pagerState.currentPage) {
         viewModel.updateNewBike(bikeType = BikeTypes.values()[pagerState.currentPage])
     }
-    Log.e("bike type = ", "${viewModel.newBike.collectAsState().value.type}")
-
 
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
         topBar = {
             Row(
-                modifier = Modifier.height(40.dp),
+                modifier = Modifier
+                    .height(50.dp)
+                    .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TextLabel(
-                    modifier = Modifier.height(30.dp),
-                    inputText = stringResource(id = R.string.add_bike),
-                    textStyle = MaterialTheme.typography.titleLarge
-                )
+                TitleTextLabel(inputText = stringResource(id = R.string.add_bike))
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     modifier = Modifier.clickable { navController.popBackStack() },
@@ -107,6 +103,7 @@ fun AddBikeScreen(
             ColorRow { selectedColor -> viewModel.updateNewBike(bikeColor = selectedColor) }
             SelectBikePager(
                 state = pagerState,
+                currentWidth = screenWidth,
                 bikeTypes = BikeTypes.values(),
                 wheels = viewModel.newBike.collectAsState().value.wheelSize,
                 bikeColors = viewModel.newBike.collectAsState().value.bikeColor
@@ -120,6 +117,7 @@ fun AddBikeScreen(
                 value = viewModel.newBike.collectAsState().value.model,
                 error = bikeNameError,
                 modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
                     .onGloballyPositioned {
                         coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
                     }
@@ -127,7 +125,10 @@ fun AddBikeScreen(
                 bikeNameError = if (newBikeName.isBlank()) errorMessage else null
                 viewModel.updateNewBike(model = newBikeName)
             }
-            TextLabel(inputText = stringResource(id = R.string.wheel_size), isRequired = true)
+            TextLabel(
+                inputText = stringResource(id = R.string.wheel_size),
+                isRequired = true
+            )
             DropdownSelector(
                 items = BikeWheels.values().map { wheel -> wheel.size },
                 selectedItem = viewModel.newBike.collectAsState().value.wheelSize.size,

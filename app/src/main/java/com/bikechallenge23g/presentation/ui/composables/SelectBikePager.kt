@@ -1,6 +1,7 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,17 +36,18 @@ import com.bikechallenge23g.theme.AppBlue
 @Composable
 fun SelectBikePager(
     state: PagerState,
+    currentWidth: Int,
     bikeTypes: Array<BikeTypes>,
     wheels: BikeWheels,
     bikeColors: BikeColors
 ) {
     var bikeType by remember { mutableStateOf(BikeTypes.ROAD_BIKE) }
-
+    Log.e("curentWidth", currentWidth.toString())
     Column {
         HorizontalPager(
             state = state,
             pageSpacing = 20.dp,
-            pageSize = PageSize.Fixed(300.dp)
+            pageSize = PageSize.Fixed((currentWidth * 0.38).dp)
         ) { page ->
             bikeType = bikeTypes[page]
             BikeCard(
@@ -56,7 +58,7 @@ fun SelectBikePager(
         }
         Row(
             Modifier
-                .height(50.dp)
+                .height(20.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
@@ -81,11 +83,12 @@ fun SelectBikePager(
 fun PreviewSelectBike() {
     val pagerState = rememberPagerState(
         initialPage = BikeTypes.ELECTRIC.ordinal,
-        initialPageOffsetFraction = -0.16f
+        initialPageOffsetFraction = -0.15f
     ) { BikeTypes.values().size }
 
     SelectBikePager(
         state = pagerState,
+        currentWidth = 300,
         bikeTypes = BikeTypes.values(),
         wheels = BikeWheels.BIG,
         bikeColors = BikeColors.BLUE
