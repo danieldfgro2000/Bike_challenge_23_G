@@ -36,7 +36,7 @@ fun TextLabel(
     modifier: Modifier = Modifier,
     inputText: String,
     isRequired: Boolean = false,
-    height: Dp = 18.dp,
+    height: Dp = 20.dp,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium
 ) {
     Row(modifier = modifier) {

@@ -62,13 +62,14 @@ fun AddBikeScreen(
         initialPageOffsetFraction = -0.16f
     ) { BikeTypes.values().size }
 
-    val errorMessage = stringResource(id = R.string.required_field)
-    var bikeNameError by remember { mutableStateOf<String?>(errorMessage) }
+    val emptyFieldErrorMessage = stringResource(id = R.string.required_field)
+    val numberErrorMessage = stringResource(id = R.string.number_input_error)
+    var bikeNameError by remember { mutableStateOf<String?>(emptyFieldErrorMessage) }
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
 
     val newBike = viewModel.newBike.collectAsState().value
     val isInputValid: Boolean =
-        newBike.model.isNotBlank() && newBike.dueService.isNotBlank()
+        newBike.model.isNotBlank() && newBike.serviceInterval.toString().isNotBlank()
 
     LaunchedEffect(key1 = pagerState.currentPage) {
         viewModel.updateNewBike(bikeType = BikeTypes.values()[pagerState.currentPage])
@@ -116,7 +117,7 @@ fun AddBikeScreen(
                             coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
                         }
                 ) { newBikeName ->
-                    bikeNameError = if (newBikeName.isBlank()) errorMessage else null
+                    bikeNameError = if (newBikeName.isBlank()) emptyFieldErrorMessage else null
                     viewModel.updateNewBike(model = newBikeName)
                 }
                 TextLabel(
@@ -141,7 +142,7 @@ fun AddBikeScreen(
                     isRequired = true
                 )
                 CustomTextField(
-                    value = viewModel.newBike.collectAsState().value.dueService,
+                    value = viewModel.newBike.collectAsState().value.serviceInterval.toString(),
                     error = bikeServiceIntervalError,
                     modifier = Modifier
                         .padding(10.dp)
@@ -152,8 +153,14 @@ fun AddBikeScreen(
                     unit = viewModel.distanceUnit.collectAsState().value
                 ) { newServiceInterval ->
                     bikeServiceIntervalError =
-                        if (newServiceInterval.isBlank()) errorMessage else null
-                    viewModel.updateNewBike(dueService = newServiceInterval)
+                        if (newServiceInterval.isBlank()) {
+                            emptyFieldErrorMessage
+                        } else if (newServiceInterval.toIntOrNull() == null) {
+                            numberErrorMessage
+                        } else null
+                    if (newServiceInterval.toIntOrNull() != null) {
+                        viewModel.updateNewBike(serviceInterval = newServiceInterval.toInt())
+                    }
                 }
 
                 Row(

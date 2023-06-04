@@ -1,7 +1,6 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,11 +41,10 @@ fun SelectBikePager(
     bikeColors: BikeColors
 ) {
     var bikeType by remember { mutableStateOf(BikeTypes.ROAD_BIKE) }
-    Log.e("curentWidth", currentWidth.toString())
     Column {
         HorizontalPager(
             state = state,
-            pageSpacing = 20.dp,
+//            pageSpacing = 20.dp,
             pageSize = PageSize.Fixed((currentWidth * 0.38).dp)
         ) { page ->
             bikeType = bikeTypes[page]

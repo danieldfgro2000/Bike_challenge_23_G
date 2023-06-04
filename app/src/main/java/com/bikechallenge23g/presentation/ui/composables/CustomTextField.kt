@@ -73,6 +73,7 @@ fun CustomTextField(
             ) {
                 BasicTextField(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .focusRequester(focusRequester)
                         .onFocusChanged { focusState -> isFocused = focusState.isFocused },
                     value = value,

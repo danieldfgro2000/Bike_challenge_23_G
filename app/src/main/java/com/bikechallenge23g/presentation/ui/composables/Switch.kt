@@ -2,6 +2,7 @@ package com.bikechallenge23g.presentation.ui.composables
 
 
 import androidx.compose.material.Switch
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,7 +17,7 @@ fun CustomSwitch(
     isChecked: (Boolean) -> Unit
 ) {
     var checkedState by remember { mutableStateOf(false) }
-    Surface {
+    Surface(color = MaterialTheme.colorScheme.background) {
         Switch(
             checked = defaultState,
             onCheckedChange = {

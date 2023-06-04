@@ -64,7 +64,8 @@ class MainViewModel @Inject constructor(
         model: String = newBike.value.model,
         bikeColor: BikeColors = newBike.value.bikeColor,
         wheelSize: BikeWheels = newBike.value.wheelSize,
-        dueService: String = newBike.value.dueService,
+        serviceIn: Int = newBike.value.serviceIn,
+        serviceInterval: Int = newBike.value.serviceInterval,
         isServiceReminderActive: Boolean = newBike.value.isServiceReminderActive,
         distance: Double = newBike.value.distance
     ) {
@@ -75,7 +76,8 @@ class MainViewModel @Inject constructor(
             model,
             bikeColor,
             wheelSize,
-            dueService,
+            serviceIn,
+            serviceInterval,
             isServiceReminderActive,
             distance
         )

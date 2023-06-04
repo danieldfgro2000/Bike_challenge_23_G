@@ -2,6 +2,8 @@ package com.bikechallenge23g.presentation.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -12,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
+import com.bikechallenge23g.presentation.ui.composables.BikeCardWithDetails
 import com.bikechallenge23g.presentation.ui.composables.NoBikePlaceholder
 import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
@@ -42,9 +45,17 @@ fun BikeScreen(
             }
         },
         content = {
-
             if (bikes.isEmpty()) {
                 NoBikePlaceholder(navController)
+            } else {
+                LazyColumn {
+                    items(bikes) { bikeView ->
+                        BikeCardWithDetails(bike = bikeView) {
+
+                        }
+                    }
+                }
+
             }
         })
 }
