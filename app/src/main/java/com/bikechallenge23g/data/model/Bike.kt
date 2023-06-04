@@ -12,14 +12,14 @@ import java.io.Serializable
 data class Bike(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val type: BikeType = BikeType.ELECTRIC,
-    val isDefault: Boolean = false,
-    val model: String = "",
-    val bikeColor: BikeColor = BikeColor.BLUE,
-    val wheelSize: BikeWheel = BikeWheel.BIG,
-    val serviceIn: Int = 170,
-    val serviceInterval: Int = 500,
-    val isServiceReminderActive: Boolean = true,
-    val distance: Double = 0.0,
-    val distanceUnit: DistanceUnit = DistanceUnit.KM
+    val type: BikeType? = BikeType.ELECTRIC,
+    val isDefault: Boolean? = false,
+    val model: String? = "",
+    val bikeColor: BikeColor? = BikeColor.BLUE,
+    val wheelSize: BikeWheel? = BikeWheel.BIG,
+    val serviceIn: Int? = 500,
+    val serviceInterval: Int? = 500,
+    val isServiceReminderActive: Boolean? = true,
+    val distance: Double? = 0.0,
+    val distanceUnit: DistanceUnit? = DistanceUnit.KM
 ) : Serializable

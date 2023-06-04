@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
+import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.presentation.navigation.BottomMenuItem
@@ -69,7 +70,7 @@ fun AddBikeScreen(
 
     val newBike = viewModel.newBike.collectAsState().value
     val isInputValid: Boolean =
-        newBike.model.isNotBlank() && newBike.serviceInterval.toString().isNotBlank()
+        newBike?.model?.isNotBlank() == true && newBike.serviceInterval.toString().isNotBlank()
 
     LaunchedEffect(key1 = pagerState.currentPage) {
         viewModel.updateNewBike(bikeType = BikeType.values()[pagerState.currentPage])
@@ -100,8 +101,9 @@ fun AddBikeScreen(
                     state = pagerState,
                     currentWidth = screenWidth,
                     bikeTypes = BikeType.values(),
-                    wheels = viewModel.newBike.collectAsState().value.wheelSize,
-                    bikeColor = viewModel.newBike.collectAsState().value.bikeColor
+                    wheels = viewModel.newBike.collectAsState().value?.wheelSize ?: BikeWheel.BIG,
+                    bikeColor = viewModel.newBike.collectAsState().value?.bikeColor
+                        ?: BikeColor.BLUE
                 )
                 TextLabel(
                     modifier = Modifier.padding(horizontal = 5.dp),
@@ -109,7 +111,7 @@ fun AddBikeScreen(
                     isRequired = true
                 )
                 CustomTextField(
-                    value = viewModel.newBike.collectAsState().value.model,
+                    value = viewModel.newBike.collectAsState().value?.model ?: "",
                     error = bikeNameError,
                     modifier = Modifier
                         .padding(10.dp)
@@ -128,7 +130,8 @@ fun AddBikeScreen(
                 DropdownSelector(
                     modifier = Modifier.padding(10.dp),
                     items = BikeWheel.values().map { wheel -> wheel.size },
-                    selectedItem = viewModel.newBike.collectAsState().value.wheelSize.size,
+                    selectedItem = viewModel.newBike.collectAsState().value?.wheelSize?.size
+                        ?: BikeWheel.BIG.size,
                     onItemSelected = { selectedWheel ->
                         viewModel.updateNewBike(
                             wheelSize = BikeWheel.values()
@@ -142,7 +145,7 @@ fun AddBikeScreen(
                     isRequired = true
                 )
                 CustomTextField(
-                    value = viewModel.newBike.collectAsState().value.serviceInterval.toString(),
+                    value = viewModel.newBike.collectAsState().value?.serviceInterval.toString(),
                     error = bikeServiceIntervalError,
                     modifier = Modifier
                         .padding(10.dp)
@@ -159,7 +162,10 @@ fun AddBikeScreen(
                             numberErrorMessage
                         } else null
                     if (newServiceInterval.toIntOrNull() != null) {
-                        viewModel.updateNewBike(serviceInterval = newServiceInterval.toInt())
+                        viewModel.updateNewBike(
+                            serviceIn = newServiceInterval.toInt(),
+                            serviceInterval = newServiceInterval.toInt()
+                        )
                     }
                 }
 
@@ -174,7 +180,7 @@ fun AddBikeScreen(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     CustomSwitch(
-                        defaultState = viewModel.newBike.collectAsState().value.isDefault
+                        defaultState = viewModel.newBike.collectAsState().value?.isDefault ?: false
                     ) { changeDefault ->
                         viewModel.updateNewBike(isDefault = changeDefault)
                     }

@@ -50,24 +50,25 @@ class MainViewModel @Inject constructor(
     val bikes: StateFlow<List<Bike>>
         get() = _bikes
 
-    private var _newBike = MutableStateFlow(Bike())
-    val newBike: StateFlow<Bike>
+    private var _newBike: MutableStateFlow<Bike?> = MutableStateFlow(Bike())
+    val newBike: MutableStateFlow<Bike?>
         get() = _newBike
 
     fun saveNewBike() = viewModelScope.launch(IO) {
-        saveBikeUseCase.execute(newBike.value)
+        newBike.value?.let { saveBikeUseCase.execute(it) }
+        _newBike.value = null
     }
 
     fun updateNewBike(
-        bikeType: BikeType = newBike.value.type,
-        isDefault: Boolean = newBike.value.isDefault,
-        model: String = newBike.value.model,
-        bikeColor: BikeColor = newBike.value.bikeColor,
-        wheelSize: BikeWheel = newBike.value.wheelSize,
-        serviceIn: Int = newBike.value.serviceIn,
-        serviceInterval: Int = newBike.value.serviceInterval,
-        isServiceReminderActive: Boolean = newBike.value.isServiceReminderActive,
-        distance: Double = newBike.value.distance
+        bikeType: BikeType? = newBike.value?.type,
+        isDefault: Boolean? = newBike.value?.isDefault,
+        model: String? = newBike.value?.model,
+        bikeColor: BikeColor? = newBike.value?.bikeColor,
+        wheelSize: BikeWheel? = newBike.value?.wheelSize,
+        serviceIn: Int? = newBike.value?.serviceIn,
+        serviceInterval: Int? = newBike.value?.serviceInterval,
+        isServiceReminderActive: Boolean? = newBike.value?.isServiceReminderActive,
+        distance: Double? = newBike.value?.distance
     ) {
         _newBike.value = Bike(
             id = null,
@@ -102,7 +103,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private val _defaultBike = MutableStateFlow(bikes.value.map { it.type.name }.firstOrNull())
+    private val _defaultBike = MutableStateFlow(bikes.value.map { it.type?.name }.firstOrNull())
     val defaultBike: MutableStateFlow<String?>
         get() = _defaultBike
 

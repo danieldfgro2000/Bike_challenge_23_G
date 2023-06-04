@@ -68,12 +68,12 @@ fun SettingScreen(
                 ) {
                     TextCard(serviceReminder, modifier = Modifier.weight(1f))
                     CustomSwitch(
-                        defaultState = bikes.firstOrNull { it.isDefault }?.isServiceReminderActive
+                        defaultState = bikes.firstOrNull { it.isDefault == true }?.isServiceReminderActive
                             ?: false
                     ) { isReminderActive ->
                         viewModel.updateServiceReminder(
                             isReminderActive,
-                            bikes.firstOrNull { it.isDefault }?.id
+                            bikes.firstOrNull { it.isDefault == true }?.id
                         )
                     }
                 }
@@ -83,11 +83,11 @@ fun SettingScreen(
                         inputText = stringResource(id = R.string.default_bike),
                         isRequired = true
                     )
-                    bikes.firstOrNull { it.isDefault }?.let { bike ->
+                    bikes.firstOrNull { it.isDefault == true }?.let { bike ->
                         DropdownSelector(
                             modifier = Modifier.padding(10.dp),
-                            items = bikes.map { name -> name.model },
-                            selectedItem = bike.model
+                            items = bikes.map { name -> name.model ?: "" },
+                            selectedItem = bike.model ?: ""
                         ) { selectedModel ->
                             viewModel.updateDefaultBike(bikes.firstOrNull { it.model == selectedModel }?.id)
                         }

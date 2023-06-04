@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +30,7 @@ import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
+import com.bikechallenge23g.data.model.enums.DistanceUnit
 
 @Composable
 fun BikeView(
@@ -45,8 +47,8 @@ fun BikeView(
                 modifier = modifier,
                 painter = painterResource(
                     id = imageSelector(
-                        wheels = bike.wheelSize,
-                        bikeType = bike.type
+                        wheels = bike.wheelSize ?: BikeWheel.BIG,
+                        bikeType = bike.type ?: BikeType.ROAD_BIKE
                     ).first
                 ), contentDescription = stringResource(id = R.string.bike_wheels)
             )
@@ -54,19 +56,21 @@ fun BikeView(
                 modifier = modifier,
                 painter = painterResource(
                     id = imageSelector(
-                        wheels = bike.wheelSize,
-                        bikeType = bike.type
+                        wheels = bike.wheelSize ?: BikeWheel.BIG,
+                        bikeType = bike.type ?: BikeType.ROAD_BIKE
                     ).second
                 ),
-                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(bike.bikeColor.color),
+                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                    bike.bikeColor?.color ?: Color.White
+                ),
                 contentDescription = stringResource(id = R.string.bike_middle)
             )
             Image(
                 modifier = modifier,
                 painter = painterResource(
                     id = imageSelector(
-                        wheels = bike.wheelSize,
-                        bikeType = bike.type
+                        wheels = bike.wheelSize ?: BikeWheel.BIG,
+                        bikeType = bike.type ?: BikeType.ROAD_BIKE
                     ).third
                 ), contentDescription = stringResource(id = R.string.bike_over)
             )
@@ -254,7 +258,7 @@ fun BikeCardWithDetails(
                 Spacer(modifier = Modifier.height(30.dp))
                 TextLabel(
                     modifier = Modifier.padding(start = 5.dp),
-                    inputText = bike.model,
+                    inputText = bike.model ?: "",
                     height = 30.dp,
                     textStyle = MaterialTheme.typography.titleLarge,
 
@@ -267,7 +271,7 @@ fun BikeCardWithDetails(
                         )
                     Spacer(modifier = Modifier.width(5.dp))
                     TextLabel(
-                        inputText = bike.wheelSize.size,
+                        inputText = bike.wheelSize?.size ?: BikeWheel.BIG.size,
                         textStyle = MaterialTheme.typography.labelLarge,
 
                         )
@@ -285,15 +289,15 @@ fun BikeCardWithDetails(
                         textStyle = MaterialTheme.typography.labelLarge
                     )
                     TextLabel(
-                        inputText = bike.distanceUnit.name,
+                        inputText = bike.distanceUnit?.name ?: DistanceUnit.KM.name,
                         textStyle = MaterialTheme.typography.labelLarge
                     )
 
                 }
                 CustomSlider(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
-                    progress = bike.serviceIn.toFloat(),
-                    range = bike.serviceInterval.toFloat()
+                    progress = ((bike.serviceInterval ?: 0) - (bike.serviceIn ?: 0)).toFloat(),
+                    range = bike.serviceInterval?.toFloat() ?: 1f
                 )
             }
         }

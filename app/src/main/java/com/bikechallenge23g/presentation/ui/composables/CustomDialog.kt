@@ -40,7 +40,7 @@ fun CustomDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 TextLabel(
-                    inputText = bike.model,
+                    inputText = bike.model ?: "",
                     height = 30.dp,
                     textStyle = MaterialTheme.typography.titleMedium
                 )

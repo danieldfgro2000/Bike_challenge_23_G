@@ -29,10 +29,13 @@ fun CustomSlider(
     var boxWidth by remember { mutableIntStateOf(0) }
     val posStart = progress / range
     val posEnd = 1 - posStart
+    val sPE = if (posEnd == 0f) 0.1f else posEnd
     val sBW = if (boxWidth == 0) 1 else boxWidth
+
     val weightStart: Float = 1 / (sBW / posStart)
-    val weightEnd: Float = 1 / (sBW / posEnd)
-    val sWE = if (weightEnd >= 0.0f) weightEnd else 0.1f
+    val weightEnd: Float = 1 / (sBW / sPE)
+    val sWE = if (weightEnd <= 0.0f) 0.001f else weightEnd
+    val sWs = if (weightStart <= 0.0f) 0.001f else weightStart
 
     Box(
         modifier = modifier
@@ -54,7 +57,7 @@ fun CustomSlider(
             Image(
                 painter = painterResource(id = R.drawable.loading_over),
                 contentDescription = null,
-                modifier = Modifier.weight(weightStart),
+                modifier = Modifier.weight(sWs),
                 contentScale = ContentScale.Fit
             )
             Image(
@@ -105,5 +108,5 @@ fun PreviewCustomSlidebar70() {
 @Preview
 @Composable
 fun PreviewCustomSlidebar200() {
-    CustomSlider(Modifier, 200f, 300f)
+    CustomSlider(Modifier, 0f, 1f)
 }
