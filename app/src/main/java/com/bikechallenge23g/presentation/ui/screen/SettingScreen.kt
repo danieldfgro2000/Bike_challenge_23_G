@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
-import com.bikechallenge23g.data.model.enums.DistanceUnits
+import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.presentation.ui.composables.CustomSwitch
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
 import com.bikechallenge23g.presentation.ui.composables.TextCard
@@ -52,10 +52,10 @@ fun SettingScreen(
                 )
                 DropdownSelector(
                     modifier = Modifier.padding(10.dp),
-                    items = DistanceUnits.values().map { it.name },
+                    items = DistanceUnit.values().map { it.name },
                     selectedItem = viewModel.distanceUnit.collectAsState().value.name
                 ) {
-                    viewModel.updateDistanceUnit(DistanceUnits.valueOf(it))
+                    viewModel.updateDistanceUnit(DistanceUnit.valueOf(it))
                 }
                 TextLabel(
                     modifier = Modifier.padding(horizontal = 5.dp),

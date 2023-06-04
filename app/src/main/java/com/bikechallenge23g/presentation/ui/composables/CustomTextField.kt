@@ -35,7 +35,7 @@ import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bikechallenge23g.data.model.enums.DistanceUnits
+import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.theme.AppCappuccino
 
 @Composable
@@ -44,7 +44,7 @@ fun CustomTextField(
     error: String?,
     modifier: Modifier,
     displayUnit: Boolean = false,
-    unit: DistanceUnits = DistanceUnits.KM,
+    unit: DistanceUnit = DistanceUnit.KM,
     onValueChange: (String) -> Unit,
 ) {
     var isFocused by remember { mutableStateOf(false) }

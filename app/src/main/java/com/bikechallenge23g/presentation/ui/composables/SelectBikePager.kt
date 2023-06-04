@@ -26,9 +26,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bikechallenge23g.data.model.enums.BikeColors
-import com.bikechallenge23g.data.model.enums.BikeTypes
-import com.bikechallenge23g.data.model.enums.BikeWheels
+import com.bikechallenge23g.data.model.enums.BikeColor
+import com.bikechallenge23g.data.model.enums.BikeType
+import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.theme.AppBlue
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -36,11 +36,11 @@ import com.bikechallenge23g.theme.AppBlue
 fun SelectBikePager(
     state: PagerState,
     currentWidth: Int,
-    bikeTypes: Array<BikeTypes>,
-    wheels: BikeWheels,
-    bikeColors: BikeColors
+    bikeTypes: Array<BikeType>,
+    wheels: BikeWheel,
+    bikeColor: BikeColor
 ) {
-    var bikeType by remember { mutableStateOf(BikeTypes.ROAD_BIKE) }
+    var bikeType by remember { mutableStateOf(BikeType.ROAD_BIKE) }
     Column {
         HorizontalPager(
             state = state,
@@ -49,9 +49,9 @@ fun SelectBikePager(
         ) { page ->
             bikeType = bikeTypes[page]
             BikeCard(
-                bikeTypes = bikeType,
+                bikeType = bikeType,
                 wheelSize = wheels,
-                bikeColor = bikeColors
+                bikeColor = bikeColor
             )
         }
         Row(
@@ -80,15 +80,15 @@ fun SelectBikePager(
 @Composable
 fun PreviewSelectBike() {
     val pagerState = rememberPagerState(
-        initialPage = BikeTypes.ELECTRIC.ordinal,
+        initialPage = BikeType.ELECTRIC.ordinal,
         initialPageOffsetFraction = -0.15f
-    ) { BikeTypes.values().size }
+    ) { BikeType.values().size }
 
     SelectBikePager(
         state = pagerState,
         currentWidth = 300,
-        bikeTypes = BikeTypes.values(),
-        wheels = BikeWheels.BIG,
-        bikeColors = BikeColors.BLUE
+        bikeTypes = BikeType.values(),
+        wheels = BikeWheel.BIG,
+        bikeColor = BikeColor.BLUE
     )
 }

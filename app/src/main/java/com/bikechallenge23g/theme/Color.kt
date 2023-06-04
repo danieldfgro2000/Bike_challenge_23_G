@@ -3,6 +3,7 @@ package com.bikechallenge23g.theme
 import androidx.compose.ui.graphics.Color
 
 val AppBlue = Color(0xFF0066F5)
+val AppDarkBlue = Color(0xFF222C48)
 val AppDarkGrey = Color(0xFF121726)
 val AppMediumGrey = Color(0xFF222C48)
 val AppLightGrey = Color(0xFF5A6C9E)

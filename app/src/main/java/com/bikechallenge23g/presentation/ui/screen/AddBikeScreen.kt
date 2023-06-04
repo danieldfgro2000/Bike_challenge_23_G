@@ -31,8 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
-import com.bikechallenge23g.data.model.enums.BikeTypes
-import com.bikechallenge23g.data.model.enums.BikeWheels
+import com.bikechallenge23g.data.model.enums.BikeType
+import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 import com.bikechallenge23g.presentation.ui.composables.ColorRow
 import com.bikechallenge23g.presentation.ui.composables.CustomButton
@@ -58,9 +58,9 @@ fun AddBikeScreen(
     val scrollState = rememberScrollState()
 
     val pagerState = rememberPagerState(
-        initialPage = BikeTypes.ELECTRIC.ordinal,
+        initialPage = BikeType.ELECTRIC.ordinal,
         initialPageOffsetFraction = -0.16f
-    ) { BikeTypes.values().size }
+    ) { BikeType.values().size }
 
     val emptyFieldErrorMessage = stringResource(id = R.string.required_field)
     val numberErrorMessage = stringResource(id = R.string.number_input_error)
@@ -72,7 +72,7 @@ fun AddBikeScreen(
         newBike.model.isNotBlank() && newBike.serviceInterval.toString().isNotBlank()
 
     LaunchedEffect(key1 = pagerState.currentPage) {
-        viewModel.updateNewBike(bikeType = BikeTypes.values()[pagerState.currentPage])
+        viewModel.updateNewBike(bikeType = BikeType.values()[pagerState.currentPage])
     }
 
     Scaffold(
@@ -99,9 +99,9 @@ fun AddBikeScreen(
                 SelectBikePager(
                     state = pagerState,
                     currentWidth = screenWidth,
-                    bikeTypes = BikeTypes.values(),
+                    bikeTypes = BikeType.values(),
                     wheels = viewModel.newBike.collectAsState().value.wheelSize,
-                    bikeColors = viewModel.newBike.collectAsState().value.bikeColor
+                    bikeColor = viewModel.newBike.collectAsState().value.bikeColor
                 )
                 TextLabel(
                     modifier = Modifier.padding(horizontal = 5.dp),
@@ -127,11 +127,11 @@ fun AddBikeScreen(
                 )
                 DropdownSelector(
                     modifier = Modifier.padding(10.dp),
-                    items = BikeWheels.values().map { wheel -> wheel.size },
+                    items = BikeWheel.values().map { wheel -> wheel.size },
                     selectedItem = viewModel.newBike.collectAsState().value.wheelSize.size,
                     onItemSelected = { selectedWheel ->
                         viewModel.updateNewBike(
-                            wheelSize = BikeWheels.values()
+                            wheelSize = BikeWheel.values()
                                 .find { available -> available.size == selectedWheel }!!
                         )
                     }

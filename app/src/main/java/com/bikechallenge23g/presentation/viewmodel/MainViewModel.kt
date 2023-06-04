@@ -5,10 +5,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.bikechallenge23g.data.model.Bike
-import com.bikechallenge23g.data.model.enums.BikeColors
-import com.bikechallenge23g.data.model.enums.BikeTypes
-import com.bikechallenge23g.data.model.enums.BikeWheels
-import com.bikechallenge23g.data.model.enums.DistanceUnits
+import com.bikechallenge23g.data.model.enums.BikeColor
+import com.bikechallenge23g.data.model.enums.BikeType
+import com.bikechallenge23g.data.model.enums.BikeWheel
+import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
@@ -59,11 +59,11 @@ class MainViewModel @Inject constructor(
     }
 
     fun updateNewBike(
-        bikeType: BikeTypes = newBike.value.type,
+        bikeType: BikeType = newBike.value.type,
         isDefault: Boolean = newBike.value.isDefault,
         model: String = newBike.value.model,
-        bikeColor: BikeColors = newBike.value.bikeColor,
-        wheelSize: BikeWheels = newBike.value.wheelSize,
+        bikeColor: BikeColor = newBike.value.bikeColor,
+        wheelSize: BikeWheel = newBike.value.wheelSize,
         serviceIn: Int = newBike.value.serviceIn,
         serviceInterval: Int = newBike.value.serviceInterval,
         isServiceReminderActive: Boolean = newBike.value.isServiceReminderActive,
@@ -110,11 +110,15 @@ class MainViewModel @Inject constructor(
     val serviceReminder: StateFlow<String>
         get() = _serviceReminder
 
-    private val _distanceUnit = MutableStateFlow(DistanceUnits.KM)
-    val distanceUnit: StateFlow<DistanceUnits>
+    private val _distanceUnit = MutableStateFlow(DistanceUnit.KM)
+    val distanceUnit: StateFlow<DistanceUnit>
         get() = _distanceUnit
 
-    fun updateDistanceUnit(newDistanceUnit: DistanceUnits) {
+    fun updateDistanceUnit(newDistanceUnit: DistanceUnit) {
         _distanceUnit.value = newDistanceUnit
+    }
+
+    fun deleteBike(bike: Bike) = viewModelScope.launch(IO) {
+        deleteBikeUseCase.execute(bike)
     }
 }

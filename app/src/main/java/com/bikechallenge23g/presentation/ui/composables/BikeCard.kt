@@ -1,7 +1,6 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.Bike
-import com.bikechallenge23g.data.model.enums.BikeColors
-import com.bikechallenge23g.data.model.enums.BikeTypes
-import com.bikechallenge23g.data.model.enums.BikeWheels
+import com.bikechallenge23g.data.model.enums.BikeColor
+import com.bikechallenge23g.data.model.enums.BikeType
+import com.bikechallenge23g.data.model.enums.BikeWheel
 
 @Composable
 fun BikeView(
@@ -47,7 +46,7 @@ fun BikeView(
                 painter = painterResource(
                     id = imageSelector(
                         wheels = bike.wheelSize,
-                        bikeTypes = bike.type
+                        bikeType = bike.type
                     ).first
                 ), contentDescription = stringResource(id = R.string.bike_wheels)
             )
@@ -56,7 +55,7 @@ fun BikeView(
                 painter = painterResource(
                     id = imageSelector(
                         wheels = bike.wheelSize,
-                        bikeTypes = bike.type
+                        bikeType = bike.type
                     ).second
                 ),
                 colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(bike.bikeColor.color),
@@ -67,7 +66,7 @@ fun BikeView(
                 painter = painterResource(
                     id = imageSelector(
                         wheels = bike.wheelSize,
-                        bikeTypes = bike.type
+                        bikeType = bike.type
                     ).third
                 ), contentDescription = stringResource(id = R.string.bike_over)
             )
@@ -77,9 +76,9 @@ fun BikeView(
 
 @Composable
 fun BikeCard(
-    bikeTypes: BikeTypes,
-    wheelSize: BikeWheels,
-    bikeColor: BikeColors
+    bikeType: BikeType,
+    wheelSize: BikeWheel,
+    bikeColor: BikeColor
 ) {
     Card(
         modifier = Modifier
@@ -102,7 +101,7 @@ fun BikeCard(
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
-                            bikeTypes = bikeTypes
+                            bikeType = bikeType
                         ).first
                     ), contentDescription = stringResource(id = R.string.bike_wheels)
                 )
@@ -113,7 +112,7 @@ fun BikeCard(
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
-                            bikeTypes = bikeTypes
+                            bikeType = bikeType
                         ).second
                     ),
                     colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(bikeColor.color),
@@ -126,14 +125,14 @@ fun BikeCard(
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
-                            bikeTypes = bikeTypes
+                            bikeType = bikeType
                         ).third
                     ), contentDescription = stringResource(id = R.string.bike_over)
                 )
             }
             TextLabel(
                 height = 22.dp,
-                inputText = bikeTypes.type,
+                inputText = bikeType.type,
                 textStyle = MaterialTheme.typography.labelLarge
             )
         }
@@ -141,20 +140,20 @@ fun BikeCard(
 }
 
 @Composable
-fun imageSelector(wheels: BikeWheels, bikeTypes: BikeTypes): Triple<Int, Int, Int> =
-    bikeImageSelector(bikeTypes = bikeTypes, wheels = wheels)
+fun imageSelector(wheels: BikeWheel, bikeType: BikeType): Triple<Int, Int, Int> =
+    bikeImageSelector(bikeType = bikeType, wheels = wheels)
 
 @Composable
-private fun wheelImageSelector(wheels: BikeWheels, smallWheelImage: Int, bigWheelImage: Int) =
+private fun wheelImageSelector(wheels: BikeWheel, smallWheelImage: Int, bigWheelImage: Int) =
     when (wheels) {
-        BikeWheels.BIG -> bigWheelImage
-        BikeWheels.SMALL -> smallWheelImage
+        BikeWheel.BIG -> bigWheelImage
+        BikeWheel.SMALL -> smallWheelImage
     }
 
 @Composable
-private fun bikeImageSelector(bikeTypes: BikeTypes, wheels: BikeWheels) =
-    when (bikeTypes) {
-        BikeTypes.ELECTRIC -> {
+private fun bikeImageSelector(bikeType: BikeType, wheels: BikeWheel) =
+    when (bikeType) {
+        BikeType.ELECTRIC -> {
             Triple(
                 wheelImageSelector(
                     wheels,
@@ -166,7 +165,7 @@ private fun bikeImageSelector(bikeTypes: BikeTypes, wheels: BikeWheels) =
             )
         }
 
-        BikeTypes.HYBRID -> {
+        BikeType.HYBRID -> {
             Triple(
                 wheelImageSelector(
                     wheels,
@@ -178,7 +177,7 @@ private fun bikeImageSelector(bikeTypes: BikeTypes, wheels: BikeWheels) =
             )
         }
 
-        BikeTypes.MTB -> {
+        BikeType.MTB -> {
             Triple(
                 wheelImageSelector(
                     wheels,
@@ -190,7 +189,7 @@ private fun bikeImageSelector(bikeTypes: BikeTypes, wheels: BikeWheels) =
             )
         }
 
-        BikeTypes.ROAD_BIKE -> {
+        BikeType.ROAD_BIKE -> {
             Triple(
                 wheelImageSelector(
                     wheels,
@@ -206,7 +205,8 @@ private fun bikeImageSelector(bikeTypes: BikeTypes, wheels: BikeWheels) =
 @Composable
 fun BikeCardWithDetails(
     bike: Bike,
-    onMore: () -> Unit
+    onEditSelected: () -> Unit,
+    onDeleteSelected: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -222,13 +222,20 @@ fun BikeCardWithDetails(
                 painter = painterResource(id = R.drawable.bike_card_background),
                 contentDescription = null
             )
-            Image(
+//            Image(
+//                modifier = Modifier
+//                    .align(Alignment.TopEnd)
+//                    .padding(10.dp)
+//                    .clickable { onMore() },
+//                painter = painterResource(id = R.drawable.icon_more),
+//                contentDescription = null
+//            )
+            IconWithDropdown(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(10.dp)
-                    .clickable { onMore() },
-                painter = painterResource(id = R.drawable.icon_more),
-                contentDescription = null
+                    .padding(10.dp),
+                onEditSelected = { onEditSelected() },
+                onDeleteSelected = { onDeleteSelected() }
             )
             Column(
                 modifier = Modifier
@@ -296,16 +303,16 @@ fun BikeCardWithDetails(
 @Preview
 @Composable
 fun PreviewBikeCardWithDetails() {
-    BikeCardWithDetails(bike = Bike(model = "NukeProof Scout 290")) {}
+    BikeCardWithDetails(bike = Bike(model = "NukeProof Scout 290"), onEditSelected = {}) {}
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewBikeCard() {
     BikeCard(
-        bikeTypes = BikeTypes.ROAD_BIKE,
-        wheelSize = BikeWheels.BIG,
-        bikeColor = BikeColors.BLUE
+        bikeType = BikeType.ROAD_BIKE,
+        wheelSize = BikeWheel.BIG,
+        bikeColor = BikeColor.BLUE
     )
 }
 
@@ -313,8 +320,8 @@ fun PreviewBikeCard() {
 @Composable
 fun PreviewBikeCardSmall() {
     BikeCard(
-        bikeTypes = BikeTypes.MTB,
-        wheelSize = BikeWheels.BIG,
-        bikeColor = BikeColors.BLUE
+        bikeType = BikeType.MTB,
+        wheelSize = BikeWheel.BIG,
+        bikeColor = BikeColor.BLUE
     )
 }

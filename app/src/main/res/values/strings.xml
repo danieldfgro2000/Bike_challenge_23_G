@@ -24,4 +24,8 @@
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="wheels">Wheels:</string>
     <string name="number_input_error">The input must be of type number</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="bike_will_be_deleted">will be deleted</string>
+    <string name="cancel">Cancel\n</string>
 </resources>

@@ -2,7 +2,7 @@ package com.bikechallenge23g.data.model.enums
 
 import androidx.compose.ui.graphics.Color
 
-enum class BikeColors(var color: Color) {
+enum class BikeColor(var color: Color) {
     BLACK(Color.Black),
     DARK_GRAY(Color.DarkGray),
     LIGHT_GRAY(Color.LightGray),

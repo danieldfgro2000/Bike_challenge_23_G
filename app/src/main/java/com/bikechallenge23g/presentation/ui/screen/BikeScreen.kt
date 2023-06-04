@@ -10,11 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
+import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
 import com.bikechallenge23g.presentation.ui.composables.BikeCardWithDetails
+import com.bikechallenge23g.presentation.ui.composables.CustomDialog
 import com.bikechallenge23g.presentation.ui.composables.NoBikePlaceholder
 import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
@@ -30,6 +35,8 @@ fun BikeScreen(
     LaunchedEffect(key1 = bikes) {
         viewModel.getAllBikes()
     }
+    var showBikeDeleteDialog by remember { mutableStateOf(false) }
+    var deletedBike by remember { mutableStateOf<Bike?>(null) }
 
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
@@ -50,12 +57,28 @@ fun BikeScreen(
             } else {
                 LazyColumn {
                     items(bikes) { bikeView ->
-                        BikeCardWithDetails(bike = bikeView) {
-
-                        }
+                        BikeCardWithDetails(
+                            bike = bikeView,
+                            onEditSelected = { navController.navigate(NavigationRoutes.AddBike.route) },
+                            onDeleteSelected = {
+                                deletedBike = bikeView
+                                showBikeDeleteDialog = true
+                            }
+                        )
                     }
                 }
+            }
 
+            if (showBikeDeleteDialog) {
+                deletedBike?.let {
+                    CustomDialog(
+                        bike = it,
+                        hideDialog = { showBikeDeleteDialog = false }) { bikeToBeDeleted ->
+                        showBikeDeleteDialog = false
+                        deletedBike = null
+                        viewModel.deleteBike(bikeToBeDeleted)
+                    }
+                }
             }
         })
 }
