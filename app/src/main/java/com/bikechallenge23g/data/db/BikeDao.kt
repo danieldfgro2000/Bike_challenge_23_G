@@ -14,9 +14,15 @@ interface BikeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveBike(bike: Bike)
 
-    @Query("SELECT * FROM bikes")
-    fun getAllBikes() : Flow<List<Bike>>
+    @Query("UPDATE bikes SET isDefault = CASE WHEN id != :bikeId THEN 0 ELSE 1 END")
+    fun updateDefaultBike(bikeId: Int)
+
+    @Query("UPDATE bikes SET isServiceReminderActive = :isReminderActive WHERE id == :bikeId")
+    fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int)
 
     @Delete
     fun deleteBike(bike: Bike)
+
+    @Query("SELECT * FROM bikes")
+    fun getAllBikes(): Flow<List<Bike>>
 }

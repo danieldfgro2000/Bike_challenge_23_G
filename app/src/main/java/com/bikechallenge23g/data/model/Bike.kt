@@ -17,5 +17,6 @@ data class Bike(
     val bikeColor: BikeColors = BikeColors.BLUE,
     val wheelSize: BikeWheels = BikeWheels.BIG,
     val dueService: String = "100",
+    val isServiceReminderActive: Boolean = true,
     val distance: Double = 0.0
 ) : Serializable

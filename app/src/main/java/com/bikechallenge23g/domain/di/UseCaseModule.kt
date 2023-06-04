@@ -4,6 +4,8 @@ import com.bikechallenge23g.domain.repository.BikeRepository
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateServiceReminderUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,8 +30,19 @@ class UseCaseModule {
 
     @Singleton
     @Provides
+    fun provideUpdateDefaultBikeUseCase(bikeRepository: BikeRepository): UpdateDefaultBikeUseCase {
+        return UpdateDefaultBikeUseCase(bikeRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdateServiceReminder(bikeRepository: BikeRepository): UpdateServiceReminderUseCase {
+        return UpdateServiceReminderUseCase(bikeRepository)
+    }
+
+    @Singleton
+    @Provides
     fun provideDeleteBikeUseCase(bikeRepository: BikeRepository): DeleteBikeUseCase {
         return DeleteBikeUseCase(bikeRepository)
     }
-
 }

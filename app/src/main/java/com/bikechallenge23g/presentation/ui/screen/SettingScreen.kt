@@ -33,6 +33,7 @@ fun SettingScreen(
     val scrollState = rememberScrollState()
     val serviceReminder by viewModel.serviceReminder.collectAsState()
     val bikes = viewModel.bikes.collectAsState().value
+
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
@@ -66,7 +67,15 @@ fun SettingScreen(
                         .padding(10.dp)
                 ) {
                     TextCard(serviceReminder, modifier = Modifier.weight(1f))
-                    CustomSwitch {}
+                    CustomSwitch(
+                        defaultState = bikes.firstOrNull { it.isDefault }?.isServiceReminderActive
+                            ?: false
+                    ) { isReminderActive ->
+                        viewModel.updateServiceReminder(
+                            isReminderActive,
+                            bikes.firstOrNull { it.isDefault }?.id
+                        )
+                    }
                 }
                 if (bikes.isNotEmpty()) {
                     TextLabel(
@@ -74,13 +83,13 @@ fun SettingScreen(
                         inputText = stringResource(id = R.string.default_bike),
                         isRequired = true
                     )
-                    bikes.firstOrNull { it.isDefault }?.model?.let {
+                    bikes.firstOrNull { it.isDefault }?.let { bike ->
                         DropdownSelector(
                             modifier = Modifier.padding(10.dp),
                             items = bikes.map { name -> name.model },
-                            selectedItem = it
-                        ) {
-                            //                            viewModel.updateDefaultBike()
+                            selectedItem = bike.model
+                        ) { selectedModel ->
+                            viewModel.updateDefaultBike(bikes.firstOrNull { it.model == selectedModel }?.id)
                         }
                     }
                 }

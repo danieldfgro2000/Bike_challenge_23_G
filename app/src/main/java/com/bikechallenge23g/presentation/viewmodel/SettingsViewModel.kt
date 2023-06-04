@@ -1,0 +1,3 @@
+package com.bikechallenge23g.presentation.viewmodel
+
+class SettingsViewModel

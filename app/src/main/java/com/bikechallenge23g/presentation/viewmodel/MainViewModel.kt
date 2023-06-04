@@ -12,6 +12,8 @@ import com.bikechallenge23g.data.model.enums.DistanceUnits
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateServiceReminderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +25,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val application: Application,
     private val saveBikeUseCase: SaveBikeUseCase,
+    private val updateDefaultBikeUseCase: UpdateDefaultBikeUseCase,
+    private val updateServiceReminderUseCase: UpdateServiceReminderUseCase,
     private val deleteBikeUseCase: DeleteBikeUseCase,
     private val getBikesUseCase: GetBikesUseCase
 ) : AndroidViewModel(application) {
@@ -51,9 +55,7 @@ class MainViewModel @Inject constructor(
         get() = _newBike
 
     fun saveNewBike() = viewModelScope.launch(IO) {
-        Log.e("Saving bike", "${newBike.value}")
         saveBikeUseCase.execute(newBike.value)
-        Log.e("bike saved", "${newBike.value}")
     }
 
     fun updateNewBike(
@@ -63,6 +65,7 @@ class MainViewModel @Inject constructor(
         bikeColor: BikeColors = newBike.value.bikeColor,
         wheelSize: BikeWheels = newBike.value.wheelSize,
         dueService: String = newBike.value.dueService,
+        isServiceReminderActive: Boolean = newBike.value.isServiceReminderActive,
         distance: Double = newBike.value.distance
     ) {
         _newBike.value = Bike(
@@ -73,9 +76,28 @@ class MainViewModel @Inject constructor(
             bikeColor,
             wheelSize,
             dueService,
+            isServiceReminderActive,
             distance
         )
         Log.e("New bike = ", "${_newBike.value}")
+    }
+
+    fun updateDefaultBike(bikeId: Int?) {
+        Log.e("bikeID", "$bikeId")
+        bikeId?.let {
+            viewModelScope.launch(IO) {
+                updateDefaultBikeUseCase.execute(bikeId)
+            }
+        }
+    }
+
+    fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int?) {
+        Log.e("bikeID", "$bikeId")
+        bikeId?.let {
+            viewModelScope.launch(IO) {
+                updateServiceReminderUseCase.execute(isReminderActive, bikeId)
+            }
+        }
     }
 
     private val _defaultBike = MutableStateFlow(bikes.value.map { it.type.name }.firstOrNull())

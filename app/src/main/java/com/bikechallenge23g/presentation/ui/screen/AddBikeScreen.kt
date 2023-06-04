@@ -166,7 +166,11 @@ fun AddBikeScreen(
                         inputText = stringResource(id = R.string.default_bike)
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    CustomSwitch { changeDefault -> viewModel.updateNewBike(isDefault = changeDefault) }
+                    CustomSwitch(
+                        defaultState = viewModel.newBike.collectAsState().value.isDefault
+                    ) { changeDefault ->
+                        viewModel.updateNewBike(isDefault = changeDefault)
+                    }
                 }
             }
         },

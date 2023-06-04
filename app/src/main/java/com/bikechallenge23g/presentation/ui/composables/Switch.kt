@@ -12,13 +12,13 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun CustomSwitch(
-    defaultState: Boolean = false,
+    defaultState: Boolean,
     isChecked: (Boolean) -> Unit
 ) {
     var checkedState by remember { mutableStateOf(false) }
     Surface {
         Switch(
-            checked = checkedState,
+            checked = defaultState,
             onCheckedChange = {
                 checkedState = it
                 isChecked(it)

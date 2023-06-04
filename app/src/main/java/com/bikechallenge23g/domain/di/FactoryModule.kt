@@ -4,6 +4,8 @@ import android.app.Application
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateServiceReminderUseCase
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import com.bikechallenge23g.presentation.viewmodel.MainViewModelFactory
 import dagger.Module
@@ -21,6 +23,8 @@ class FactoryModule {
     fun provideMainViewModelFactory(
         application: Application,
         saveBikeUseCase: SaveBikeUseCase,
+        updateDefaultBikeUseCase: UpdateDefaultBikeUseCase,
+        updateServiceReminderUseCase: UpdateServiceReminderUseCase,
         deleteBikeUseCase: DeleteBikeUseCase,
         getBikesUseCase: GetBikesUseCase
     ): MainViewModelFactory {
@@ -28,6 +32,8 @@ class FactoryModule {
             application,
             getBikesUseCase,
             saveBikeUseCase,
+            updateDefaultBikeUseCase,
+            updateServiceReminderUseCase,
             deleteBikeUseCase
         )
     }
@@ -37,12 +43,16 @@ class FactoryModule {
     fun provideMainViewModel(
         application: Application,
         saveBikeUseCase: SaveBikeUseCase,
+        updateDefaultBikeUseCase: UpdateDefaultBikeUseCase,
+        updateServiceReminderUseCase: UpdateServiceReminderUseCase,
         deleteBikeUseCase: DeleteBikeUseCase,
         getBikesUseCase: GetBikesUseCase
     ): MainViewModel {
         return MainViewModel(
             application,
             saveBikeUseCase,
+            updateDefaultBikeUseCase,
+            updateServiceReminderUseCase,
             deleteBikeUseCase,
             getBikesUseCase
         )

@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         window.statusBarColor = Color.BLACK
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+//        setSplashScreen(SplashScreen.Builder(this).build())
         setContent {
             BikeApp(viewModel)
         }
