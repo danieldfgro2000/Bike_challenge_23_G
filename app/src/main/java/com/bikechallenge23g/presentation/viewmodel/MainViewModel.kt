@@ -13,6 +13,7 @@ import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateDistanceUnitUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceIntervalUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceReminderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,11 +25,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val application: Application,
+    application: Application,
     private val saveBikeUseCase: SaveBikeUseCase,
     private val updateDefaultBikeUseCase: UpdateDefaultBikeUseCase,
     private val updateServiceReminderUseCase: UpdateServiceReminderUseCase,
     private val updateServiceIntervalUseCase: UpdateServiceIntervalUseCase,
+    private val updateDistanceUnitUseCase: UpdateDistanceUnitUseCase,
     private val deleteBikeUseCase: DeleteBikeUseCase,
     private val getBikesUseCase: GetBikesUseCase
 ) : AndroidViewModel(application) {
@@ -101,11 +103,11 @@ class MainViewModel @Inject constructor(
         Log.e("Selected = ", "${selectedBike.value}")
     }
 
-    fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int?) {
-        Log.e("bikeID", "$bikeId")
-        bikeId?.let {
+    fun updateServiceReminder(isReminderActive: Boolean) {
+        selectedBike.value?.id?.let {
             viewModelScope.launch(IO) {
-                updateServiceReminderUseCase.execute(isReminderActive, bikeId)
+                Log.e("bikeID", "$it")
+                updateServiceReminderUseCase.execute(isReminderActive, it)
             }
         }
     }
@@ -119,12 +121,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private val _distanceUnit = MutableStateFlow(DistanceUnit.KM)
-    val distanceUnit: StateFlow<DistanceUnit>
-        get() = _distanceUnit
-
     fun updateDistanceUnit(newDistanceUnit: DistanceUnit) {
-        _distanceUnit.value = newDistanceUnit
+        selectedBike.value?.id?.let {
+            viewModelScope.launch(IO) {
+                updateDistanceUnitUseCase.execute(it, newDistanceUnit)
+            }
+        }
     }
 
     fun deleteBike(bike: Bike) = viewModelScope.launch(IO) {

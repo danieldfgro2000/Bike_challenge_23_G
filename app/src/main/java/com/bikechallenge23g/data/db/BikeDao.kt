@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bikechallenge23g.data.model.Bike
+import com.bikechallenge23g.data.model.enums.DistanceUnit
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,6 +23,9 @@ interface BikeDao {
 
     @Query("UPDATE bikes SET serviceInterval = :newInterval WHERE id == :bikeId")
     fun updateServiceInterval(bikeId: Int, newInterval: Int)
+
+    @Query("UPDATE bikes SET distanceUnit = :newUnit WHERE id == :bikeId")
+    fun updateDistanceUnit(bikeId: Int, newUnit: DistanceUnit)
 
     @Delete
     fun deleteBike(bike: Bike)

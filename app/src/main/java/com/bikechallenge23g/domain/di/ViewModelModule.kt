@@ -5,6 +5,7 @@ import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
+import com.bikechallenge23g.domain.usecase.UpdateDistanceUnitUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceIntervalUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceReminderUseCase
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
@@ -25,6 +26,7 @@ class ViewModelModule {
         updateDefaultBikeUseCase: UpdateDefaultBikeUseCase,
         updateServiceReminderUseCase: UpdateServiceReminderUseCase,
         updateServiceIntervalUseCase: UpdateServiceIntervalUseCase,
+        updateDistanceUnitUseCase: UpdateDistanceUnitUseCase,
         deleteBikeUseCase: DeleteBikeUseCase,
         getBikesUseCase: GetBikesUseCase
     ): MainViewModel {
@@ -34,6 +36,7 @@ class ViewModelModule {
             updateDefaultBikeUseCase,
             updateServiceReminderUseCase,
             updateServiceIntervalUseCase,
+            updateDistanceUnitUseCase,
             deleteBikeUseCase,
             getBikesUseCase
         )

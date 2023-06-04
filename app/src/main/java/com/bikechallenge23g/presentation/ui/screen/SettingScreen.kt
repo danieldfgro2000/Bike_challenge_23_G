@@ -60,7 +60,7 @@ fun SettingScreen(
                 DropdownSelector(
                     modifier = Modifier.padding(10.dp),
                     items = DistanceUnit.values().map { it.name },
-                    selectedItem = viewModel.distanceUnit.collectAsState().value.name
+                    selectedItem = selectedBike?.distanceUnit?.unit ?: DistanceUnit.KM.unit
                 ) {
                     viewModel.updateDistanceUnit(DistanceUnit.valueOf(it))
                 }
@@ -74,8 +74,10 @@ fun SettingScreen(
                         .padding(10.dp)
                 ) {
                     CustomTextField(
+                        modifier = Modifier.fillMaxWidth(0.9f),
                         value = selectedBike?.serviceInterval.toString(),
                         error = bikeServiceIntervalError,
+                        unit = selectedBike?.distanceUnit ?: DistanceUnit.KM,
                         displayUnit = true
                     ) { newServiceInterval ->
                         bikeServiceIntervalError =
@@ -93,10 +95,7 @@ fun SettingScreen(
                         defaultState = bikes.firstOrNull { it.isDefault == true }?.isServiceReminderActive
                             ?: false
                     ) { isReminderActive ->
-                        viewModel.updateServiceReminder(
-                            isReminderActive,
-                            bikes.firstOrNull { it.isDefault == true }?.id
-                        )
+                        viewModel.updateServiceReminder(isReminderActive)
                     }
                 }
                 if (bikes.isNotEmpty()) {

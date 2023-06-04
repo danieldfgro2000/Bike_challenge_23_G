@@ -73,7 +73,6 @@ fun CustomTextField(
             ) {
                 BasicTextField(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .focusRequester(focusRequester)
                         .onFocusChanged { focusState -> isFocused = focusState.isFocused },
                     value = value,
@@ -114,7 +113,7 @@ fun CustomTextField(
 @Preview
 @Composable
 private fun PreviewTextFieldCustomWithoutError() {
-    CustomTextField(value = "Nuke", error = null, modifier = Modifier) {}
+    CustomTextField(value = "Nuke", error = null, displayUnit = true, modifier = Modifier) {}
 }
 
 @Preview

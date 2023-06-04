@@ -34,6 +34,7 @@ import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
+import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 import com.bikechallenge23g.presentation.ui.composables.ColorRow
 import com.bikechallenge23g.presentation.ui.composables.CustomButton
@@ -154,7 +155,7 @@ fun AddBikeScreen(
                             coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
                         },
                     displayUnit = true,
-                    unit = viewModel.distanceUnit.collectAsState().value
+                    unit = newBike?.distanceUnit ?: DistanceUnit.KM
                 ) { newServiceInterval ->
                     bikeServiceIntervalError =
                         if (newServiceInterval.isBlank()) {

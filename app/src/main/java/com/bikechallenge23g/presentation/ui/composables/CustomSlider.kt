@@ -34,8 +34,8 @@ fun CustomSlider(
 
     val weightStart: Float = 1 / (sBW / posStart)
     val weightEnd: Float = 1 / (sBW / sPE)
-    val sWE = if (weightEnd <= 0.0f) 0.001f else weightEnd
-    val sWs = if (weightStart <= 0.0f) 0.001f else weightStart
+    val sWE = if (progress > range) 0.99f else if (weightEnd <= 0.0f) 0.001f else weightEnd
+    val sWs = if (progress > range) 0.01f else if (weightStart <= 0.0f) 0.001f else weightStart
 
     Box(
         modifier = modifier
@@ -109,4 +109,10 @@ fun PreviewCustomSlidebar70() {
 @Composable
 fun PreviewCustomSlidebar200() {
     CustomSlider(Modifier, 0f, 1f)
+}
+
+@Preview
+@Composable
+fun PreviewCustomSlidebarNeg() {
+    CustomSlider(Modifier, 100f, 10f)
 }
