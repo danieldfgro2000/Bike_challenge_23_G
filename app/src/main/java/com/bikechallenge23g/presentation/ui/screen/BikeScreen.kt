@@ -30,11 +30,10 @@ fun BikeScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-
     val bikes by viewModel.bikes.collectAsState()
-    LaunchedEffect(key1 = bikes) {
-        viewModel.getAllBikes()
-    }
+
+    LaunchedEffect(key1 = bikes) { viewModel.getAllBikes() }
+
     var showBikeDeleteDialog by remember { mutableStateOf(false) }
     var deletedBike by remember { mutableStateOf<Bike?>(null) }
 
@@ -59,7 +58,10 @@ fun BikeScreen(
                     items(bikes) { bikeView ->
                         BikeCardWithDetails(
                             bike = bikeView,
-                            onEditSelected = { navController.navigate(NavigationRoutes.AddBike.route) },
+                            onEditSelected = {
+                                viewModel.setSelectedBike(bikeView)
+                                navController.navigate(NavigationRoutes.AddBike.route)
+                            },
                             onDeleteSelected = {
                                 deletedBike = bikeView
                                 showBikeDeleteDialog = true

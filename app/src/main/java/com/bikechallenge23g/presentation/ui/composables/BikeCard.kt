@@ -226,14 +226,6 @@ fun BikeCardWithDetails(
                 painter = painterResource(id = R.drawable.bike_card_background),
                 contentDescription = null
             )
-//            Image(
-//                modifier = Modifier
-//                    .align(Alignment.TopEnd)
-//                    .padding(10.dp)
-//                    .clickable { onMore() },
-//                painter = painterResource(id = R.drawable.icon_more),
-//                contentDescription = null
-//            )
             IconWithDropdown(
                 modifier = Modifier
                     .align(Alignment.TopEnd)

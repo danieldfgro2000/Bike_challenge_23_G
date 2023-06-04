@@ -15,6 +15,9 @@ class BikeRepositoryImpl(
     override suspend fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int) =
         bikeLocalDataSource.updateServiceReminder(isReminderActive, bikeId)
 
+    override suspend fun updateServiceInterval(bikeId: Int, newInterval: Int) =
+        bikeLocalDataSource.updateServiceInterval(bikeId, newInterval)
+
     override suspend fun deleteBike(bike: Bike) = bikeLocalDataSource.deleteBikeFromDb(bike)
     override suspend fun getSavedBikes(): Flow<List<Bike>> = bikeLocalDataSource.getSavedBikes()
 }

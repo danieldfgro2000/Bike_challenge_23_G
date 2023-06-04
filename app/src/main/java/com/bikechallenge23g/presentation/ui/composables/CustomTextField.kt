@@ -40,9 +40,9 @@ import com.bikechallenge23g.theme.AppCappuccino
 
 @Composable
 fun CustomTextField(
+    modifier: Modifier = Modifier,
     value: String,
-    error: String?,
-    modifier: Modifier,
+    error: String? = null,
     displayUnit: Boolean = false,
     unit: DistanceUnit = DistanceUnit.KM,
     onValueChange: (String) -> Unit,

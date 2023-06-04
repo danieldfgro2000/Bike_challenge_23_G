@@ -7,11 +7,14 @@ import kotlinx.coroutines.flow.Flow
 
 class BikeLocalDataSourceImpl(
     private val bikeDao: BikeDao
-) : BikeLocalDataSource{
+) : BikeLocalDataSource {
     override suspend fun saveBikeToDb(bike: Bike) = bikeDao.saveBike(bike)
     override suspend fun updateDefaultBike(bikeId: Int) = bikeDao.updateDefaultBike(bikeId)
     override suspend fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int) =
         bikeDao.updateServiceReminder(isReminderActive = isReminderActive, bikeId = bikeId)
+
+    override suspend fun updateServiceInterval(bikeId: Int, newInterval: Int) =
+        bikeDao.updateServiceInterval(bikeId, newInterval)
 
     override suspend fun deleteBikeFromDb(bike: Bike) = bikeDao.deleteBike(bike)
     override suspend fun getSavedBikes(): Flow<List<Bike>> = bikeDao.getAllBikes()
