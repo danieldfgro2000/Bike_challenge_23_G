@@ -4,6 +4,7 @@ package com.bikechallenge23g.presentation.ui.composables
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -65,7 +67,10 @@ fun IconWithDropdown(
     onDeleteSelected: () -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-    Surface(modifier = modifier) {
+    Surface(
+        modifier = modifier,
+        color = Color.Transparent
+    ) {
 
         Image(
             modifier = Modifier.clickable { expanded.value = true },
@@ -74,12 +79,11 @@ fun IconWithDropdown(
         )
         DropdownMenu(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .wrapContentWidth()
+                .padding(horizontal = 10.dp),
             expanded = expanded.value,
             onDismissRequest = { expanded.value = false }
         ) {
-
             DropdownMenuItem(
                 onClick = {
                     onEditSelected()
@@ -96,10 +100,8 @@ fun IconWithDropdown(
             ) {
                 CustomMenuItem(icon = R.drawable.icon_delete, text = R.string.delete)
             }
-
         }
     }
-
 }
 
 @Composable
@@ -115,6 +117,7 @@ fun CustomMenuItem(
             painter = painterResource(id = icon),
             contentDescription = stringResource(id = text)
         )
+        Spacer(modifier = Modifier.padding(5.dp))
         Text(
             text = stringResource(id = text),
             style = MaterialTheme.typography.labelMedium,

@@ -28,4 +28,5 @@
     <string name="delete">Delete</string>
     <string name="bike_will_be_deleted">will be deleted</string>
     <string name="cancel">Cancel\n</string>
+    <string name="add_ride">Add Ride</string>
 </resources>

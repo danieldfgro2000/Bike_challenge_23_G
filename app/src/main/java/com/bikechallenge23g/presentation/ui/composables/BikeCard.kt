@@ -264,7 +264,7 @@ fun BikeCardWithDetails(
                     Spacer(modifier = Modifier.width(5.dp))
                     TextLabel(
                         inputText = bike.wheelSize?.size ?: BikeWheel.BIG.size,
-                        textStyle = MaterialTheme.typography.labelLarge,
+                        textStyle = MaterialTheme.typography.titleMedium,
 
                         )
 
@@ -278,11 +278,11 @@ fun BikeCardWithDetails(
                     Spacer(modifier = Modifier.width(5.dp))
                     TextLabel(
                         inputText = bike.serviceIn.toString(),
-                        textStyle = MaterialTheme.typography.labelLarge
+                        textStyle = MaterialTheme.typography.titleMedium
                     )
                     TextLabel(
                         inputText = bike.distanceUnit?.name ?: DistanceUnit.KM.name,
-                        textStyle = MaterialTheme.typography.labelLarge
+                        textStyle = MaterialTheme.typography.titleMedium
                     )
 
                 }
@@ -299,7 +299,11 @@ fun BikeCardWithDetails(
 @Preview
 @Composable
 fun PreviewBikeCardWithDetails() {
-    BikeCardWithDetails(bike = Bike(model = "NukeProof Scout 290"), onEditSelected = {}) {}
+    BikeCardWithDetails(
+        bike = Bike(
+            model = "NukeProof Scout 290",
+            distanceUnit = DistanceUnit.MILES
+        ), onEditSelected = {}) {}
 }
 
 @Preview(showBackground = true)

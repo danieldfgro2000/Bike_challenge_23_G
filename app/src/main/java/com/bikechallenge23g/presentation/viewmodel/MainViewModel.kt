@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.bikechallenge23g.data.model.Bike
+import com.bikechallenge23g.data.model.Ride
 import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
@@ -35,9 +36,6 @@ class MainViewModel @Inject constructor(
     private val getBikesUseCase: GetBikesUseCase
 ) : AndroidViewModel(application) {
 
-    init {
-        getAllBikes()
-    }
 
     fun getAllBikes() = viewModelScope.launch(IO) {
         getBikesUseCase.execute().collect { bikes ->
@@ -132,4 +130,9 @@ class MainViewModel @Inject constructor(
     fun deleteBike(bike: Bike) = viewModelScope.launch(IO) {
         deleteBikeUseCase.execute(bike)
     }
+
+    private val _rides = MutableStateFlow(listOf<Ride>())
+    val rides: StateFlow<List<Ride>>
+        get() = _rides
+
 }

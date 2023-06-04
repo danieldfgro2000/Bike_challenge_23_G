@@ -20,7 +20,7 @@ import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
 import com.bikechallenge23g.presentation.ui.composables.BikeCardWithDetails
 import com.bikechallenge23g.presentation.ui.composables.CustomDialog
-import com.bikechallenge23g.presentation.ui.composables.NoBikePlaceholder
+import com.bikechallenge23g.presentation.ui.composables.NoItemsPlaceholder
 import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 
@@ -38,8 +38,8 @@ fun BikeScreen(
     var deletedBike by remember { mutableStateOf<Bike?>(null) }
 
     Scaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(),
+        backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopBar(
                 title = R.string.bikes,
@@ -47,23 +47,23 @@ fun BikeScreen(
                 iconDescription = R.string.add_bike,
                 showIconDescription = true
             ) {
-                navController.navigate(NavigationRoutes.AddBike.route)
+                navController.navigate(NavigationRoutes.AddEditBike.route)
             }
         },
         content = {
             if (bikes.isEmpty()) {
-                NoBikePlaceholder(navController)
+                NoItemsPlaceholder(navController)
             } else {
                 LazyColumn {
-                    items(bikes) { bikeView ->
+                    items(bikes) { currentBike ->
                         BikeCardWithDetails(
-                            bike = bikeView,
+                            bike = currentBike,
                             onEditSelected = {
-                                viewModel.setSelectedBike(bikeView)
-                                navController.navigate(NavigationRoutes.AddBike.route)
+                                viewModel.setSelectedBike(currentBike)
+                                navController.navigate(NavigationRoutes.AddEditBike.route)
                             },
                             onDeleteSelected = {
-                                deletedBike = bikeView
+                                deletedBike = currentBike
                                 showBikeDeleteDialog = true
                             }
                         )

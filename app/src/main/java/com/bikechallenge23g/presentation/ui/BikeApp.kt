@@ -55,7 +55,8 @@ fun MainScreen(
     LaunchedEffect(Unit) {
         bottomNavController.addOnDestinationChangedListener { _, _, _ ->
             showBottomMenu =
-                bottomNavController.currentDestination?.route != NavigationRoutes.AddBike.route
+                bottomNavController.currentDestination?.route != NavigationRoutes.AddEditBike.route ||
+                        bottomNavController.currentDestination?.route != NavigationRoutes.AddEditRide.route
         }
     }
     BikeChallenge23GTheme {
@@ -120,7 +121,7 @@ fun NavGraphBuilder.extendedNavigation(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    composable(NavigationRoutes.AddBike.route) {
+    composable(NavigationRoutes.AddEditBike.route) {
         AddBikeScreen(navController = navController, viewModel = viewModel)
     }
 }
