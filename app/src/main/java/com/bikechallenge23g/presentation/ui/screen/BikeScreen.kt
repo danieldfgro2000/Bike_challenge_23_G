@@ -65,6 +65,9 @@ fun BikeScreen(
                             onDeleteSelected = {
                                 deletedBike = currentBike
                                 showBikeDeleteDialog = true
+                            },
+                            onCardClicked = {
+                                viewModel.setSelectedBike(currentBike)
                             }
                         )
                     }
@@ -74,12 +77,14 @@ fun BikeScreen(
             if (showBikeDeleteDialog) {
                 deletedBike?.let {
                     CustomDialog(
-                        bike = it,
-                        hideDialog = { showBikeDeleteDialog = false }) { bikeToBeDeleted ->
-                        showBikeDeleteDialog = false
-                        deletedBike = null
-                        viewModel.deleteBike(bikeToBeDeleted)
-                    }
+                        title = it.model ?: "",
+                        onCancel = { showBikeDeleteDialog = false },
+                        onConfirm = {
+                            showBikeDeleteDialog = false
+                            viewModel.deleteBike(it)
+                            deletedBike = null
+                        }
+                    )
                 }
             }
         })

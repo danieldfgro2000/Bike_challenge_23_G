@@ -1,6 +1,7 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -209,6 +210,7 @@ private fun bikeImageSelector(bikeType: BikeType, wheels: BikeWheel) =
 @Composable
 fun BikeCardWithDetails(
     bike: Bike,
+    onCardClicked: (Bike) -> Unit,
     onEditSelected: () -> Unit,
     onDeleteSelected: () -> Unit
 ) {
@@ -216,6 +218,7 @@ fun BikeCardWithDetails(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 5.dp)
             .fillMaxWidth()
+            .clickable { onCardClicked(bike) }
             .height(345.dp),
         shape = RoundedCornerShape(5.dp)
     ) {
@@ -303,7 +306,7 @@ fun PreviewBikeCardWithDetails() {
         bike = Bike(
             model = "NukeProof Scout 290",
             distanceUnit = DistanceUnit.MILES
-        ), onEditSelected = {}) {}
+        ), onCardClicked = {}, onEditSelected = {}) {}
 }
 
 @Preview(showBackground = true)

@@ -3,9 +3,10 @@ package com.bikechallenge23g.presentation.ui.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material3.Button
@@ -19,33 +20,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bikechallenge23g.R
-import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.theme.AppDarkBlue
 
 @Composable
 fun CustomDialog(
-    bike: Bike,
-    hideDialog: () -> Unit,
-    deleteBike: (Bike) -> Unit
+    title: String,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit
 ) {
     AlertDialog(
-        onDismissRequest = { hideDialog() },
+        modifier = Modifier.height(200.dp),
+        onDismissRequest = { onCancel() },
         title = {},
         text = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 TextLabel(
-                    inputText = bike.model ?: "",
+                    inputText = title,
                     height = 30.dp,
-                    textStyle = MaterialTheme.typography.titleMedium
+                    textStyle = MaterialTheme.typography.titleLarge
                 )
                 TextLabel(
                     inputText = stringResource(id = R.string.bike_will_be_deleted),
+                    height = 24.dp,
                     textStyle = MaterialTheme.typography.labelLarge
                 )
             }
@@ -64,7 +64,7 @@ fun CustomDialog(
                         containerColor = Color.Transparent
                     ),
                     shape = RoundedCornerShape(5.dp),
-                    onClick = { hideDialog() }) {
+                    onClick = { onCancel() }) {
                     TextLabel(inputText = stringResource(id = R.string.cancel))
                 }
 
@@ -75,7 +75,7 @@ fun CustomDialog(
                         containerColor = MaterialTheme.colorScheme.secondary
                     ),
                     shape = RoundedCornerShape(5.dp),
-                    onClick = { deleteBike(bike) }) {
+                    onClick = { onConfirm() }) {
                     TextLabel(inputText = stringResource(id = R.string.delete))
                 }
             }
@@ -87,5 +87,5 @@ fun CustomDialog(
 @Preview
 @Composable
 private fun PreviewCustomDialog() {
-    CustomDialog(bike = Bike(model = "Cannondale"), hideDialog = {}, deleteBike = { })
+    CustomDialog(title = "Cannondale", onCancel = {}, onConfirm = { })
 }

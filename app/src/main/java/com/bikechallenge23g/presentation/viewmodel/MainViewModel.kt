@@ -11,6 +11,7 @@ import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
+import com.bikechallenge23g.domain.usecase.DeleteRideUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
 import com.bikechallenge23g.domain.usecase.GetRidesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
@@ -37,7 +38,8 @@ class MainViewModel @Inject constructor(
     private val deleteBikeUseCase: DeleteBikeUseCase,
     private val getBikesUseCase: GetBikesUseCase,
     private val saveRideUseCase: SaveRideUseCase,
-    private val getRidesUseCase: GetRidesUseCase
+    private val getRidesUseCase: GetRidesUseCase,
+    private val deleteRideUseCase: DeleteRideUseCase,
 ) : AndroidViewModel(application) {
 
 
@@ -148,6 +150,7 @@ class MainViewModel @Inject constructor(
         name: String? = selectedRide.value?.name,
         bikeId: Int? = selectedRide.value?.bikeId,
         distance: Double? = selectedRide.value?.distance,
+        distanceUnit: DistanceUnit? = selectedRide.value?.distanceUnit,
         duration: Int? = selectedRide.value?.duration,
         date: Long? = selectedRide.value?.date
     ) {
@@ -156,15 +159,20 @@ class MainViewModel @Inject constructor(
             name,
             bikeId,
             distance,
+            distanceUnit,
             duration,
             date
         )
-        Log.e("New ride = ", "${_selectedRide.value}")
+        Log.e("ride = ", "${_selectedRide.value}")
     }
 
     fun saveSelectedRide() = viewModelScope.launch(IO) {
         selectedRide.value?.let { saveRideUseCase.execute(it) }
         _selectedRide.value = null
+    }
+
+    fun deleteRide(ride: Ride) = viewModelScope.launch(IO) {
+        deleteRideUseCase.execute(ride)
     }
 
     fun getAllRides() = viewModelScope.launch(IO) {
@@ -176,6 +184,11 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setSelectedRide(ride: Ride) {
+        _selectedRide.value = ride
+        Log.e("Selected = ", "${selectedRide.value}")
     }
 
 }
