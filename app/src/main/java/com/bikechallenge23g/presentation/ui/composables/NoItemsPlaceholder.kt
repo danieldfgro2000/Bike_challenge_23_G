@@ -128,7 +128,13 @@ fun NoItemsPlaceholder(
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 containerColor = Color(0xFF0066F5)
             ),
-            onClick = { navController?.navigate(NavigationRoutes.AddEditBike.route) }
+            onClick = {
+                if (isRideFlow) {
+                    navController?.navigate(NavigationRoutes.AddEditRide.route)
+                } else {
+                    navController?.navigate(NavigationRoutes.AddEditBike.route)
+                }
+            }
         ) {
             if (isRideFlow) {
                 Text(text = stringResource(id = R.string.add_ride))

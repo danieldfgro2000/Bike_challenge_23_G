@@ -12,7 +12,7 @@ sealed class NavigationRoutes(
     )
 
     object AddEditRide : NavigationRoutes(
-        route = "add_edit_ride",
+        route = BottomMenuItem.Rides.route + "/add_edit_ride",
         title = R.string.add_ride
     )
 }

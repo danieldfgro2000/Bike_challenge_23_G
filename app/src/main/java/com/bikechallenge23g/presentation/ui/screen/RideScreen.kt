@@ -38,7 +38,7 @@ fun RideScreen(
         },
         content = {
             if (rides.isEmpty()) {
-                NoItemsPlaceholder(isRideFlow = true)
+                NoItemsPlaceholder(navController = navController, isRideFlow = true)
             } else {
 
             }

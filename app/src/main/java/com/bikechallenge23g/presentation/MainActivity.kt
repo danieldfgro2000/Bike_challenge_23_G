@@ -1,7 +1,6 @@
 package com.bikechallenge23g.presentation
 
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -19,9 +18,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, true)
-        window.statusBarColor = Color.BLACK
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-//        setSplashScreen(SplashScreen.Builder(this).build())
         setContent {
             BikeApp(viewModel)
         }

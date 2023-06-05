@@ -18,7 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.presentation.ui.composables.CustomSwitch
@@ -30,7 +29,6 @@ import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 
 @Composable
 fun SettingScreen(
-    navController: NavController,
     viewModel: MainViewModel
 ) {
     val scrollState = rememberScrollState()

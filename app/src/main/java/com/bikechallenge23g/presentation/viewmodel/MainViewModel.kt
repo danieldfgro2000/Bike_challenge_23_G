@@ -135,4 +135,31 @@ class MainViewModel @Inject constructor(
     val rides: StateFlow<List<Ride>>
         get() = _rides
 
+    private var _selectedRide: MutableStateFlow<Ride?> = MutableStateFlow(Ride())
+    val selectedRide: MutableStateFlow<Ride?>
+        get() = _selectedRide
+
+    fun updateSelectedRide(
+        id: Int? = selectedRide.value?.id,
+        name: String? = selectedRide.value?.name,
+        bikeId: Int? = selectedRide.value?.bikeId,
+        distance: Double? = selectedRide.value?.distance,
+        duration: Int? = selectedRide.value?.duration,
+        date: Long? = selectedRide.value?.date
+    ) {
+        _selectedRide.value = Ride(
+            id,
+            name,
+            bikeId,
+            distance,
+            duration,
+            date
+        )
+        Log.e("New ride = ", "${_selectedRide.value}")
+    }
+
+    fun saveSelectedRide() {
+
+    }
+
 }

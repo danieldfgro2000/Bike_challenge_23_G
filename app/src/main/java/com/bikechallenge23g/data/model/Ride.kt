@@ -9,8 +9,8 @@ data class Ride(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val name: String? = "",
-    val bikeId: Int,
-    val distance: Double,
-    val duration: Int,
-    val date: Long
+    val bikeId: Int? = null,
+    val distance: Double? = null,
+    val duration: Int? = null,
+    val date: Long? = null
 ) : Serializable
