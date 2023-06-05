@@ -43,4 +43,6 @@
     <string name="duration">Duration</string>
     <string name="date_d">Date:</string>
     <string name="date">Date</string>
+    <string name="bike_details">Bike Details</string>
+    <string name="nav_back">Back Navigation</string>
 </resources>

@@ -21,7 +21,7 @@ import com.bikechallenge23g.R
 @Composable
 fun TitleTextLabel(
     inputText: String,
-    height: Dp = 40.dp,
+    height: Dp = 30.dp,
     textStyle: TextStyle = MaterialTheme.typography.titleLarge
 ) {
     TextLabel(

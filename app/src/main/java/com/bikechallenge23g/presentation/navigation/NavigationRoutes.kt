@@ -15,4 +15,9 @@ sealed class NavigationRoutes(
         route = BottomMenuItem.Rides.route + "/add_edit_ride",
         title = R.string.add_ride
     )
+
+    object BikeDetails : NavigationRoutes(
+        route = BottomMenuItem.Bikes.route + "/bike_details",
+        title = R.string.bike_details
+    )
 }

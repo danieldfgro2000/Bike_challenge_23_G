@@ -25,6 +25,7 @@ import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
 import com.bikechallenge23g.presentation.ui.screen.AddEditBikeScreen
 import com.bikechallenge23g.presentation.ui.screen.AddEditRideScreen
+import com.bikechallenge23g.presentation.ui.screen.BikeDetailScreen
 import com.bikechallenge23g.presentation.ui.screen.BikeScreen
 import com.bikechallenge23g.presentation.ui.screen.RideScreen
 import com.bikechallenge23g.presentation.ui.screen.SettingScreen
@@ -52,9 +53,12 @@ fun MainScreen(
     LaunchedEffect(Unit) {
         bottomNavController.addOnDestinationChangedListener { _, destination, _ ->
             Log.e("Destination route = ", "${destination.route}")
-            showBottomMenu =
-                bottomNavController.currentDestination?.route != NavigationRoutes.AddEditBike.route &&
-                        bottomNavController.currentDestination?.route != NavigationRoutes.AddEditRide.route
+            bottomNavController.currentDestination?.let {
+                showBottomMenu =
+                    it.route != NavigationRoutes.AddEditBike.route &&
+                            it.route != NavigationRoutes.AddEditRide.route &&
+                            it.route != NavigationRoutes.BikeDetails.route
+            }
         }
     }
     BikeChallenge23GTheme {
@@ -123,6 +127,9 @@ fun NavGraphBuilder.extendedNavigation(
     }
     composable(NavigationRoutes.AddEditRide.route) {
         AddEditRideScreen(navController = navController, viewModel = viewModel)
+    }
+    composable(NavigationRoutes.BikeDetails.route) {
+        BikeDetailScreen(navController = navController, viewModel = viewModel)
     }
 
 }

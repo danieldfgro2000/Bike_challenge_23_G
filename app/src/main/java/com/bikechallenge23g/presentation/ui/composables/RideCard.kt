@@ -34,7 +34,7 @@ import java.util.Locale
 fun RideCard(
     ride: Ride,
     bikeModel: String,
-    onCardClicked: (Ride) -> Unit,
+    onCardClicked: (Ride) -> Unit = {},
     onEditSelected: () -> Unit,
     onDeleteSelected: () -> Unit
 ) {

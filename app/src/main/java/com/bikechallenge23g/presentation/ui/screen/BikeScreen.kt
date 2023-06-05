@@ -31,6 +31,7 @@ fun BikeScreen(
     viewModel: MainViewModel
 ) {
     val bikes by viewModel.bikes.collectAsState()
+    val showTopBarIcon = bikes.isNotEmpty()
 
     LaunchedEffect(key1 = bikes) { viewModel.getAllBikes() }
 
@@ -43,9 +44,9 @@ fun BikeScreen(
         topBar = {
             TopBar(
                 title = R.string.bikes,
-                icon = R.drawable.icon_add,
-                iconDescription = R.string.add_bike,
-                showIconDescription = true
+                icon = if (showTopBarIcon) R.drawable.icon_add else null,
+                iconDescription = if (showTopBarIcon) R.string.add_bike else null,
+                showIconDescription = showTopBarIcon
             ) {
                 navController.navigate(NavigationRoutes.AddEditBike.route)
             }
@@ -68,6 +69,7 @@ fun BikeScreen(
                             },
                             onCardClicked = {
                                 viewModel.setSelectedBike(currentBike)
+                                navController.navigate(NavigationRoutes.BikeDetails.route)
                             }
                         )
                     }
