@@ -50,7 +50,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AddBikeScreen(
+fun AddEditBikeScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
@@ -66,12 +66,13 @@ fun AddBikeScreen(
 
     val emptyFieldErrorMessage = stringResource(id = R.string.required_field)
     val numberErrorMessage = stringResource(id = R.string.number_input_error)
-    var bikeNameError by remember { mutableStateOf<String?>(emptyFieldErrorMessage) }
+    var bikeNameError by remember { mutableStateOf<String?>(null) }
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
 
-    val newBike = viewModel.selectedBike.collectAsState().value
+    val selectedBike = viewModel.selectedBike.collectAsState().value
     val isInputValid: Boolean =
-        newBike?.model?.isNotBlank() == true && newBike.serviceInterval.toString().isNotBlank()
+        selectedBike?.model?.isNotBlank() == true && selectedBike.serviceInterval.toString()
+            .isNotBlank()
 
     LaunchedEffect(key1 = pagerState.currentPage) {
         viewModel.updateSelectedBike(bikeType = BikeType.values()[pagerState.currentPage])
@@ -82,7 +83,7 @@ fun AddBikeScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopBar(
-                title = R.string.add_bike,
+                title = if (selectedBike?.id == null) R.string.add_bike else R.string.edit_bike,
                 icon = R.drawable.icon_x,
                 iconDescription = R.string.close
             ) {
@@ -147,7 +148,8 @@ fun AddBikeScreen(
                     isRequired = true
                 )
                 CustomTextField(
-                    value = viewModel.selectedBike.collectAsState().value?.serviceInterval.toString(),
+                    value = (viewModel.selectedBike.collectAsState().value?.serviceInterval
+                        ?: 100).toString(),
                     error = bikeServiceIntervalError,
                     modifier = Modifier
                         .padding(10.dp)
@@ -155,7 +157,7 @@ fun AddBikeScreen(
                             coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
                         },
                     displayUnit = true,
-                    unit = newBike?.distanceUnit ?: DistanceUnit.KM
+                    unit = selectedBike?.distanceUnit ?: DistanceUnit.KM
                 ) { newServiceInterval ->
                     bikeServiceIntervalError =
                         if (newServiceInterval.isBlank()) {
@@ -195,9 +197,10 @@ fun AddBikeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                text = stringResource(id = R.string.add_bike),
+                text = stringResource(id = if (selectedBike?.id == null) R.string.add_bike else R.string.save),
                 enabled = isInputValid
             ) {
+                viewModel.updateSelectedBike()
                 viewModel.saveSelectedBike()
                 navController.navigate(BottomMenuItem.Bikes.route)
             }

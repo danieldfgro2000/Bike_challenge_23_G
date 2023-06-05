@@ -30,6 +30,6 @@ interface BikeDao {
     @Delete
     fun deleteBike(bike: Bike)
 
-    @Query("SELECT * FROM bikes")
+    @Query("SELECT * FROM bikes ORDER BY isDefault DESC, model ASC ")
     fun getAllBikes(): Flow<List<Bike>>
 }

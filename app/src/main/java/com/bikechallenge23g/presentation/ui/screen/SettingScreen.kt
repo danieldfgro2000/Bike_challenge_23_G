@@ -75,7 +75,7 @@ fun SettingScreen(
                 ) {
                     CustomTextField(
                         modifier = Modifier.fillMaxWidth(0.9f),
-                        value = selectedBike?.serviceInterval.toString(),
+                        value = (selectedBike?.serviceInterval ?: 100).toString(),
                         error = bikeServiceIntervalError,
                         unit = selectedBike?.distanceUnit ?: DistanceUnit.KM,
                         displayUnit = true

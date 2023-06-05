@@ -17,8 +17,8 @@ data class Bike(
     val model: String? = "",
     val bikeColor: BikeColor? = BikeColor.BLUE,
     val wheelSize: BikeWheel? = BikeWheel.BIG,
-    val serviceIn: Int? = 500,
-    val serviceInterval: Int? = 500,
+    val serviceIn: Int? = 100,
+    val serviceInterval: Int? = 100,
     val isServiceReminderActive: Boolean? = true,
     val distance: Double? = 0.0,
     val distanceUnit: DistanceUnit? = DistanceUnit.KM

@@ -11,6 +11,7 @@
     <string name="default_bike">Default Bike</string>
     <string name="no_bike">You don\'t have any bike yet. Add your first bike and start register your rides in order to keep your bike service cycles up to date.</string>
     <string name="add_bike">Add Bike</string>
+    <string name="edit_bike">Edit Bike</string>
     <string name="missing_bike_card">Missing bike card\n</string>
     <string name="close">Close\n</string>
     <string name="bike_wheels">Bike wheels\n</string>
@@ -29,4 +30,6 @@
     <string name="bike_will_be_deleted">will be deleted</string>
     <string name="cancel">Cancel\n</string>
     <string name="add_ride">Add Ride</string>
+    <string name="my_bike">MYBIKE</string>
+    <string name="save">Save</string>
 </resources>

@@ -24,7 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.bikechallenge23g.presentation.navigation.BottomMenu
 import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
-import com.bikechallenge23g.presentation.ui.screen.AddBikeScreen
+import com.bikechallenge23g.presentation.ui.screen.AddEditBikeScreen
 import com.bikechallenge23g.presentation.ui.screen.BikeScreen
 import com.bikechallenge23g.presentation.ui.screen.RideScreen
 import com.bikechallenge23g.presentation.ui.screen.SettingScreen
@@ -55,7 +55,7 @@ fun MainScreen(
     LaunchedEffect(Unit) {
         bottomNavController.addOnDestinationChangedListener { _, _, _ ->
             showBottomMenu =
-                bottomNavController.currentDestination?.route != NavigationRoutes.AddEditBike.route ||
+                bottomNavController.currentDestination?.route != NavigationRoutes.AddEditBike.route &&
                         bottomNavController.currentDestination?.route != NavigationRoutes.AddEditRide.route
         }
     }
@@ -122,6 +122,6 @@ fun NavGraphBuilder.extendedNavigation(
     viewModel: MainViewModel
 ) {
     composable(NavigationRoutes.AddEditBike.route) {
-        AddBikeScreen(navController = navController, viewModel = viewModel)
+        AddEditBikeScreen(navController = navController, viewModel = viewModel)
     }
 }

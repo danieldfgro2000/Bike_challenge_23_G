@@ -24,12 +24,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.theme.AppCappuccino
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
@@ -50,11 +53,12 @@ fun CustomTextField(
     var isFocused by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(modifier = modifier) {
         Card(
             modifier = Modifier
-                .height(40.dp)
+                .height(50.dp)
                 .fillMaxWidth()
                 .imePadding()
                 .onFocusChanged { focusState -> isFocused = focusState.isFocused },
@@ -73,6 +77,8 @@ fun CustomTextField(
             ) {
                 BasicTextField(
                     modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
                         .focusRequester(focusRequester)
                         .onFocusChanged { focusState -> isFocused = focusState.isFocused },
                     value = value,
@@ -80,7 +86,10 @@ fun CustomTextField(
                     singleLine = true,
                     interactionSource = interactionSource,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(onDone = { focusRequester.freeFocus() }),
+                    keyboardActions = KeyboardActions(onDone = {
+                        keyboardController?.hide()
+                        focusRequester.freeFocus()
+                    }),
                     textStyle = MaterialTheme.typography.labelMedium
                         .plus(
                             LocalTextStyle.current.copy(
@@ -98,7 +107,6 @@ fun CustomTextField(
                     )
                 }
             }
-
         }
         if (error != null && !isFocused) {
             Text(

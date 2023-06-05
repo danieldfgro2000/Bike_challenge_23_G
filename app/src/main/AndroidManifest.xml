@@ -17,7 +17,7 @@
         <activity
             android:name=".presentation.SplashScreenActivity"
             android:exported="true"
-            android:label="@string/title_activity_splash_screen"
+            android:label="@string/my_bike"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         <activity
             android:name=".presentation.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.BikeChallenge23G"></activity>
+            android:theme="@style/Theme.BikeChallenge23G" />
     </application>
 
 </manifest>
