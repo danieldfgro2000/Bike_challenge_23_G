@@ -12,7 +12,9 @@ import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
+import com.bikechallenge23g.domain.usecase.GetRidesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
+import com.bikechallenge23g.domain.usecase.SaveRideUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDistanceUnitUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceIntervalUseCase
@@ -33,7 +35,9 @@ class MainViewModel @Inject constructor(
     private val updateServiceIntervalUseCase: UpdateServiceIntervalUseCase,
     private val updateDistanceUnitUseCase: UpdateDistanceUnitUseCase,
     private val deleteBikeUseCase: DeleteBikeUseCase,
-    private val getBikesUseCase: GetBikesUseCase
+    private val getBikesUseCase: GetBikesUseCase,
+    private val saveRideUseCase: SaveRideUseCase,
+    private val getRidesUseCase: GetRidesUseCase
 ) : AndroidViewModel(application) {
 
 
@@ -158,8 +162,20 @@ class MainViewModel @Inject constructor(
         Log.e("New ride = ", "${_selectedRide.value}")
     }
 
-    fun saveSelectedRide() {
+    fun saveSelectedRide() = viewModelScope.launch(IO) {
+        selectedRide.value?.let { saveRideUseCase.execute(it) }
+        _selectedRide.value = null
+    }
 
+    fun getAllRides() = viewModelScope.launch(IO) {
+        getRidesUseCase.execute().collect { rides ->
+            rides.let {
+                Log.e("rides= ", "$rides")
+                if (rides.isNotEmpty()) {
+                    _rides.value = it
+                }
+            }
+        }
     }
 
 }

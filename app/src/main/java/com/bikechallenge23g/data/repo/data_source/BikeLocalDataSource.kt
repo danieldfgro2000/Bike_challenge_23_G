@@ -12,4 +12,5 @@ interface BikeLocalDataSource {
     suspend fun updateDistanceUnit(bikeId: Int, newUnit: DistanceUnit)
     suspend fun deleteBikeFromDb(bike: Bike)
     suspend fun getSavedBikes(): Flow<List<Bike>>
+
 }

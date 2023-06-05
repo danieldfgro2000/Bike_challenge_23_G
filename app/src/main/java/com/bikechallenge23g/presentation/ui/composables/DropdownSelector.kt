@@ -23,7 +23,7 @@ fun DropdownSelector(
 ) {
     val expanded = remember { mutableStateOf(false) }
     Surface(modifier = modifier) {
-        ClickableCardWithDropDown(selectedItem) { expanded.value = true }
+        CustomCardWithDropDown(selectedItem) { expanded.value = true }
 
         DropdownMenu(
             modifier = Modifier

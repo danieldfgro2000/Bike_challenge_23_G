@@ -122,7 +122,6 @@ fun NavGraphBuilder.extendedNavigation(
         AddEditBikeScreen(navController = navController, viewModel = viewModel)
     }
     composable(NavigationRoutes.AddEditRide.route) {
-        Log.e("Navigate to ride", "is")
         AddEditRideScreen(navController = navController, viewModel = viewModel)
     }
 

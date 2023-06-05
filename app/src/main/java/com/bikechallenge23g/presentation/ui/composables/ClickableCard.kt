@@ -21,8 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.bikechallenge23g.R
 
 @Composable
-fun ClickableCardWithDropDown(
+fun CustomCardWithDropDown(
     text: String,
+    showIcon: Boolean = true,
     expand: () -> Unit
 ) {
     Card(
@@ -42,13 +43,15 @@ fun ClickableCardWithDropDown(
                 color = MaterialTheme.colorScheme.inverseSurface,
                 fontSize = MaterialTheme.typography.labelMedium.fontSize,
             )
-            Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                modifier = Modifier.padding(top = 10.dp),
-                painter = painterResource(id = R.drawable.icon_dropdown),
-                contentDescription = stringResource(id = R.string.chevron),
-                tint = MaterialTheme.colorScheme.inverseSurface
-            )
+            if (showIcon) {
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    modifier = Modifier.padding(top = 10.dp),
+                    painter = painterResource(id = R.drawable.icon_dropdown),
+                    contentDescription = stringResource(id = R.string.chevron),
+                    tint = MaterialTheme.colorScheme.inverseSurface
+                )
+            }
         }
     }
 }

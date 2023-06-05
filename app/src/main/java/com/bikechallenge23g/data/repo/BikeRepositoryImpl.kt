@@ -23,5 +23,7 @@ class BikeRepositoryImpl(
         bikeLocalDataSource.updateDistanceUnit(bikeId, newUnit)
 
     override suspend fun deleteBike(bike: Bike) = bikeLocalDataSource.deleteBikeFromDb(bike)
+
     override suspend fun getSavedBikes(): Flow<List<Bike>> = bikeLocalDataSource.getSavedBikes()
+
 }

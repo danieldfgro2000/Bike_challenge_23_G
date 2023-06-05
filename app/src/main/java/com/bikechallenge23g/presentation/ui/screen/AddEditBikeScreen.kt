@@ -153,7 +153,9 @@ fun AddEditBikeScreen(
                     modifier = Modifier
                         .padding(10.dp)
                         .onGloballyPositioned {
-                            coroutineScope.launch { scrollState.animateScrollTo(screenHeight) }
+                            coroutineScope.launch {
+                                scrollState.animateScrollTo(screenHeight)
+                            }
                         },
                     displayUnit = true,
                     unit = selectedBike?.distanceUnit ?: DistanceUnit.KM

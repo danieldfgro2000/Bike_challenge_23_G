@@ -7,7 +7,8 @@
     <string name="km">Km</string>
     <string name="miles">Miles</string>
     <string name="chevron">Chevron\n</string>
-    <string name="distance_units">Distance Units  *</string>
+    <string name="distance">Distance</string>
+    <string name="distance_units">Distance Units</string>
     <string name="service_reminder">Service Reminder\n</string>
     <string name="default_bike">Default Bike</string>
     <string name="no_bike">You don\'t have any bike yet. Add your first bike and start register your rides in order to keep your bike service cycles up to date.</string>
@@ -35,4 +36,7 @@
     <string name="save">Save</string>
     <string name="edit_ride">Edit Ride</string>
     <string name="ride_title">Ride Title</string>
+    <string name="ok">Ok</string>
+    <string name="duration">Duration</string>
+    <string name="date">Date</string>
 </resources>

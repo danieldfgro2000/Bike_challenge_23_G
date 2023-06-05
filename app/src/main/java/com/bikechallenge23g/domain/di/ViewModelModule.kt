@@ -3,7 +3,9 @@ package com.bikechallenge23g.domain.di
 import android.app.Application
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
+import com.bikechallenge23g.domain.usecase.GetRidesUseCase
 import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
+import com.bikechallenge23g.domain.usecase.SaveRideUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDistanceUnitUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceIntervalUseCase
@@ -28,7 +30,9 @@ class ViewModelModule {
         updateServiceIntervalUseCase: UpdateServiceIntervalUseCase,
         updateDistanceUnitUseCase: UpdateDistanceUnitUseCase,
         deleteBikeUseCase: DeleteBikeUseCase,
-        getBikesUseCase: GetBikesUseCase
+        getBikesUseCase: GetBikesUseCase,
+        saveRideUseCase: SaveRideUseCase,
+        getRidesUseCase: GetRidesUseCase,
     ): MainViewModel {
         return MainViewModel(
             application,
@@ -38,7 +42,9 @@ class ViewModelModule {
             updateServiceIntervalUseCase,
             updateDistanceUnitUseCase,
             deleteBikeUseCase,
-            getBikesUseCase
+            getBikesUseCase,
+            saveRideUseCase,
+            getRidesUseCase
         )
     }
 }
