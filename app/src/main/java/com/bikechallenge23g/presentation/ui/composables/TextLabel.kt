@@ -9,6 +9,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -37,7 +38,8 @@ fun TextLabel(
     inputText: String,
     isRequired: Boolean = false,
     height: Dp = 20.dp,
-    textStyle: TextStyle = MaterialTheme.typography.labelMedium
+    textStyle: TextStyle = MaterialTheme.typography.labelMedium,
+    textColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Row(modifier = modifier) {
         Text(
@@ -45,7 +47,7 @@ fun TextLabel(
             textAlign = TextAlign.Center,
             text = inputText,
             style = textStyle,
-            color = MaterialTheme.colorScheme.onBackground
+            color = textColor
         )
         if (isRequired) {
             Spacer(modifier = Modifier.width(2.dp))

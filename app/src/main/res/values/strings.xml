@@ -45,4 +45,6 @@
     <string name="date">Date</string>
     <string name="bike_details">Bike Details</string>
     <string name="nav_back">Back Navigation</string>
+    <string name="all_rides_statistics">All Rides Statistics</string>
+    <string name="total_d">Total:</string>
 </resources>
