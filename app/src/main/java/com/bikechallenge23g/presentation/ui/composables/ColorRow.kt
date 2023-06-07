@@ -13,21 +13,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.bikechallenge23g.data.model.enums.BikeColor
 
 @Composable
 fun ColorRow(
+    initialColor: BikeColor,
     onSelected: (color: BikeColor) -> Unit
 ) {
     val scrollState = rememberScrollState()
-    var selectedColor by remember { mutableStateOf(Color.Red) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -40,13 +36,12 @@ fun ColorRow(
                 modifier = Modifier
                     .size(20.dp)
                     .clickable {
-                        selectedColor = color.color
                         onSelected(color)
                     },
                 shape = CircleShape,
                 color = color.color,
                 border =
-                if (color.color == selectedColor) {
+                if (color.color == initialColor.color) {
                     BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground)
                 } else null
             ) {

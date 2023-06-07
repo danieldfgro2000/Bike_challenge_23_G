@@ -28,6 +28,7 @@ import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import com.bikechallenge23g.theme.AppLightGreen
 import com.bikechallenge23g.theme.AppOrange
+import com.bikechallenge23g.theme.AppRed
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -65,7 +66,7 @@ fun RideScreen(
                         CustomBarChart(
                             totalKm = 25580.0,
                             values = listOf(
-                                Triple(BikeType.ROAD_BIKE, 8500f, Color.Red),
+                                Triple(BikeType.ROAD_BIKE, 8500f, AppRed),
                                 Triple(BikeType.MTB, 260050f, AppOrange),
                                 Triple(BikeType.HYBRID, 3420f, AppLightGreen),
                                 Triple(BikeType.ELECTRIC, 11000f, Color.White)

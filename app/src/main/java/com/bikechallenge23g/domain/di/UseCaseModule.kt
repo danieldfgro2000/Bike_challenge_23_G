@@ -10,8 +10,8 @@ import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
 import com.bikechallenge23g.domain.usecase.SaveRideUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDistanceUnitUseCase
-import com.bikechallenge23g.domain.usecase.UpdateServiceIntervalUseCase
-import com.bikechallenge23g.domain.usecase.UpdateServiceReminderUseCase
+import com.bikechallenge23g.domain.usecase.UpdateServiceReminderActiveUseCase
+import com.bikechallenge23g.domain.usecase.UpdateServiceReminderIntervalUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,14 +42,14 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideUpdateServiceReminderUseCase(bikeRepository: BikeRepository): UpdateServiceReminderUseCase {
-        return UpdateServiceReminderUseCase(bikeRepository)
+    fun provideUpdateServiceReminderActiveUseCase(bikeRepository: BikeRepository): UpdateServiceReminderActiveUseCase {
+        return UpdateServiceReminderActiveUseCase(bikeRepository)
     }
 
     @Singleton
     @Provides
-    fun provideUpdateServiceIntervalUseCase(bikeRepository: BikeRepository): UpdateServiceIntervalUseCase {
-        return UpdateServiceIntervalUseCase(bikeRepository)
+    fun provideUpdateServiceReminderIntervalUseCase(bikeRepository: BikeRepository): UpdateServiceReminderIntervalUseCase {
+        return UpdateServiceReminderIntervalUseCase(bikeRepository)
     }
 
     @Singleton

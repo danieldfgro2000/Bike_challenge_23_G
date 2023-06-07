@@ -33,11 +33,12 @@ fun SettingScreen(
 ) {
     val scrollState = rememberScrollState()
     val bikes = viewModel.bikes.collectAsState().value
-    val selectedBike = viewModel.selectedBike.collectAsState().value
+    val defaultBike = viewModel.defaultBike.collectAsState().value
 
     val emptyFieldErrorMessage = stringResource(id = R.string.required_field)
     val numberErrorMessage = stringResource(id = R.string.number_input_error)
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
+
 
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
@@ -58,7 +59,7 @@ fun SettingScreen(
                 DropdownSelector(
                     modifier = Modifier.padding(10.dp),
                     items = DistanceUnit.values().map { it.name },
-                    selectedItem = selectedBike?.distanceUnit?.unit ?: DistanceUnit.KM.unit
+                    selectedItem = defaultBike?.distanceUnit?.unit ?: DistanceUnit.KM.unit
                 ) {
                     viewModel.updateDistanceUnit(DistanceUnit.valueOf(it))
                 }
@@ -73,27 +74,29 @@ fun SettingScreen(
                 ) {
                     CustomTextField(
                         modifier = Modifier.fillMaxWidth(0.9f),
-                        value = (selectedBike?.serviceInterval ?: 100).toString(),
+                        value = (defaultBike?.serviceReminder ?: 100).toString(),
                         error = bikeServiceIntervalError,
-                        unit = selectedBike?.distanceUnit ?: DistanceUnit.KM,
+                        unit = defaultBike?.distanceUnit ?: DistanceUnit.KM,
                         displayUnit = true
-                    ) { newServiceInterval ->
+                    ) { newServiceReminderInterval ->
                         bikeServiceIntervalError =
-                            if (newServiceInterval.isBlank()) {
+                            if (newServiceReminderInterval.isBlank()) {
                                 emptyFieldErrorMessage
-                            } else if (newServiceInterval.toIntOrNull() == null) {
+                            } else if (newServiceReminderInterval.toIntOrNull() == null) {
                                 numberErrorMessage
                             } else null
-                        if (newServiceInterval.toIntOrNull() != null) {
-                            viewModel.updateSelectedBike(serviceInterval = newServiceInterval.toInt())
-                            viewModel.updateServiceInterval()
+                        if (newServiceReminderInterval.toIntOrNull() != null) {
+                            viewModel.updateBike(
+                                default = true,
+                                serviceReminder = newServiceReminderInterval.toInt()
+                            )
+                            viewModel.updateServiceReminderInterval()
                         }
                     }
                     CustomSwitch(
-                        defaultState = bikes.firstOrNull { it.isDefault == true }?.isServiceReminderActive
-                            ?: false
+                        defaultState = defaultBike?.isServiceReminderActive ?: false
                     ) { isReminderActive ->
-                        viewModel.updateServiceReminder(isReminderActive)
+                        viewModel.updateServiceReminderActive(isReminderActive)
                     }
                 }
                 if (bikes.isNotEmpty()) {
@@ -102,18 +105,14 @@ fun SettingScreen(
                         inputText = stringResource(id = R.string.default_bike),
                         isRequired = true
                     )
-                    bikes.firstOrNull { it.isDefault == true }?.let { bike ->
-                        viewModel.setSelectedBike(bike)
-                        DropdownSelector(
-                            modifier = Modifier.padding(10.dp),
-                            items = bikes.map { name -> name.model ?: "" },
-                            selectedItem = bike.model ?: ""
-                        ) { selectedModel ->
-                            val newSelectedBike = bikes.firstOrNull { it.model == selectedModel }
-                            newSelectedBike?.let {
-                                viewModel.updateDefaultBike(newSelectedBike.id)
-                                viewModel.setSelectedBike(newSelectedBike)
-                            }
+                    DropdownSelector(
+                        modifier = Modifier.padding(10.dp),
+                        items = bikes.map { name -> name.model ?: "" },
+                        selectedItem = defaultBike?.model ?: ""
+                    ) { selectedModel ->
+                        val newSelectedBike = bikes.firstOrNull { it.model == selectedModel }
+                        newSelectedBike?.let {
+                            viewModel.updateDefaultBike(newSelectedBike.id)
                         }
                     }
                 }

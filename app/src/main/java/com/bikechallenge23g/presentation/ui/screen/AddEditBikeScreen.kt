@@ -74,7 +74,7 @@ fun AddEditBikeScreen(
             .isNotBlank()
 
     LaunchedEffect(key1 = pagerState.currentPage) {
-        viewModel.updateSelectedBike(bikeType = BikeType.values()[pagerState.currentPage])
+        viewModel.updateBike(selected = true, bikeType = BikeType.values()[pagerState.currentPage])
     }
 
     Scaffold(
@@ -97,7 +97,15 @@ fun AddEditBikeScreen(
                     .verticalScroll(scrollState)
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
-                ColorRow { selectedColor -> viewModel.updateSelectedBike(bikeColor = selectedColor) }
+                ColorRow(
+                    initialColor = viewModel.selectedBike.collectAsState().value?.bikeColor
+                        ?: BikeColor.BLUE
+                ) { selectedColor ->
+                    viewModel.updateBike(
+                        selected = true,
+                        bikeColor = selectedColor
+                    )
+                }
                 SelectBikePager(
                     state = pagerState,
                     currentWidth = screenWidth,
@@ -122,7 +130,7 @@ fun AddEditBikeScreen(
                         }
                 ) { newBikeName ->
                     bikeNameError = if (newBikeName.isBlank()) emptyFieldErrorMessage else null
-                    viewModel.updateSelectedBike(model = newBikeName)
+                    viewModel.updateBike(selected = true, model = newBikeName)
                 }
                 TextLabel(
                     modifier = Modifier.padding(horizontal = 5.dp),
@@ -135,7 +143,8 @@ fun AddEditBikeScreen(
                     selectedItem = viewModel.selectedBike.collectAsState().value?.wheelSize?.size
                         ?: BikeWheel.BIG.size,
                     onItemSelected = { selectedWheel ->
-                        viewModel.updateSelectedBike(
+                        viewModel.updateBike(
+                            selected = true,
                             wheelSize = BikeWheel.values()
                                 .find { available -> available.size == selectedWheel }!!
                         )
@@ -167,8 +176,10 @@ fun AddEditBikeScreen(
                             numberErrorMessage
                         } else null
                     if (newServiceInterval.toIntOrNull() != null) {
-                        viewModel.updateSelectedBike(
+                        viewModel.updateBike(
+                            selected = true,
                             serviceIn = newServiceInterval.toInt(),
+                            serviceReminder = 100,
                             serviceInterval = newServiceInterval.toInt()
                         )
                     }
@@ -188,7 +199,7 @@ fun AddEditBikeScreen(
                         defaultState = viewModel.selectedBike.collectAsState().value?.isDefault
                             ?: false
                     ) { changeDefault ->
-                        viewModel.updateSelectedBike(isDefault = changeDefault)
+                        viewModel.updateBike(selected = true, isDefault = changeDefault)
                     }
                 }
             }
@@ -201,7 +212,7 @@ fun AddEditBikeScreen(
                 text = stringResource(id = if (selectedBike?.id == null) R.string.add_bike else R.string.save),
                 enabled = isInputValid
             ) {
-                viewModel.updateSelectedBike()
+                viewModel.updateBike(selected = true)
                 viewModel.saveSelectedBike()
                 navController.navigate(BottomMenuItem.Bikes.route)
             }

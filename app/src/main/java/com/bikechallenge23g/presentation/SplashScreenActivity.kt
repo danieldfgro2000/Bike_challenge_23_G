@@ -3,6 +3,7 @@ package com.bikechallenge23g.presentation
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -15,20 +16,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.bikechallenge23g.R
+import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import com.bikechallenge23g.theme.BikeChallenge23GTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SplashScreenActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
+
         setContent {
             BikeChallenge23GTheme {
                 SplashScreenContent()
             }
         }
+
+        viewModel.getAllBikes()
+        viewModel.getAllRides()
 
         lifecycleScope.launch {
             delay(2000)

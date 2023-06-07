@@ -19,10 +19,10 @@ interface BikeDao {
     fun updateDefaultBike(bikeId: Int)
 
     @Query("UPDATE bikes SET isServiceReminderActive = :isReminderActive WHERE id == :bikeId")
-    fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int)
+    fun updateServiceReminderActive(isReminderActive: Boolean, bikeId: Int)
 
-    @Query("UPDATE bikes SET serviceInterval = :newInterval WHERE id == :bikeId")
-    fun updateServiceInterval(bikeId: Int, newInterval: Int)
+    @Query("UPDATE bikes SET serviceReminder = :newInterval WHERE id == :bikeId")
+    fun updateServiceReminderInterval(bikeId: Int, newInterval: Int)
 
     @Query("UPDATE bikes SET distanceUnit = :newUnit WHERE id == :bikeId")
     fun updateDistanceUnit(bikeId: Int, newUnit: DistanceUnit)

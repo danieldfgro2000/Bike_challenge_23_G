@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface BikeLocalDataSource {
     suspend fun saveBikeToDb(bike: Bike)
     suspend fun updateDefaultBike(bikeId: Int)
-    suspend fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int)
-    suspend fun updateServiceInterval(bikeId: Int, newInterval: Int)
+    suspend fun updateServiceReminderActive(isReminderActive: Boolean, bikeId: Int)
+    suspend fun updateServiceReminderInterval(bikeId: Int, newInterval: Int)
     suspend fun updateDistanceUnit(bikeId: Int, newUnit: DistanceUnit)
     suspend fun deleteBikeFromDb(bike: Bike)
     suspend fun getSavedBikes(): Flow<List<Bike>>

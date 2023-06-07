@@ -9,8 +9,8 @@ import com.bikechallenge23g.domain.usecase.SaveBikeUseCase
 import com.bikechallenge23g.domain.usecase.SaveRideUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDefaultBikeUseCase
 import com.bikechallenge23g.domain.usecase.UpdateDistanceUnitUseCase
-import com.bikechallenge23g.domain.usecase.UpdateServiceIntervalUseCase
-import com.bikechallenge23g.domain.usecase.UpdateServiceReminderUseCase
+import com.bikechallenge23g.domain.usecase.UpdateServiceReminderActiveUseCase
+import com.bikechallenge23g.domain.usecase.UpdateServiceReminderIntervalUseCase
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import dagger.Module
 import dagger.Provides
@@ -27,8 +27,8 @@ class ViewModelModule {
         application: Application,
         saveBikeUseCase: SaveBikeUseCase,
         updateDefaultBikeUseCase: UpdateDefaultBikeUseCase,
-        updateServiceReminderUseCase: UpdateServiceReminderUseCase,
-        updateServiceIntervalUseCase: UpdateServiceIntervalUseCase,
+        updateServiceReminderActiveUseCase: UpdateServiceReminderActiveUseCase,
+        updateServiceReminderIntervalUseCase: UpdateServiceReminderIntervalUseCase,
         updateDistanceUnitUseCase: UpdateDistanceUnitUseCase,
         deleteBikeUseCase: DeleteBikeUseCase,
         getBikesUseCase: GetBikesUseCase,
@@ -40,8 +40,8 @@ class ViewModelModule {
             application,
             saveBikeUseCase,
             updateDefaultBikeUseCase,
-            updateServiceReminderUseCase,
-            updateServiceIntervalUseCase,
+            updateServiceReminderActiveUseCase,
+            updateServiceReminderIntervalUseCase,
             updateDistanceUnitUseCase,
             deleteBikeUseCase,
             getBikesUseCase,

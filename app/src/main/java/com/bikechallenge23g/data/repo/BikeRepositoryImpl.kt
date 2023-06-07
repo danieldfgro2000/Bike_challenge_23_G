@@ -13,11 +13,11 @@ class BikeRepositoryImpl(
     override suspend fun updateDefaultBike(bikeId: Int) =
         bikeLocalDataSource.updateDefaultBike(bikeId)
 
-    override suspend fun updateServiceReminder(isReminderActive: Boolean, bikeId: Int) =
-        bikeLocalDataSource.updateServiceReminder(isReminderActive, bikeId)
+    override suspend fun updateServiceReminderActive(isReminderActive: Boolean, bikeId: Int) =
+        bikeLocalDataSource.updateServiceReminderActive(isReminderActive, bikeId)
 
-    override suspend fun updateServiceInterval(bikeId: Int, newInterval: Int) =
-        bikeLocalDataSource.updateServiceInterval(bikeId, newInterval)
+    override suspend fun updateServiceReminderInterval(bikeId: Int, newInterval: Int) =
+        bikeLocalDataSource.updateServiceReminderInterval(bikeId, newInterval)
 
     override suspend fun updateDistanceUnit(bikeId: Int, newUnit: DistanceUnit) =
         bikeLocalDataSource.updateDistanceUnit(bikeId, newUnit)
