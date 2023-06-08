@@ -66,6 +66,8 @@ fun AddEditBikeScreen(
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
 
     val selectedBike by viewModel.selectedBike.collectAsState()
+    viewModel.updateBike(selected = true, bike = selectedBike)
+
     val isInputValid: Boolean =
         selectedBike?.model?.isNotBlank() == true &&
                 selectedBike?.serviceReminder != null &&
@@ -154,7 +156,7 @@ fun AddEditBikeScreen(
                     isRequired = true
                 )
                 CustomTextField(
-                    value = (selectedBike?.serviceReminder ?: 100).toString(),
+                    value = (selectedBike?.serviceIn ?: 100).toString(),
                     error = bikeServiceIntervalError,
                     modifier = Modifier
                         .padding(10.dp)
@@ -166,20 +168,17 @@ fun AddEditBikeScreen(
                     displayUnit = true,
                     unit = selectedBike?.distanceUnit ?: DistanceUnit.KM
                 ) { newServiceInterval ->
-                    bikeServiceIntervalError =
-                        if (newServiceInterval.isBlank()) {
-                            emptyFieldErrorMessage
-                        } else if (newServiceInterval.toIntOrNull() == null) {
-                            numberErrorMessage
-                        } else null
-                    if (newServiceInterval.toIntOrNull() != null) {
-                        viewModel.updateBike(
-                            selected = true,
-                            serviceReminder = newServiceInterval.toInt()
-                        )
+                    val newServiceIntervalInt = newServiceInterval.toIntOrNull()
+
+                    bikeServiceIntervalError = when {
+                        newServiceInterval.isBlank() -> emptyFieldErrorMessage
+                        newServiceIntervalInt == null -> numberErrorMessage
+                        else -> null
+                    }
+                    newServiceIntervalInt?.let {
+                        viewModel.updateBike(selected = true, serviceIn = it)
                     }
                 }
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -204,6 +203,7 @@ fun AddEditBikeScreen(
             ) {
                 Log.e("On save clic", "on click")
                 viewModel.saveSelectedBike()
+                viewModel.getAllBikes()
                 navController.navigate(BottomMenuItem.Bikes.route)
             }
         }

@@ -54,6 +54,7 @@ fun RideScreen(
                 iconDescription = if (showTopBarIcon) R.string.add_ride else null,
                 showIconDescription = showTopBarIcon
             ) {
+                viewModel.clearSelectedRide()
                 navController.navigate(NavigationRoutes.AddEditRide.route)
             }
         },

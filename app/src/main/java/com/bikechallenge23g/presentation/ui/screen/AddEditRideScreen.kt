@@ -58,9 +58,11 @@ fun AddEditRideScreen(
 
     val bikes = viewModel.bikes.collectAsState().value
 
-    val selectedBike = bikes.firstOrNull { it.id == selectedRide?.bikeId }
-        ?: bikes.firstOrNull { it.isDefault == true }
-    viewModel.updateBike(selected = true, bike = selectedBike)
+    viewModel.updateBike(
+        selected = true,
+        bike = bikes.firstOrNull { it.id == selectedRide?.bikeId })
+    val selectedBike by viewModel.selectedBike.collectAsState()
+
 
     var isInputValid = false
     selectedRide?.let {
@@ -118,11 +120,16 @@ fun AddEditRideScreen(
                     modifier = Modifier.padding(10.dp),
                     items = bikes.map { it.model ?: "" },
                     selectedItem = selectedBike?.model ?: "",
-                    onItemSelected = { newBike ->
+                    onItemSelected = { newBikeModel ->
+                        val newBike = bikes.firstOrNull { it.model == newBikeModel }
                         viewModel.updateBike(
                             selected = true,
-                            bike = bikes.firstOrNull { it.model == newBike })
-                        viewModel.updateSelectedRide(bikeId = bikes.firstOrNull { it.model == newBike }?.id)
+                            bike = newBike
+                        )
+                        viewModel.updateSelectedRide(
+                            bikeId = newBike?.id,
+                            distanceUnit = newBike?.distanceUnit
+                        )
                     }
                 )
                 TextLabel(
@@ -132,12 +139,10 @@ fun AddEditRideScreen(
                 )
                 CustomTextField(
                     modifier = Modifier.padding(10.dp),
-                    value = (viewModel.selectedRide.collectAsState().value?.distance
-                        ?: 0.0).toString(),
+                    value = (selectedBike?.distance ?: 0.0).toString(),
                     error = distanceError,
                     displayUnit = true,
-                    unit = bikes.firstOrNull { it.id == selectedRide?.bikeId }?.distanceUnit
-                        ?: DistanceUnit.KM,
+                    unit = selectedBike?.distanceUnit ?: DistanceUnit.KM,
                     onValueChange = { newDistance ->
                         distanceError =
                             if (newDistance.isBlank()) {
@@ -194,9 +199,12 @@ fun AddEditRideScreen(
                 text = stringResource(id = if (selectedRide?.id == null) R.string.add_ride else R.string.save),
                 enabled = isInputValid
             ) {
-                viewModel.updateSelectedRide()
-                viewModel.saveSelectedRide()
-                viewModel.saveSelectedBike()
+                with(viewModel) {
+                    saveSelectedRide()
+                    saveSelectedBike()
+                    getAllBikes()
+                    getAllRides()
+                }
                 navController.navigate(BottomMenuItem.Rides.route)
             }
         }

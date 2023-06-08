@@ -51,7 +51,7 @@ fun BikeScreen(
                 iconDescription = if (showTopBarIcon) R.string.add_bike else null,
                 showIconDescription = showTopBarIcon
             ) {
-                viewModel.saveSelectedBike()
+                viewModel.clearSelectedBike()
                 navController.navigate(NavigationRoutes.AddEditBike.route)
             }
         },

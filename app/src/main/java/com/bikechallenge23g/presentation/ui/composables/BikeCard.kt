@@ -266,6 +266,7 @@ fun BikeCardWithDetails(
                     Row(modifier = Modifier.padding(start = 10.dp)) {
                         TextLabel(
                             inputText = stringResource(id = R.string.wheels),
+                            height = 30.dp,
                             textStyle = MaterialTheme.typography.labelLarge,
 
                             )
@@ -280,6 +281,7 @@ fun BikeCardWithDetails(
                     Row(modifier = Modifier.padding(start = 10.dp)) {
                         TextLabel(
                             inputText = stringResource(id = R.string.service_interval),
+                            height = 30.dp,
                             textStyle = MaterialTheme.typography.labelLarge,
 
                             )

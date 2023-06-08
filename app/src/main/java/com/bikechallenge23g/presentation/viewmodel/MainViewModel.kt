@@ -84,14 +84,17 @@ class MainViewModel @Inject constructor(
     val selectedBike: MutableStateFlow<Bike?>
         get() = _selectedBike
 
+    fun clearSelectedBike() {
+        _selectedBike.value = null
+    }
+
     fun saveSelectedBike() = viewModelScope.launch(IO) {
         Log.e("Save bike", "${selectedBike.value}")
         selectedBike.value?.let {
             Log.e("Save bike", "$it")
             saveBikeUseCase.execute(it)
         }
-        _selectedBike.value = null
-        getAllBikes()
+        clearSelectedBike()
     }
 
     fun updateBike(
@@ -127,6 +130,7 @@ class MainViewModel @Inject constructor(
                 distance = distance ?: selectedBike.value?.distance ?: 0.0,
                 distanceUnit = distanceUnit ?: selectedBike.value?.distanceUnit ?: DistanceUnit.KM
             )
+            Log.e("selected bike = ", "${_selectedBike.value}")
         }
         default?.let {
             Log.e("UPDATING", "DEFAULT")
@@ -145,10 +149,8 @@ class MainViewModel @Inject constructor(
                 distance = distance ?: defaultBike.value?.distance,
                 distanceUnit = distanceUnit ?: defaultBike.value?.distanceUnit
             )
+            Log.e("default bike = ", "${_selectedBike.value}")
         }
-
-        Log.e("selected bike = ", "${_selectedBike.value}")
-        Log.e("default bike = ", "${_selectedBike.value}")
     }
 
     fun updateDefaultBike(bikeId: Int?) {
@@ -208,14 +210,18 @@ class MainViewModel @Inject constructor(
     val selectedRide: MutableStateFlow<Ride?>
         get() = _selectedRide
 
+    fun clearSelectedRide() {
+        _selectedRide.value = null
+    }
+
     fun updateSelectedRide(
         id: Int? = selectedRide.value?.id,
         name: String? = selectedRide.value?.name,
-        bikeId: Int? = selectedRide.value?.bikeId,
-        distance: Double? = selectedRide.value?.distance,
-        distanceUnit: DistanceUnit? = selectedRide.value?.distanceUnit,
-        duration: Int? = selectedRide.value?.duration,
-        date: Long? = selectedRide.value?.date
+        bikeId: Int? = selectedRide.value?.bikeId ?: 0,
+        distance: Double? = selectedRide.value?.distance ?: 0.0,
+        distanceUnit: DistanceUnit? = selectedRide.value?.distanceUnit ?: DistanceUnit.KM,
+        duration: Int? = selectedRide.value?.duration ?: 0,
+        date: Long? = selectedRide.value?.date ?: 0
     ) {
         _selectedRide.value = Ride(
             id,
@@ -232,12 +238,10 @@ class MainViewModel @Inject constructor(
     fun saveSelectedRide() = viewModelScope.launch(IO) {
         selectedRide.value?.let { saveRideUseCase.execute(it) }
         _selectedRide.value = null
-        getAllRides()
     }
 
     fun deleteRide(ride: Ride) = viewModelScope.launch(IO) {
         deleteRideUseCase.execute(ride)
-        getAllRides()
     }
 
     fun getAllRides() = viewModelScope.launch(IO) {
