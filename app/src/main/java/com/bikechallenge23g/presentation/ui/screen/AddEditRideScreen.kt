@@ -155,8 +155,6 @@ fun AddEditRideScreen(
                             viewModel.updateBike(
                                 selected = true,
                                 distance = (selectedBike?.distance ?: 0.0) + newDistance.toDouble(),
-                                serviceIn = (selectedBike?.serviceIn ?: 0) - newDistance.toDouble()
-                                    .toInt()
                             )
                             viewModel.updateSelectedRide(
                                 distance = newDistance.toDouble()

@@ -1,11 +1,11 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -13,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
@@ -30,12 +29,16 @@ fun CustomSlider(
     val posStart = progress / range
     val posEnd = 1 - posStart
     val sPE = if (posEnd == 0f) 0.1f else posEnd
+    Log.e("safe pos end", "$sPE")
     val sBW = if (boxWidth == 0) 1 else boxWidth
+    Log.e("safe box width", "$sBW")
 
-    val weightStart: Float = 1 / (sBW / posStart)
-    val weightEnd: Float = 1 / (sBW / sPE)
-    val sWE = if (progress > range) 0.99f else if (weightEnd <= 0.0f) 0.001f else weightEnd
-    val sWs = if (progress > range) 0.01f else if (weightStart <= 0.0f) 0.001f else weightStart
+    val weightStart: Float = 1 / (sBW / posStart) * 1000
+    val weightEnd: Float = 1 / (sBW / sPE) * 1000
+    val sWE = if (progress >= range) 0.001f else if (weightEnd <= 0.0f) 0.99f else weightEnd
+    val sWs = if (progress >= range) 0.99f else if (weightStart <= 0.0f) 0.001f else weightStart
+    Log.e("sWE", "$sWE")
+    Log.e("sWs", "$sWs")
 
     Box(
         modifier = modifier
@@ -80,15 +83,15 @@ fun CustomSlider(
             )
         )
 
-        Slider(
-            value = progress,
-            onValueChange = { },
-            valueRange = 0f..range,
-            modifier = Modifier
-                .align(Alignment.Center)
-                .fillMaxWidth()
-                .alpha(0f)
-        )
+//        Slider(
+//            value = progress,
+//            onValueChange = { },
+//            valueRange = 0f..range,
+//            modifier = Modifier
+//                .align(Alignment.Center)
+//                .fillMaxWidth()
+//                .alpha(0f)
+//        )
     }
 }
 
@@ -96,7 +99,7 @@ fun CustomSlider(
 @Preview
 @Composable
 fun PreviewCustomSlidebar20() {
-    CustomSlider(Modifier, 20f, 100f)
+    CustomSlider(Modifier, 399f, 400f)
 }
 
 @Preview

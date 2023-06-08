@@ -287,7 +287,8 @@ fun BikeCardWithDetails(
                             )
                         Spacer(modifier = Modifier.width(5.dp))
                         TextLabel(
-                            inputText = bike.serviceIn.toString(),
+                            inputText = ((bike.serviceIn ?: 0) - (bike.distance?.toInt()
+                                ?: 0)).toString(),
                             textStyle = MaterialTheme.typography.titleMedium
                         )
                         TextLabel(
@@ -298,9 +299,8 @@ fun BikeCardWithDetails(
                     }
                     CustomSlider(
                         modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
-                        progress = ((bike.distance?.toInt() ?: 0) - (bike.serviceIn
-                            ?: 0)).toFloat(),
-                        range = bike.serviceReminder?.toFloat() ?: 1f
+                        progress = bike.distance?.toFloat() ?: 0f,
+                        range = bike.serviceIn?.toFloat() ?: 1f
                     )
                 }
             }
@@ -314,6 +314,8 @@ fun PreviewBikeCardWithDetails() {
     BikeCardWithDetails(
         bike = Bike(
             model = "NukeProof Scout 290",
+            serviceIn = 500,
+            distance = 1000.0,
             distanceUnit = DistanceUnit.MILES
         ), onCardClicked = {}, onEditSelected = {}) {}
 }
