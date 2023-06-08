@@ -296,8 +296,9 @@ fun BikeCardWithDetails(
                     }
                     CustomSlider(
                         modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
-                        progress = ((bike.serviceInterval ?: 0) - (bike.serviceIn ?: 0)).toFloat(),
-                        range = bike.serviceInterval?.toFloat() ?: 1f
+                        progress = ((bike.distance?.toInt() ?: 0) - (bike.serviceIn
+                            ?: 0)).toFloat(),
+                        range = bike.serviceReminder?.toFloat() ?: 1f
                     )
                 }
             }

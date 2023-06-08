@@ -68,8 +68,8 @@ fun AddEditBikeScreen(
     val selectedBike by viewModel.selectedBike.collectAsState()
     val isInputValid: Boolean =
         selectedBike?.model?.isNotBlank() == true &&
-                selectedBike?.serviceInterval != null &&
-                selectedBike?.serviceInterval.toString().isNotBlank()
+                selectedBike?.serviceReminder != null &&
+                selectedBike?.serviceReminder.toString().isNotBlank()
 
     val pagerState = rememberPagerState(
         initialPage = selectedBike?.type?.ordinal ?: BikeType.ELECTRIC.ordinal,
@@ -154,7 +154,7 @@ fun AddEditBikeScreen(
                     isRequired = true
                 )
                 CustomTextField(
-                    value = (selectedBike?.serviceInterval ?: 100).toString(),
+                    value = (selectedBike?.serviceReminder ?: 100).toString(),
                     error = bikeServiceIntervalError,
                     modifier = Modifier
                         .padding(10.dp)
@@ -175,9 +175,7 @@ fun AddEditBikeScreen(
                     if (newServiceInterval.toIntOrNull() != null) {
                         viewModel.updateBike(
                             selected = true,
-                            serviceIn = selectedBike?.serviceIn ?: newServiceInterval.toInt(),
-                            serviceReminder = selectedBike?.serviceInterval,
-                            serviceInterval = newServiceInterval.toInt()
+                            serviceReminder = newServiceInterval.toInt()
                         )
                     }
                 }

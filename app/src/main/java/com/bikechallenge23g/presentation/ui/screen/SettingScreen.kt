@@ -102,7 +102,6 @@ fun SettingScreen(
                                 serviceReminder = newServiceReminderInterval.toInt()
                             )
                             viewModel.updateServiceReminderInterval()
-                            viewModel.getAllBikes()
                         }
                     }
                     CustomSwitch(
@@ -112,7 +111,6 @@ fun SettingScreen(
                             default = true,
                             isServiceReminderActive = isReminderActive
                         )
-                        viewModel.setServiceReminder()
                         viewModel.updateServiceReminderActive(isReminderActive)
                     }
                 }
@@ -130,6 +128,9 @@ fun SettingScreen(
                         val newSelectedBike = bikes.firstOrNull { it.model == selectedModel }
                         newSelectedBike?.let {
                             viewModel.updateDefaultBike(newSelectedBike.id)
+                            viewModel.updateBike(
+                                default = true,
+                                bike = bikes.firstOrNull { it.model == selectedModel })
                         }
                     }
                 }

@@ -106,7 +106,6 @@ class MainViewModel @Inject constructor(
         wheelSize: BikeWheel? = null,
         serviceIn: Int? = null,
         serviceReminder: Int? = null,
-        serviceInterval: Int? = null,
         isServiceReminderActive: Boolean? = null,
         distance: Double? = null,
         distanceUnit: DistanceUnit? = null
@@ -119,11 +118,10 @@ class MainViewModel @Inject constructor(
                 type = bikeType ?: selectedBike.value?.type ?: BikeType.MTB,
                 isDefault = isDefault ?: selectedBike.value?.isDefault ?: true,
                 model = model ?: selectedBike.value?.model,
-                bikeColor = bikeColor ?: selectedBike.value?.bikeColor,
+                bikeColor = bikeColor ?: selectedBike.value?.bikeColor ?: BikeColor.GREEN,
                 wheelSize = wheelSize ?: selectedBike.value?.wheelSize ?: BikeWheel.BIG,
                 serviceIn = serviceIn ?: selectedBike.value?.serviceIn ?: 100,
                 serviceReminder = serviceReminder ?: selectedBike.value?.serviceReminder ?: 100,
-                serviceInterval = serviceInterval ?: selectedBike.value?.serviceInterval ?: 100,
                 isServiceReminderActive = isServiceReminderActive
                     ?: selectedBike.value?.isServiceReminderActive ?: false,
                 distance = distance ?: selectedBike.value?.distance ?: 0.0,
@@ -142,7 +140,6 @@ class MainViewModel @Inject constructor(
                 wheelSize = wheelSize ?: defaultBike.value?.wheelSize,
                 serviceIn = serviceIn ?: defaultBike.value?.serviceIn,
                 serviceReminder = serviceReminder ?: defaultBike.value?.serviceReminder,
-                serviceInterval = serviceInterval ?: defaultBike.value?.serviceInterval,
                 isServiceReminderActive = isServiceReminderActive
                     ?: defaultBike.value?.isServiceReminderActive,
                 distance = distance ?: defaultBike.value?.distance,
