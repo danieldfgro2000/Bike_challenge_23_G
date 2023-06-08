@@ -44,7 +44,6 @@ fun SelectBikePager(
     Column {
         HorizontalPager(
             state = state,
-//            pageSpacing = 20.dp,
             pageSize = PageSize.Fixed((currentWidth * 0.38).dp)
         ) { page ->
             bikeType = bikeTypes[page]

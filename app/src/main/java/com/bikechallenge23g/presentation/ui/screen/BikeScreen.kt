@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,25 +33,10 @@ fun BikeScreen(
     val bikes by viewModel.bikes.collectAsState()
     val showTopBarIcon = bikes.isNotEmpty()
 
-//    LaunchedEffect(key1 = bikes) {
-//        viewModel.getAllBikes()
-//        viewModel.getAllRides()
-//
-//    }
-
-
-//   val setAlarm by viewModel.setAlarm.collectAsState()
-//    val context = LocalContext.current
-//
-//    if (setAlarm) {
-//        Log.e("AlarmSetter ", "Set alarm")
-//        AlarmSetter(context).scheduleAlarm()
-//
-//    } else {
-//        Log.e("AlarmSetter ", "Cancel alarm")
-//        AlarmSetter(context).cancelAlarm()
-//    }
-
+    LaunchedEffect(key1 = bikes) {
+        viewModel.getAllBikes()
+        viewModel.getAllRides()
+    }
 
     var showBikeDeleteDialog by remember { mutableStateOf(false) }
     var deletedBike by remember { mutableStateOf<Bike?>(null) }

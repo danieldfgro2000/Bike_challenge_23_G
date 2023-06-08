@@ -58,6 +58,10 @@ fun AddEditRideScreen(
 
     val bikes = viewModel.bikes.collectAsState().value
 
+    val selectedBike = bikes.firstOrNull { it.id == selectedRide?.bikeId }
+        ?: bikes.firstOrNull { it.isDefault == true }
+    viewModel.updateBike(selected = true, bike = selectedBike)
+
     var isInputValid = false
     selectedRide?.let {
         with(selectedRide) {
@@ -113,8 +117,11 @@ fun AddEditRideScreen(
                 DropdownSelector(
                     modifier = Modifier.padding(10.dp),
                     items = bikes.map { it.model ?: "" },
-                    selectedItem = bikes.firstOrNull { it.id == selectedRide?.bikeId }?.model ?: "",
+                    selectedItem = selectedBike?.model ?: "",
                     onItemSelected = { newBike ->
+                        viewModel.updateBike(
+                            selected = true,
+                            bike = bikes.firstOrNull { it.model == newBike })
                         viewModel.updateSelectedRide(bikeId = bikes.firstOrNull { it.model == newBike }?.id)
                     }
                 )
@@ -140,6 +147,12 @@ fun AddEditRideScreen(
                             } else null
 
                         if (newDistance.isNotBlank() && newDistance.toDoubleOrNull() != null) {
+                            viewModel.updateBike(
+                                selected = true,
+                                distance = (selectedBike?.distance ?: 0.0) + newDistance.toDouble(),
+                                serviceIn = (selectedBike?.serviceIn ?: 0) - newDistance.toDouble()
+                                    .toInt()
+                            )
                             viewModel.updateSelectedRide(
                                 distance = newDistance.toDouble()
                             )
@@ -183,6 +196,7 @@ fun AddEditRideScreen(
             ) {
                 viewModel.updateSelectedRide()
                 viewModel.saveSelectedRide()
+                viewModel.saveSelectedBike()
                 navController.navigate(BottomMenuItem.Rides.route)
             }
         }

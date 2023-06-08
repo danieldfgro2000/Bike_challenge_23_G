@@ -16,10 +16,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.DistanceUnit
+import com.bikechallenge23g.data.notification.AlarmSetter
 import com.bikechallenge23g.presentation.ui.composables.CustomSwitch
 import com.bikechallenge23g.presentation.ui.composables.CustomTextField
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
@@ -33,12 +35,20 @@ fun SettingScreen(
 ) {
     val scrollState = rememberScrollState()
     val bikes = viewModel.bikes.collectAsState().value
-    val defaultBike = viewModel.defaultBike.collectAsState().value
+    val defaultBike by viewModel.defaultBike.collectAsState()
 
     val emptyFieldErrorMessage = stringResource(id = R.string.required_field)
     val numberErrorMessage = stringResource(id = R.string.number_input_error)
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
 
+    val setAlarm by viewModel.setAlarm.collectAsState()
+    val context = LocalContext.current
+
+    if (setAlarm) {
+        AlarmSetter(context, defaultBike).scheduleAlarm()
+    } else {
+        AlarmSetter(context).cancelAlarm()
+    }
 
     Scaffold(
         backgroundColor = MaterialTheme.colorScheme.background,
@@ -61,6 +71,7 @@ fun SettingScreen(
                     items = DistanceUnit.values().map { it.name },
                     selectedItem = defaultBike?.distanceUnit?.unit ?: DistanceUnit.KM.unit
                 ) {
+                    viewModel.updateBike(default = true, distanceUnit = DistanceUnit.valueOf(it))
                     viewModel.updateDistanceUnit(DistanceUnit.valueOf(it))
                 }
                 TextLabel(
@@ -91,11 +102,17 @@ fun SettingScreen(
                                 serviceReminder = newServiceReminderInterval.toInt()
                             )
                             viewModel.updateServiceReminderInterval()
+                            viewModel.getAllBikes()
                         }
                     }
                     CustomSwitch(
                         defaultState = defaultBike?.isServiceReminderActive ?: false
                     ) { isReminderActive ->
+                        viewModel.updateBike(
+                            default = true,
+                            isServiceReminderActive = isReminderActive
+                        )
+                        viewModel.setServiceReminder()
                         viewModel.updateServiceReminderActive(isReminderActive)
                     }
                 }

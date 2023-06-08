@@ -4,6 +4,8 @@
     <style name="Base.Theme.BikeChallenge23G" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowSplashScreenBackground">#121726</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/image_source_unsplash</item>
+        <item name="android:windowSplashScreenAnimationDuration">1000</item>
     </style>
 </resources>

@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
     fun getAllBikes() = viewModelScope.launch(IO) {
         getBikesUseCase.execute().collect { bikes ->
             bikes.let { sBikes ->
-                Log.e("Bikes= ", "$bikes")
+                Log.e("getAllBikes= ", "$bikes")
                 if (bikes.isNotEmpty()) {
                     _bikes.value = sBikes
                     val default = sBikes.firstOrNull { it.isDefault == true }
@@ -55,7 +55,7 @@ class MainViewModel @Inject constructor(
                         setServiceReminder()
                     }
                 }
-                Log.e("default bike= ", "${defaultBike.value}")
+                Log.e("getAllBikes: ", "default bike= ${defaultBike.value}")
             }
         }
     }
@@ -73,34 +73,11 @@ class MainViewModel @Inject constructor(
     val setAlarm: StateFlow<Boolean>
         get() = _setAlarm
 
-    private fun setServiceReminder() {
-//        Log.e("SetServiceReminder", "Set")
-        defaultBike.value?.let { b ->
-//            Log.e("Default bike = ", "$b")
-//            Log.e("SetServiceReminder", "Bike not null")
-            when (b.isServiceReminderActive) {
-                true -> {
-//                    Log.e("SetServiceReminder", "Reminder active - checking km...")
-                    b.serviceIn?.let { due ->
-                        b.serviceReminder?.let { reminder ->
-                            if (due < reminder) {
-//                                Log.e("SetServiceReminder", "Setting the alarm")
-                                _setAlarm.value = true
-                            }
-                        }
-                    }
-//                    Log.e("setAlarm = ", "${setAlarm.value}")
-                }
-
-                false -> {
-//                    Log.e("SetServiceReminder", "Reminder inactive - disabling the alarm")
-                    _setAlarm.value = false
-//                    Log.e("setAlarm = ", "${setAlarm.value}")
-                }
-
-                null -> {}
-            }
-        }
+    fun setServiceReminder() {
+        val b = defaultBike.value
+        _setAlarm.value =
+            b?.isServiceReminderActive == true &&
+                    b.serviceIn?.let { due -> b.serviceReminder?.let { reminder -> due < reminder } } == true
     }
 
     private var _selectedBike: MutableStateFlow<Bike?> = MutableStateFlow(Bike())
@@ -108,13 +85,19 @@ class MainViewModel @Inject constructor(
         get() = _selectedBike
 
     fun saveSelectedBike() = viewModelScope.launch(IO) {
-        selectedBike.value?.let { saveBikeUseCase.execute(it) }
+        Log.e("Save bike", "${selectedBike.value}")
+        selectedBike.value?.let {
+            Log.e("Save bike", "$it")
+            saveBikeUseCase.execute(it)
+        }
         _selectedBike.value = null
+        getAllBikes()
     }
 
     fun updateBike(
         selected: Boolean? = null,
         default: Boolean? = null,
+        bike: Bike? = null,
         id: Int? = null,
         bikeType: BikeType? = null,
         isDefault: Boolean? = null,
@@ -126,26 +109,30 @@ class MainViewModel @Inject constructor(
         serviceInterval: Int? = null,
         isServiceReminderActive: Boolean? = null,
         distance: Double? = null,
+        distanceUnit: DistanceUnit? = null
     ) {
         selected?.let {
             Log.e("UPDATING", "SELECTED")
+            bike?.let { _selectedBike.value = it }
             _selectedBike.value = Bike(
                 id = id ?: selectedBike.value?.id,
-                type = bikeType ?: selectedBike.value?.type,
-                isDefault = isDefault ?: selectedBike.value?.isDefault,
+                type = bikeType ?: selectedBike.value?.type ?: BikeType.MTB,
+                isDefault = isDefault ?: selectedBike.value?.isDefault ?: true,
                 model = model ?: selectedBike.value?.model,
                 bikeColor = bikeColor ?: selectedBike.value?.bikeColor,
-                wheelSize = wheelSize ?: selectedBike.value?.wheelSize,
-                serviceIn = serviceIn ?: selectedBike.value?.serviceIn,
-                serviceReminder = serviceReminder ?: selectedBike.value?.serviceReminder,
-                serviceInterval = serviceInterval ?: selectedBike.value?.serviceInterval,
+                wheelSize = wheelSize ?: selectedBike.value?.wheelSize ?: BikeWheel.BIG,
+                serviceIn = serviceIn ?: selectedBike.value?.serviceIn ?: 100,
+                serviceReminder = serviceReminder ?: selectedBike.value?.serviceReminder ?: 100,
+                serviceInterval = serviceInterval ?: selectedBike.value?.serviceInterval ?: 100,
                 isServiceReminderActive = isServiceReminderActive
-                    ?: selectedBike.value?.isServiceReminderActive,
-                distance = distance ?: selectedBike.value?.distance
+                    ?: selectedBike.value?.isServiceReminderActive ?: false,
+                distance = distance ?: selectedBike.value?.distance ?: 0.0,
+                distanceUnit = distanceUnit ?: selectedBike.value?.distanceUnit ?: DistanceUnit.KM
             )
         }
         default?.let {
             Log.e("UPDATING", "DEFAULT")
+            bike?.let { _defaultBike.value = it }
             _defaultBike.value = Bike(
                 id = id ?: defaultBike.value?.id,
                 type = bikeType ?: defaultBike.value?.type,
@@ -158,7 +145,8 @@ class MainViewModel @Inject constructor(
                 serviceInterval = serviceInterval ?: defaultBike.value?.serviceInterval,
                 isServiceReminderActive = isServiceReminderActive
                     ?: defaultBike.value?.isServiceReminderActive,
-                distance = distance ?: defaultBike.value?.distance
+                distance = distance ?: defaultBike.value?.distance,
+                distanceUnit = distanceUnit ?: defaultBike.value?.distanceUnit
             )
         }
 
@@ -171,6 +159,7 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch(IO) {
                 Log.e("update default = ", "${defaultBike.value}")
                 updateDefaultBikeUseCase.execute(bikeId)
+                getAllBikes()
             }
         }
     }
@@ -211,6 +200,7 @@ class MainViewModel @Inject constructor(
 
     fun deleteBike(bike: Bike) = viewModelScope.launch(IO) {
         deleteBikeUseCase.execute(bike)
+        getAllBikes()
     }
 
     private val _rides = MutableStateFlow(listOf<Ride>())
@@ -245,10 +235,12 @@ class MainViewModel @Inject constructor(
     fun saveSelectedRide() = viewModelScope.launch(IO) {
         selectedRide.value?.let { saveRideUseCase.execute(it) }
         _selectedRide.value = null
+        getAllRides()
     }
 
     fun deleteRide(ride: Ride) = viewModelScope.launch(IO) {
         deleteRideUseCase.execute(ride)
+        getAllRides()
     }
 
     fun getAllRides() = viewModelScope.launch(IO) {
