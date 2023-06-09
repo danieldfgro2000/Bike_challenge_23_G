@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -39,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.theme.AppCappuccino
+import com.bikechallenge23g.theme.AppRed
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -65,7 +65,7 @@ fun CustomTextField(
             border = BorderStroke(
                 width = 1.dp,
                 color = when {
-                    error != null && !isFocused -> Color.Red
+                    error != null && !isFocused -> AppRed
                     else -> AppCappuccino
                 }
             ),
@@ -112,7 +112,7 @@ fun CustomTextField(
             Text(
                 modifier = Modifier.padding(top = 5.dp),
                 text = error,
-                style = MaterialTheme.typography.labelSmall.copy(color = Color.Red)
+                style = MaterialTheme.typography.labelSmall.copy(color = AppRed)
             )
         }
     }

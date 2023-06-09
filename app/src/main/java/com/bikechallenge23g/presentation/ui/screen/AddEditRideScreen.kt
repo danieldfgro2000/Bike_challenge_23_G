@@ -11,28 +11,26 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.DistanceUnit
-import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 import com.bikechallenge23g.presentation.ui.composables.CustomButton
-import com.bikechallenge23g.presentation.ui.composables.CustomDateTimePicker
 import com.bikechallenge23g.presentation.ui.composables.CustomTextField
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
 import com.bikechallenge23g.presentation.ui.composables.TextLabel
 import com.bikechallenge23g.presentation.ui.composables.TopBar
+import com.bikechallenge23g.presentation.ui.composables.customDateTimePicker
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,34 +40,34 @@ fun AddEditRideScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    val screenHeight = LocalConfiguration.current.screenHeightDp
-    val screenWidth = LocalConfiguration.current.screenHeightDp
     val coroutineScope = rememberCoroutineScope()
-    var offset by remember { mutableStateOf(0) }
-    val focusRequester = remember { FocusRequester() }
+    var offset by remember { mutableIntStateOf(0) }
     val scrollState = rememberScrollState()
 
-    var distanceError by remember { mutableStateOf<String?>(null) }
-    val durationError by remember { mutableStateOf<String?>(null) }
-    val dateError by remember { mutableStateOf<String?>(null) }
     val requiredFieldErrorMessage = stringResource(id = R.string.required_field)
     val invalidInputErrorMessage = stringResource(id = R.string.number_input_error)
-    val selectedRide = viewModel.selectedRide.collectAsState().value
 
-    val bikes = viewModel.bikes.collectAsState().value
+    var distanceError by remember { mutableStateOf<String?>(requiredFieldErrorMessage) }
+    var bikeModelError by remember { mutableStateOf<String?>(requiredFieldErrorMessage) }
 
-    viewModel.updateBike(
-        selected = true,
-        bike = bikes.firstOrNull { it.id == selectedRide?.bikeId })
+    val bikes by viewModel.bikes.collectAsState()
+
     val selectedBike by viewModel.selectedBike.collectAsState()
+    val selectedRide by viewModel.selectedRide.collectAsState()
 
+    if ((selectedRide?.bikeId ?: -1) == selectedBike?.id) {
+        bikeModelError = null
+    }
 
     var isInputValid = false
-    selectedRide?.let {
-        with(selectedRide) {
-            isInputValid =
-                bikeId != null && distance != 0.0 && distance != null && duration != 0 && date != 0L
-        }
+    selectedRide?.let { r ->
+        isInputValid =
+            r.bikeId != null &&
+                    r.distance != 0.0 &&
+                    r.distance != null &&
+                    r.duration != 0 &&
+                    r.date != 0L
+
     }
 
     Scaffold(
@@ -81,6 +79,8 @@ fun AddEditRideScreen(
                 icon = R.drawable.icon_x,
                 iconDescription = R.string.close
             ) {
+                viewModel.clearSelectedRide()
+                viewModel.clearSelectedBike()
                 navController.popBackStack()
             }
         },
@@ -119,6 +119,7 @@ fun AddEditRideScreen(
                 DropdownSelector(
                     modifier = Modifier.padding(10.dp),
                     items = bikes.map { it.model ?: "" },
+                    error = bikeModelError,
                     selectedItem = selectedBike?.model ?: "",
                     onItemSelected = { newBikeModel ->
                         val newBike = bikes.firstOrNull { it.model == newBikeModel }
@@ -139,13 +140,13 @@ fun AddEditRideScreen(
                 )
                 CustomTextField(
                     modifier = Modifier.padding(10.dp),
-                    value = (selectedBike?.distance ?: 0.0).toString(),
+                    value = (selectedRide?.distance ?: 0.0).toString(),
                     error = distanceError,
                     displayUnit = true,
                     unit = selectedBike?.distanceUnit ?: DistanceUnit.KM,
                     onValueChange = { newDistance ->
                         distanceError =
-                            if (newDistance.isBlank()) {
+                            if (newDistance.isBlank() || newDistance.toDoubleOrNull() == 0.0) {
                                 requiredFieldErrorMessage
                             } else if (newDistance.toDoubleOrNull() == null) {
                                 invalidInputErrorMessage
@@ -167,25 +168,23 @@ fun AddEditRideScreen(
                     inputText = stringResource(id = R.string.duration),
                     isRequired = true
                 )
-                CustomDateTimePicker(
-                    modifier = Modifier.padding(10.dp),
-                    selectedTime = selectedRide?.duration ?: 0,
-                    onTimeSelected = { newDuration ->
-                        viewModel.updateSelectedRide(duration = newDuration)
-                    }
+                viewModel.updateSelectedRide(
+                    duration = customDateTimePicker(
+                        modifier = Modifier.padding(10.dp),
+                        selectedTime = selectedRide?.duration
+                    ).first
                 )
                 TextLabel(
                     modifier = Modifier.padding(horizontal = 5.dp),
                     inputText = stringResource(id = R.string.date),
                     isRequired = true
                 )
-                CustomDateTimePicker(
-                    modifier = Modifier.padding(10.dp),
-                    isDatePicker = true,
-                    selectedDate = selectedRide?.date,
-                    onDateSelected = { newDate ->
-                        viewModel.updateSelectedRide(date = newDate)
-                    }
+                viewModel.updateSelectedRide(
+                    date = customDateTimePicker(
+                        modifier = Modifier.padding(10.dp),
+                        isDatePicker = true,
+                        selectedDate = selectedRide?.date
+                    ).second
                 )
             }
         },
@@ -194,7 +193,11 @@ fun AddEditRideScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                text = stringResource(id = if (selectedRide?.id == null) R.string.add_ride else R.string.save),
+                text = stringResource(
+                    id =
+                    if (selectedRide?.id == null) R.string.add_ride
+                    else R.string.save
+                ),
                 enabled = isInputValid
             ) {
                 with(viewModel) {
@@ -203,7 +206,7 @@ fun AddEditRideScreen(
                     getAllBikes()
                     getAllRides()
                 }
-                navController.navigate(BottomMenuItem.Rides.route)
+                navController.popBackStack()
             }
         }
     )

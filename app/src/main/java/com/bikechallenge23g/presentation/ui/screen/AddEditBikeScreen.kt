@@ -35,7 +35,6 @@ import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.data.model.enums.DistanceUnit
-import com.bikechallenge23g.presentation.navigation.BottomMenuItem
 import com.bikechallenge23g.presentation.ui.composables.ColorRow
 import com.bikechallenge23g.presentation.ui.composables.CustomButton
 import com.bikechallenge23g.presentation.ui.composables.CustomSwitch
@@ -79,7 +78,10 @@ fun AddEditBikeScreen(
     ) { BikeType.values().size }
 
     LaunchedEffect(key1 = pagerState.currentPage) {
-        viewModel.updateBike(selected = true, bikeType = BikeType.values()[pagerState.currentPage])
+        viewModel.updateBike(
+            selected = true,
+            bikeType = BikeType.values()[pagerState.currentPage]
+        )
     }
 
     Scaffold(
@@ -204,7 +206,7 @@ fun AddEditBikeScreen(
                 Log.e("On save clic", "on click")
                 viewModel.saveSelectedBike()
                 viewModel.getAllBikes()
-                navController.navigate(BottomMenuItem.Bikes.route)
+                navController.popBackStack()
             }
         }
     )

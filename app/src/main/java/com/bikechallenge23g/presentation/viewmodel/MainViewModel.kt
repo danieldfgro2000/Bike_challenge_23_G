@@ -217,7 +217,7 @@ class MainViewModel @Inject constructor(
     fun updateSelectedRide(
         id: Int? = selectedRide.value?.id,
         name: String? = selectedRide.value?.name,
-        bikeId: Int? = selectedRide.value?.bikeId ?: 0,
+        bikeId: Int? = selectedRide.value?.bikeId,
         distance: Double? = selectedRide.value?.distance ?: 0.0,
         distanceUnit: DistanceUnit? = selectedRide.value?.distanceUnit ?: DistanceUnit.KM,
         duration: Int? = selectedRide.value?.duration ?: 0,
@@ -232,7 +232,7 @@ class MainViewModel @Inject constructor(
             duration,
             date
         )
-        Log.e("ride = ", "${_selectedRide.value}")
+        Log.e("Updated ride = ", "${_selectedRide.value}")
     }
 
     fun saveSelectedRide() = viewModelScope.launch(IO) {

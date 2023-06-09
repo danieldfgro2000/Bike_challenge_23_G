@@ -24,7 +24,8 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = AppCappuccino,
     background = AppDarkGrey,
     surface = AppLightGrey,
-    inverseSurface = AppCappuccino
+    inverseSurface = AppCappuccino,
+    error = AppRed
 
 )
 
@@ -36,7 +37,8 @@ private val LightColorScheme = lightColorScheme(
     onBackground = AppCappuccino,
     background = AppLightGrey,
     surface = AppMediumGrey,
-    inverseSurface = AppCappuccino
+    inverseSurface = AppCappuccino,
+    error = AppRed
 
     /* Other default colors to override
 background = Color(0xFFFFFBFE),

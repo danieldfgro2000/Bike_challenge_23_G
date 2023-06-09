@@ -19,12 +19,18 @@ fun DropdownSelector(
     modifier: Modifier = Modifier,
     items: List<String>,
     selectedItem: String,
+    error: String? = null,
     onItemSelected: (String) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-    Surface(modifier = modifier) {
-        CustomCardWithDropDown(selectedItem) { expanded.value = true }
-
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.background
+    ) {
+        CustomCardWithDropDown(
+            text = selectedItem,
+            error = error
+        ) { expanded.value = true }
         DropdownMenu(
             modifier = Modifier
                 .fillMaxWidth()
