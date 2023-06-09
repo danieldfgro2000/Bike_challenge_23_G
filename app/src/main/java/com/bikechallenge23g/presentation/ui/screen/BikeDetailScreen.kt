@@ -60,10 +60,12 @@ fun BikeDetailScreen(
                     .fillMaxSize()
                     .padding(it)
             ) {
-                viewModel.selectedBike.collectAsState().value?.let { thisBike ->
-                    BikeCardWithDetails(bike = thisBike, showMore = false)
-                }
                 LazyColumn {
+                    item {
+                        viewModel.selectedBike.collectAsState().value?.let { thisBike ->
+                            BikeCardWithDetails(bike = thisBike, showMore = false)
+                        }
+                    }
                     items(rides) { currentRide ->
                         RideCard(
                             ride = currentRide,

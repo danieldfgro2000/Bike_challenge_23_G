@@ -39,7 +39,7 @@ fun TextLabel(
     isRequired: Boolean = false,
     height: Dp = 20.dp,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
-    textColor: Color = MaterialTheme.colorScheme.onBackground
+    textColor: Color? = null
 ) {
     Row(modifier = modifier) {
         Text(
@@ -47,7 +47,7 @@ fun TextLabel(
             textAlign = TextAlign.Center,
             text = inputText,
             style = textStyle,
-            color = textColor
+            color = textColor ?: MaterialTheme.colorScheme.onBackground
         )
         if (isRequired) {
             Spacer(modifier = Modifier.width(2.dp))

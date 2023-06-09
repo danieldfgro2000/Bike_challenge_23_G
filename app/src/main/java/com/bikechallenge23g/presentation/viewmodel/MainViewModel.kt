@@ -2,6 +2,7 @@ package com.bikechallenge23g.presentation.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.bikechallenge23g.data.model.Bike
@@ -10,6 +11,7 @@ import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.data.model.enums.DistanceUnit
+import com.bikechallenge23g.domain.usecase.CalcChartUseCase
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.DeleteRideUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
@@ -21,6 +23,7 @@ import com.bikechallenge23g.domain.usecase.UpdateDistanceUnitUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceReminderActiveUseCase
 import com.bikechallenge23g.domain.usecase.UpdateServiceReminderIntervalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,6 +43,7 @@ class MainViewModel @Inject constructor(
     private val saveRideUseCase: SaveRideUseCase,
     private val getRidesUseCase: GetRidesUseCase,
     private val deleteRideUseCase: DeleteRideUseCase,
+    private val calcChartUseCase: CalcChartUseCase
 ) : AndroidViewModel(application) {
 
     fun getAllBikes() = viewModelScope.launch(IO) {
@@ -260,4 +264,16 @@ class MainViewModel @Inject constructor(
         Log.e("Selected = ", "${selectedRide.value}")
     }
 
+    private var _chartData: MutableStateFlow<Pair<Double, List<Triple<BikeType, Float, Color>>>> =
+        MutableStateFlow(Pair(0.0, listOf()))
+    val chartData: MutableStateFlow<Pair<Double, List<Triple<BikeType, Float, Color>>>>
+        get() = _chartData
+
+    fun getChartData() {
+        viewModelScope.launch(Default) {
+            calcChartUseCase.execute(rides.value, bikes.value).collect {
+                _chartData.value = it
+            }
+        }
+    }
 }

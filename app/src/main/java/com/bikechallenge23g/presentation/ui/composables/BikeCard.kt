@@ -33,6 +33,7 @@ import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.BikeWheel
 import com.bikechallenge23g.data.model.enums.DistanceUnit
+import com.bikechallenge23g.theme.AppRed
 
 @Composable
 fun BikeView(
@@ -216,6 +217,8 @@ fun BikeCardWithDetails(
     onEditSelected: () -> Unit = {},
     onDeleteSelected: () -> Unit = {}
 ) {
+    val remaining = ((bike.serviceIn ?: 0) - (bike.distance?.toInt() ?: 0)).toString()
+
     Card(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 5.dp)
@@ -266,8 +269,7 @@ fun BikeCardWithDetails(
                     Row(modifier = Modifier.padding(start = 10.dp)) {
                         TextLabel(
                             inputText = stringResource(id = R.string.wheels),
-                            height = 30.dp,
-                            textStyle = MaterialTheme.typography.labelLarge,
+                            textStyle = MaterialTheme.typography.labelMedium,
 
                             )
                         Spacer(modifier = Modifier.width(5.dp))
@@ -281,19 +283,19 @@ fun BikeCardWithDetails(
                     Row(modifier = Modifier.padding(start = 10.dp)) {
                         TextLabel(
                             inputText = stringResource(id = R.string.service_interval),
-                            height = 30.dp,
-                            textStyle = MaterialTheme.typography.labelLarge,
+                            textStyle = MaterialTheme.typography.labelMedium,
 
                             )
                         Spacer(modifier = Modifier.width(5.dp))
                         TextLabel(
-                            inputText = ((bike.serviceIn ?: 0) - (bike.distance?.toInt()
-                                ?: 0)).toString(),
-                            textStyle = MaterialTheme.typography.titleMedium
+                            inputText = remaining,
+                            textStyle = MaterialTheme.typography.titleMedium,
+                            textColor = if ((remaining.toIntOrNull() ?: 0) <= 0) AppRed else null
                         )
                         TextLabel(
                             inputText = bike.distanceUnit?.name ?: DistanceUnit.KM.name,
-                            textStyle = MaterialTheme.typography.titleMedium
+                            textStyle = MaterialTheme.typography.titleMedium,
+                            textColor = if ((remaining.toIntOrNull() ?: 0) <= 0) AppRed else null
                         )
 
                     }

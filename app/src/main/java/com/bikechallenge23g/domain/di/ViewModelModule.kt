@@ -1,6 +1,7 @@
 package com.bikechallenge23g.domain.di
 
 import android.app.Application
+import com.bikechallenge23g.domain.usecase.CalcChartUseCase
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.DeleteRideUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
@@ -34,7 +35,8 @@ class ViewModelModule {
         getBikesUseCase: GetBikesUseCase,
         saveRideUseCase: SaveRideUseCase,
         getRidesUseCase: GetRidesUseCase,
-        deleteRideUseCase: DeleteRideUseCase
+        deleteRideUseCase: DeleteRideUseCase,
+        calcChartUseCase: CalcChartUseCase,
     ): MainViewModel {
         return MainViewModel(
             application,
@@ -47,7 +49,8 @@ class ViewModelModule {
             getBikesUseCase,
             saveRideUseCase,
             getRidesUseCase,
-            deleteRideUseCase
+            deleteRideUseCase,
+            calcChartUseCase
         )
     }
 }

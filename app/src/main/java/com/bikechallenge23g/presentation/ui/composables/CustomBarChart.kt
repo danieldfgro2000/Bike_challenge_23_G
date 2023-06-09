@@ -1,6 +1,6 @@
 package com.bikechallenge23g.presentation.ui.composables
 
-import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.BikeType
 import com.bikechallenge23g.data.model.enums.DistanceUnit
+import com.bikechallenge23g.theme.AppCappuccino
 import com.bikechallenge23g.theme.AppLightGreen
 import com.bikechallenge23g.theme.AppOrange
 import java.util.Locale
@@ -57,9 +59,7 @@ fun CustomBarChart(
 
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(400.dp),
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -68,7 +68,7 @@ fun CustomBarChart(
 
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier
@@ -90,59 +90,61 @@ fun CustomBarChart(
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
+            Card(
+                modifier = Modifier.padding(horizontal = 10.dp),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = AppCappuccino.copy(
+                        alpha = 0.4f
+                    )
+                ),
+                shape = RoundedCornerShape(5.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp)
+                        .heightIn(min = 200.dp, max = 400.dp)
+                        .onGloballyPositioned { layoutCoordinates ->
+                            chartRowHeight = layoutCoordinates.size.height
+                        }
+                        .drawBehind {
+                            repeat((size.height / 100).toInt()) {
+                                drawLine(
+                                    color = axisColor,
+                                    start = Offset(0f, chartRowHeight.toFloat() - 120 * it),
+                                    end = Offset(size.width, chartRowHeight.toFloat() - 120 * it),
+                                    strokeWidth = lineStrokeWidth
+                                )
+                            }
+                            drawLine(
+                                color = axisColor,
+                                start = Offset(0f, chartRowHeight.toFloat() - 120),
+                                end = Offset(size.width, chartRowHeight.toFloat() - 120),
+                                strokeWidth = axisStrokeWidth
+                            )
+                        },
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    values.forEach { value ->
+                        Bar(
+                            bikeType = value.first,
+                            value = value.second,
+                            color = value.third,
+                            maxHeight = 350.dp
+                        )
+                    }
+                }
+            }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(330.dp)
-                    .padding(horizontal = 10.dp)
-                    .onGloballyPositioned { layoutCoordinates ->
-                        chartRowHeight = layoutCoordinates.size.height
-                        Log.e("Chart height = ", "$chartRowHeight")
-                    }
-                    .drawBehind {
-                        drawLine(
-                            color = axisColor,
-                            start = Offset(0f, 0f),
-                            end = Offset(0f, size.height),
-                            strokeWidth = lineStrokeWidth
-                        )
-                        drawLine(
-                            color = axisColor,
-                            start = Offset(size.width, 0f),
-                            end = Offset(size.width, size.height),
-                            strokeWidth = lineStrokeWidth
-                        )
-
-                        repeat((size.height / 100).toInt() + 1) {
-                            drawLine(
-                                color = axisColor,
-                                start = Offset(0f, size.height - 100 * it),
-                                end = Offset(size.width, size.height - 100 * it),
-                                strokeWidth = lineStrokeWidth
-                            )
-                        }
-                        drawLine(
-                            color = axisColor,
-                            start = Offset(0f, size.height - 100),
-                            end = Offset(size.width, size.height - 100),
-                            strokeWidth = axisStrokeWidth
-                        )
-
-                    },
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                values.forEach { value ->
-                    Bar(
-                        bikeType = value.first,
-                        value = value.second,
-                        color = value.third,
-                        maxHeight = 350.dp
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
+                    .padding(vertical = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 TextLabel(
@@ -173,6 +175,12 @@ private fun Bar(
     color: Color,
     maxHeight: Dp
 ) {
+    val rangeCompensate = when (value) {
+        in 0f..1000f -> 1000
+        in 1000f..10000f -> 10000
+        in 10000f..100000f -> 100000
+        else -> 15000
+    }
     val itemHeight = remember(value) { value * maxHeight.value / 15000 }
     val bikeModel = when (bikeType) {
         BikeType.ELECTRIC -> "E-Bike"
@@ -181,13 +189,13 @@ private fun Bar(
         BikeType.HYBRID -> "City"
     }
     Box(
-        modifier = Modifier
-            .width(70.dp)
-            .height(if (itemHeight > 50) itemHeight.dp else 70.dp),
+        modifier = Modifier.width(70.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         Card(
-            modifier = Modifier.padding(bottom = 40.dp),
+            modifier = Modifier
+                .padding(bottom = 40.dp)
+                .height(if (itemHeight > 50) itemHeight.dp else 30.dp),
             shape = RoundedCornerShape(5.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent,
@@ -202,9 +210,7 @@ private fun Bar(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 TextLabel(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = Color.Transparent),
+                    modifier = Modifier.fillMaxWidth(),
                     inputText = String.format(Locale.GERMANY, "%,.0f", value),
                     textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     textColor = MaterialTheme.colorScheme.background
@@ -227,8 +233,8 @@ fun PreviewCustomBarChart() {
     CustomBarChart(
         totalKm = 25580.0,
         values = listOf(
-            Triple(BikeType.ROAD_BIKE, 8500f, Color.Red),
-            Triple(BikeType.MTB, 2650f, AppOrange),
+            Triple(BikeType.ROAD_BIKE, 500f, Color.Red),
+            Triple(BikeType.MTB, 50f, AppOrange),
             Triple(BikeType.HYBRID, 3420f, AppLightGreen),
             Triple(BikeType.ELECTRIC, 11000f, Color.White)
         )

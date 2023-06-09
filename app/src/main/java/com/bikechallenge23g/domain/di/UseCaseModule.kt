@@ -2,6 +2,7 @@ package com.bikechallenge23g.domain.di
 
 import com.bikechallenge23g.domain.repository.BikeRepository
 import com.bikechallenge23g.domain.repository.RideRepository
+import com.bikechallenge23g.domain.usecase.CalcChartUseCase
 import com.bikechallenge23g.domain.usecase.DeleteBikeUseCase
 import com.bikechallenge23g.domain.usecase.DeleteRideUseCase
 import com.bikechallenge23g.domain.usecase.GetBikesUseCase
@@ -80,5 +81,11 @@ class UseCaseModule {
     @Provides
     fun provideDeleteRideUseCase(rideRepository: RideRepository): DeleteRideUseCase {
         return DeleteRideUseCase(rideRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCalcChartUseCase(): CalcChartUseCase {
+        return CalcChartUseCase()
     }
 }
