@@ -1,7 +1,6 @@
 package com.bikechallenge23g.presentation.ui.screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -203,8 +202,7 @@ fun AddEditBikeScreen(
                 text = stringResource(id = if (selectedBike?.id == null) R.string.add_bike else R.string.save),
                 enabled = isInputValid
             ) {
-                Log.e("On save clic", "on click")
-                viewModel.saveSelectedBike()
+                viewModel.saveSelectedBike(clear = false)
                 viewModel.getAllBikes()
                 navController.popBackStack()
             }

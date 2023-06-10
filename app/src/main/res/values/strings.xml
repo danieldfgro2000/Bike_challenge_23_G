@@ -47,4 +47,5 @@
     <string name="nav_back">Back Navigation</string>
     <string name="all_rides_statistics">All Rides Statistics</string>
     <string name="total_d">Total:</string>
+    <string name="total_ride_distance">Total Rides Distance</string>
 </resources>

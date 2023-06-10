@@ -21,7 +21,8 @@ import com.bikechallenge23g.R
 
 @Composable
 fun TopBar(
-    title: Int,
+    title: Int? = null,
+    titleStr: String? = null,
     icon: Int? = null,
     iconDescription: Int? = null,
     showIconDescription: Boolean = false,
@@ -48,7 +49,12 @@ fun TopBar(
             )
             Spacer(modifier = Modifier.width(10.dp))
         }
-        TitleTextLabel(inputText = stringResource(id = title))
+        title?.let {
+            TitleTextLabel(inputText = stringResource(id = title))
+        }
+        titleStr?.let {
+            TitleTextLabel(inputText = titleStr)
+        }
         Spacer(modifier = Modifier.weight(1f))
         if (showMoreOptions) {
             MoreOptionsDropdown(

@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.data.model.Ride
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
@@ -46,7 +45,7 @@ fun BikeDetailScreen(
         backgroundColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopBar(
-                title = R.string.bike_details,
+                titleStr = selectedBike?.model,
                 showNavBack = true,
                 showMoreOptions = true,
                 onEdit = { navController.navigate(NavigationRoutes.AddEditBike.route) },
@@ -63,7 +62,7 @@ fun BikeDetailScreen(
                 LazyColumn {
                     item {
                         viewModel.selectedBike.collectAsState().value?.let { thisBike ->
-                            BikeCardWithDetails(bike = thisBike, showMore = false)
+                            BikeCardWithDetails(bike = thisBike, isBikeDetailScreen = false)
                         }
                     }
                     items(rides) { currentRide ->

@@ -202,7 +202,7 @@ fun AddEditRideScreen(
             ) {
                 with(viewModel) {
                     saveSelectedRide()
-                    saveSelectedBike()
+                    saveSelectedBike(clear = false)
                     getAllBikes()
                     getAllRides()
                 }

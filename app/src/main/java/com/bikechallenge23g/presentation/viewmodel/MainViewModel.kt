@@ -92,13 +92,15 @@ class MainViewModel @Inject constructor(
         _selectedBike.value = null
     }
 
-    fun saveSelectedBike() = viewModelScope.launch(IO) {
+    fun saveSelectedBike(clear: Boolean = true) = viewModelScope.launch(IO) {
         Log.e("Save bike", "${selectedBike.value}")
         selectedBike.value?.let {
             Log.e("Save bike", "$it")
             saveBikeUseCase.execute(it)
         }
-        clearSelectedBike()
+        if (clear) {
+            clearSelectedBike()
+        }
     }
 
     fun updateBike(
@@ -239,9 +241,11 @@ class MainViewModel @Inject constructor(
         Log.e("Updated ride = ", "${_selectedRide.value}")
     }
 
-    fun saveSelectedRide() = viewModelScope.launch(IO) {
+    fun saveSelectedRide(clear: Boolean = true) = viewModelScope.launch(IO) {
         selectedRide.value?.let { saveRideUseCase.execute(it) }
-        _selectedRide.value = null
+        if (clear) {
+            clearSelectedRide()
+        }
     }
 
     fun deleteRide(ride: Ride) = viewModelScope.launch(IO) {
