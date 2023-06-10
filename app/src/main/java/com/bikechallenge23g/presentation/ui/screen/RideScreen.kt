@@ -2,8 +2,9 @@ package com.bikechallenge23g.presentation.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -14,6 +15,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.Ride
@@ -22,22 +25,32 @@ import com.bikechallenge23g.presentation.ui.composables.CustomBarChart
 import com.bikechallenge23g.presentation.ui.composables.CustomDialog
 import com.bikechallenge23g.presentation.ui.composables.NoItemsPlaceholder
 import com.bikechallenge23g.presentation.ui.composables.RideCard
+import com.bikechallenge23g.presentation.ui.composables.TextLabel
 import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
+import com.bikechallenge23g.theme.AppLightGrey
+import java.time.LocalDate
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun RideScreen(
     navController: NavController,
-    viewModel: MainViewModel
-) {
+    viewModel: MainViewModel,
+
+    ) {
     val rides by viewModel.rides.collectAsState()
     val showTopBarIcon = rides.isNotEmpty()
+
+    val months = rides.map { LocalDate.ofEpochDay(it.date ?: 0).month }.distinct()
+
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp
 
     LaunchedEffect(key1 = rides) {
         viewModel.getAllRides()
         viewModel.getChartData()
     }
+
 
     val chartData by viewModel.chartData.collectAsState()
 
@@ -69,20 +82,47 @@ fun RideScreen(
                             values = chartData.second
                         )
                     }
-                    items(rides) { currentRide ->
+                    @Composable
+                    fun RenderMonthAndRide(both: Boolean, month: String, ride: Ride) {
+                        if (both) {
+                            TextLabel(
+                                modifier = Modifier.padding(start = 5.dp),
+                                inputText = month,
+                                height = 25.dp,
+                                textStyle = MaterialTheme.typography.headlineLarge,
+                                textColor = AppLightGrey.copy(alpha = 0.5f)
+                            )
+                        }
                         RideCard(
-                            ride = currentRide,
+                            ride = ride,
                             bikeModel = viewModel.bikes.collectAsState().value
-                                .firstOrNull { currentRide.bikeId == it.id }?.model ?: "",
+                                .firstOrNull { ride.bikeId == it.id }?.model ?: "",
                             onEditSelected = {
-                                viewModel.setSelectedRide(currentRide)
+                                viewModel.setSelectedRide(ride)
                                 navController.navigate(NavigationRoutes.AddEditRide.route)
                             },
                             onDeleteSelected = {
-                                deletedRide = currentRide
+                                deletedRide = ride
                                 showRideDeleteDialog = true
                             }
                         )
+                    }
+                    itemsIndexed(rides) { index, ride ->
+                        val month = LocalDate.ofEpochDay(ride.date ?: 0)
+                            .month.name.uppercase()
+                        when (index) {
+                            0 -> RenderMonthAndRide(both = true, month = month, ride = ride)
+                            else -> {
+                                val prevMonth = LocalDate
+                                    .ofEpochDay(rides[index - 1].date ?: 0)
+                                    .month.name.uppercase()
+                                RenderMonthAndRide(
+                                    both = (month != prevMonth),
+                                    month = month,
+                                    ride = ride
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -102,3 +142,7 @@ fun RideScreen(
         }
     )
 }
+
+
+
+
