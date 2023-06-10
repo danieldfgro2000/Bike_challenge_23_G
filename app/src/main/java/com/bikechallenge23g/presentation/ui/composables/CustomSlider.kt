@@ -1,67 +1,69 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.bikechallenge23g.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun CustomSlider(
-    modifier: Modifier = Modifier,
     progress: Float,
     range: Float
 ) {
-    var boxWidth by remember { mutableIntStateOf(0) }
-    val posStart = progress / range
-    val posEnd = 1 - posStart
-    val sPE = if (posEnd == 0f) 0.1f else posEnd
-    Log.e("safe pos end", "$sPE")
-    val sBW = if (boxWidth == 0) 1 else boxWidth
-    Log.e("safe box width", "$sBW")
+    var sWs by remember { mutableFloatStateOf(0.001f) }
+    var sWE by remember { mutableFloatStateOf(1f) }
 
-    val weightStart: Float = 1 / (sBW / posStart) * 1000
-    val weightEnd: Float = 1 / (sBW / sPE) * 1000
-    val sWE = if (progress >= range) 0.001f else if (weightEnd <= 0.0f) 0.99f else weightEnd
-    val sWs = if (progress >= range) 0.99f else if (weightStart <= 0.0f) 0.001f else weightStart
-    Log.e("sWE", "$sWE")
-    Log.e("sWs", "$sWs")
+    LaunchedEffect(progress, range) {
+        withContext(Dispatchers.Default) {
+
+            val clampedProgress = progress.coerceIn(0.001f, range)
+            val posStart = clampedProgress / range
+            val posEnd = 1f - posStart
+
+            withContext(Dispatchers.Main) {
+                sWs = posStart
+                sWE = if (posEnd > 0f) posEnd else 0.001f
+            }
+        }
+    }
 
     Box(
-        modifier = modifier
-            .onGloballyPositioned { layoutCoordinates ->
-                boxWidth = layoutCoordinates.size.width
-            },
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth(),
         contentAlignment = Alignment.CenterStart
-
     ) {
         Image(
+            modifier = Modifier.align(Alignment.CenterStart),
             painter = painterResource(id = R.drawable.loading_circle),
             contentDescription = null
         )
-
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(start = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = R.drawable.loading_over),
                 contentDescription = null,
                 modifier = Modifier.weight(sWs),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.FillWidth
             )
             Image(
                 painter = painterResource(id = R.drawable.loading_wrench),
@@ -71,27 +73,14 @@ fun CustomSlider(
                 painter = painterResource(id = R.drawable.loading_bar),
                 contentDescription = null,
                 modifier = Modifier.weight(sWE),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.FillWidth
             )
         }
-
         Image(
+            modifier = Modifier.align(Alignment.CenterEnd),
             painter = painterResource(id = R.drawable.loading_bolt),
-            contentDescription = null,
-            modifier = Modifier.align(
-                Alignment.CenterEnd
-            )
+            contentDescription = null
         )
-
-//        Slider(
-//            value = progress,
-//            onValueChange = { },
-//            valueRange = 0f..range,
-//            modifier = Modifier
-//                .align(Alignment.Center)
-//                .fillMaxWidth()
-//                .alpha(0f)
-//        )
     }
 }
 
@@ -99,23 +88,23 @@ fun CustomSlider(
 @Preview
 @Composable
 fun PreviewCustomSlidebar20() {
-    CustomSlider(Modifier, 399f, 400f)
+    CustomSlider(399f, 400f)
 }
 
 @Preview
 @Composable
 fun PreviewCustomSlidebar70() {
-    CustomSlider(Modifier, 70f, 100f)
+    CustomSlider(88f, 100f)
 }
 
 @Preview
 @Composable
 fun PreviewCustomSlidebar200() {
-    CustomSlider(Modifier, 0f, 1f)
+    CustomSlider(0f, 1f)
 }
 
 @Preview
 @Composable
 fun PreviewCustomSlidebarNeg() {
-    CustomSlider(Modifier, 100f, 10f)
+    CustomSlider(100f, 10f)
 }

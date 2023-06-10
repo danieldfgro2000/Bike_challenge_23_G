@@ -38,7 +38,6 @@ import com.bikechallenge23g.theme.AppRed
 @Composable
 fun BikeView(
     bike: Bike,
-
     modifier: Modifier
 ) {
     Column(
@@ -146,19 +145,15 @@ fun BikeCard(
         }
     }
 }
-
-@Composable
 fun imageSelector(wheels: BikeWheel, bikeType: BikeType): Triple<Int, Int, Int> =
     bikeImageSelector(bikeType = bikeType, wheels = wheels)
 
-@Composable
 private fun wheelImageSelector(wheels: BikeWheel, smallWheelImage: Int, bigWheelImage: Int) =
     when (wheels) {
         BikeWheel.BIG -> bigWheelImage
         BikeWheel.SMALL -> smallWheelImage
     }
 
-@Composable
 private fun bikeImageSelector(bikeType: BikeType, wheels: BikeWheel) =
     when (bikeType) {
         BikeType.ELECTRIC -> {
@@ -258,10 +253,7 @@ fun BikeCardWithDetails(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-//                        .wrapContentHeight()
-                        .padding(vertical = 10.dp)
-//                        .height(345.dp)
-                    ,
+                        .padding(vertical = 10.dp),
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Bottom
                 ) {
@@ -273,8 +265,7 @@ fun BikeCardWithDetails(
                             modifier = Modifier.padding(start = 5.dp),
                             inputText = bike.model ?: "",
                             height = 30.dp,
-                            textStyle = MaterialTheme.typography.titleLarge,
-
+                            textStyle = MaterialTheme.typography.titleLarge
                             )
                     }
                     Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
@@ -306,7 +297,6 @@ fun BikeCardWithDetails(
                         )
                     }
                     CustomSlider(
-                        modifier = Modifier.padding(10.dp),
                         progress = bike.distance?.toFloat() ?: 0f,
                         range = bike.serviceIn?.toFloat() ?: 1f
                     )
@@ -353,7 +343,7 @@ fun BikeCardWithDetails(
 
 @Preview
 @Composable
-fun PreviewBikeCardWithDetails() {
+private fun PreviewBikeCardWithDetails() {
     BikeCardWithDetails(
         bike = Bike(
             model = "NukeProof Scout 290",
@@ -365,7 +355,7 @@ fun PreviewBikeCardWithDetails() {
 
 @Preview
 @Composable
-fun PreviewBikeCardWithDetailsOnBikeDetailsScreen() {
+private fun PreviewBikeCardWithDetailsOnBikeDetailsScreen() {
     BikeCardWithDetails(
         isBikeDetailScreen = true,
         ridesCount = "3",
@@ -380,7 +370,7 @@ fun PreviewBikeCardWithDetailsOnBikeDetailsScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewBikeCard() {
+private fun PreviewBikeCard() {
     BikeCard(
         bikeType = BikeType.ROAD_BIKE,
         wheelSize = BikeWheel.BIG,
@@ -390,7 +380,7 @@ fun PreviewBikeCard() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewBikeCardSmall() {
+private fun PreviewBikeCardSmall() {
     BikeCard(
         bikeType = BikeType.MTB,
         wheelSize = BikeWheel.BIG,
