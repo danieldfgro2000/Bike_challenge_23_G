@@ -212,9 +212,10 @@ private fun bikeImageSelector(bikeType: BikeType, wheels: BikeWheel) =
 
 @Composable
 fun BikeCardWithDetails(
+    modifier: Modifier = Modifier,
     bike: Bike,
     isBikeDetailScreen: Boolean = false,
-    ridesCount: String = "",
+    ridesCount: String? = "",
     totalRidesDistance: String = "",
     onCardClicked: (Bike) -> Unit = {},
     onEditSelected: () -> Unit = {},
@@ -223,7 +224,7 @@ fun BikeCardWithDetails(
     val remaining = ((bike.serviceIn ?: 0) - (bike.distance?.toInt() ?: 0)).toString()
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 10.dp, vertical = 5.dp)
             .fillMaxWidth()
             .clickable { onCardClicked(bike) }
@@ -256,8 +257,11 @@ fun BikeCardWithDetails(
                 )
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(345.dp),
+                        .fillMaxSize()
+//                        .wrapContentHeight()
+                        .padding(vertical = 10.dp)
+//                        .height(345.dp)
+                    ,
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Bottom
                 ) {
@@ -273,25 +277,21 @@ fun BikeCardWithDetails(
 
                             )
                     }
-                    Row(modifier = Modifier.padding(start = 10.dp)) {
+                    Row(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
                         TextLabel(
                             inputText = stringResource(id = R.string.wheels),
-                            textStyle = MaterialTheme.typography.labelMedium,
-
-                            )
+                            textStyle = MaterialTheme.typography.labelMedium
+                        )
                         Spacer(modifier = Modifier.width(5.dp))
                         TextLabel(
                             inputText = bike.wheelSize?.size ?: BikeWheel.BIG.size,
-                            textStyle = MaterialTheme.typography.titleMedium,
-
-                            )
-
+                            textStyle = MaterialTheme.typography.titleMedium
+                        )
                     }
                     Row(modifier = Modifier.padding(start = 10.dp)) {
                         TextLabel(
                             inputText = stringResource(id = R.string.service_interval),
-                            textStyle = MaterialTheme.typography.labelMedium,
-
+                            textStyle = MaterialTheme.typography.labelMedium
                             )
                         Spacer(modifier = Modifier.width(5.dp))
                         TextLabel(
@@ -304,32 +304,29 @@ fun BikeCardWithDetails(
                             textStyle = MaterialTheme.typography.titleMedium,
                             textColor = if ((remaining.toIntOrNull() ?: 0) <= 0) AppRed else null
                         )
-
                     }
                     CustomSlider(
-                        modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
+                        modifier = Modifier.padding(10.dp),
                         progress = bike.distance?.toFloat() ?: 0f,
                         range = bike.serviceIn?.toFloat() ?: 1f
                     )
                     if (isBikeDetailScreen) {
-                        Row(modifier = Modifier.padding(start = 10.dp)) {
+                        Row(modifier = Modifier.padding(horizontal = 10.dp)) {
                             TextLabel(
                                 inputText = stringResource(id = R.string.rides),
-                                textStyle = MaterialTheme.typography.labelMedium,
-
-                                )
+                                textStyle = MaterialTheme.typography.labelMedium
+                            )
                             Spacer(modifier = Modifier.width(5.dp))
                             TextLabel(
-                                inputText = ridesCount,
+                                inputText = ridesCount!!,
                                 textStyle = MaterialTheme.typography.titleMedium
                             )
                         }
-                        Row(modifier = Modifier.padding(start = 10.dp)) {
+                        Row(modifier = Modifier.padding(start = 10.dp, top = 5.dp)) {
                             TextLabel(
                                 inputText = stringResource(id = R.string.total_ride_distance),
-                                textStyle = MaterialTheme.typography.labelMedium,
-
-                                )
+                                textStyle = MaterialTheme.typography.labelMedium
+                            )
                             Spacer(modifier = Modifier.width(5.dp))
                             TextLabel(
                                 inputText = totalRidesDistance,
@@ -347,7 +344,6 @@ fun BikeCardWithDetails(
                             )
 
                         }
-                        Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
             }
@@ -372,6 +368,8 @@ fun PreviewBikeCardWithDetails() {
 fun PreviewBikeCardWithDetailsOnBikeDetailsScreen() {
     BikeCardWithDetails(
         isBikeDetailScreen = true,
+        ridesCount = "3",
+        totalRidesDistance = "450",
         bike = Bike(
             model = "NukeProof Scout 290",
             serviceIn = 500,

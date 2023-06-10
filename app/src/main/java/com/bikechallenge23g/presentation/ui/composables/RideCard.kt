@@ -1,6 +1,5 @@
 package com.bikechallenge23g.presentation.ui.composables
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,15 +33,13 @@ import java.util.Locale
 fun RideCard(
     ride: Ride,
     bikeModel: String,
-    onCardClicked: (Ride) -> Unit = {},
     onEditSelected: () -> Unit,
     onDeleteSelected: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp)
-            .clickable { onCardClicked(ride) },
+            .padding(horizontal = 10.dp, vertical = 5.dp),
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onBackground,
@@ -153,7 +150,7 @@ fun PreviewRideCard() {
         duration = 65,
         date = 14367,
         name = "Ride"
-    ), bikeModel = "Nukeproof Scout 290", onCardClicked = {}, onEditSelected = {}) {
+    ), bikeModel = "Nukeproof Scout 290", onEditSelected = {}) {
 
     }
 }

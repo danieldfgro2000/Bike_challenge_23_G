@@ -67,12 +67,6 @@ fun RideScreen(
                         CustomBarChart(
                             totalKm = chartData.first,
                             values = chartData.second
-//                            values = listOf(
-//                                Triple(BikeType.ROAD_BIKE, 500f, AppRed),
-//                                Triple(BikeType.MTB, 1400f, AppOrange),
-//                                Triple(BikeType.HYBRID, 200f, AppLightGreen),
-//                                Triple(BikeType.ELECTRIC, 110f, Color.White)
-//                            )
                         )
                     }
                     items(rides) { currentRide ->
@@ -80,7 +74,6 @@ fun RideScreen(
                             ride = currentRide,
                             bikeModel = viewModel.bikes.collectAsState().value
                                 .firstOrNull { currentRide.bikeId == it.id }?.model ?: "",
-                            onCardClicked = {},
                             onEditSelected = {
                                 viewModel.setSelectedRide(currentRide)
                                 navController.navigate(NavigationRoutes.AddEditRide.route)

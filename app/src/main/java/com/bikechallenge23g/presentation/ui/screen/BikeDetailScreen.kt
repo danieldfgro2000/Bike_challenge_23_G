@@ -15,15 +15,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.data.model.Ride
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
 import com.bikechallenge23g.presentation.ui.composables.BikeCardWithDetails
 import com.bikechallenge23g.presentation.ui.composables.CustomDialog
 import com.bikechallenge23g.presentation.ui.composables.RideCard
+import com.bikechallenge23g.presentation.ui.composables.TextLabel
 import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
+import com.bikechallenge23g.theme.AppLightGrey
 
 @Composable
 fun BikeDetailScreen(
@@ -62,8 +67,25 @@ fun BikeDetailScreen(
                 LazyColumn {
                     item {
                         viewModel.selectedBike.collectAsState().value?.let { thisBike ->
-                            BikeCardWithDetails(bike = thisBike, isBikeDetailScreen = false)
+                            BikeCardWithDetails(
+                                modifier = Modifier.padding(0.dp),
+                                bike = thisBike,
+                                isBikeDetailScreen = true,
+                                ridesCount = rides.size.toString(),
+                                totalRidesDistance = rides.sumOf { ride -> ride.distance ?: 0.0 }
+                                    .toString()
+                            )
                         }
+                    }
+
+                    item {
+                        TextLabel(
+                            modifier = Modifier.padding(start = 5.dp),
+                            inputText = stringResource(id = R.string.rides).uppercase(),
+                            height = 25.dp,
+                            textStyle = MaterialTheme.typography.headlineLarge,
+                            textColor = AppLightGrey.copy(alpha = 0.5f)
+                        )
                     }
                     items(rides) { currentRide ->
                         RideCard(
