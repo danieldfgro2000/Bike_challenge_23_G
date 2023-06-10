@@ -15,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
@@ -35,22 +34,15 @@ import java.time.LocalDate
 @Composable
 fun RideScreen(
     navController: NavController,
-    viewModel: MainViewModel,
-
-    ) {
+    viewModel: MainViewModel
+) {
     val rides by viewModel.rides.collectAsState()
     val showTopBarIcon = rides.isNotEmpty()
-
-    val months = rides.map { LocalDate.ofEpochDay(it.date ?: 0).month }.distinct()
-
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp
 
     LaunchedEffect(key1 = rides) {
         viewModel.getAllRides()
         viewModel.getChartData()
     }
-
 
     val chartData by viewModel.chartData.collectAsState()
 

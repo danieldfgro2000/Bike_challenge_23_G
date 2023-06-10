@@ -41,6 +41,12 @@ fun customDateTimePicker(
         longEpochToddMMyyyy(selectedDate ?: LocalDate.now().toEpochDay())
     } else intTimeToHHmm(selectedTime ?: 0)
 
+    val selectedTimeToLocalTime = if (selectedTime != null) {
+        LocalTime.of(selectedTime / 60, selectedTime % 60)
+    } else {
+        LocalTime.of(0, 0)
+    }
+
     val error: String? = if (!isDatePicker && calculatedTime == 0) {
         stringResource(id = R.string.required_field)
     } else null
@@ -58,7 +64,7 @@ fun customDateTimePicker(
         }
         if (showTimePickerDialog) {
             TimePickerDialog(
-                initialTime = LocalTime.MIDNIGHT,
+                initialTime = selectedTimeToLocalTime,
                 is24HourFormat = true,
                 onDismissRequest = { showTimePickerDialog = false },
                 onTimeChange = {

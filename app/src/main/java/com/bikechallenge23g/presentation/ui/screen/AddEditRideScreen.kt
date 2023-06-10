@@ -58,6 +58,9 @@ fun AddEditRideScreen(
     if ((selectedRide?.bikeId ?: -1) == selectedBike?.id) {
         bikeModelError = null
     }
+    if (selectedRide?.distance != 0.0 && selectedRide?.distance != null) {
+        distanceError = null
+    }
 
     var isInputValid = false
     selectedRide?.let { r ->

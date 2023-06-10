@@ -31,7 +31,7 @@ fun TopBar(
     onDelete: () -> Unit = {},
     onEdit: () -> Unit = {},
     onNavBack: () -> Unit = {},
-    topBarCallback: () -> Unit = {}
+    onClose: () -> Unit = {}
 ) {
 
     Row(
@@ -64,7 +64,7 @@ fun TopBar(
         }
         icon?.let {
             Icon(
-                modifier = Modifier.clickable { topBarCallback() },
+                modifier = Modifier.clickable { onClose() },
                 painter = painterResource(id = icon),
                 contentDescription = stringResource(
                     id = iconDescription ?: R.string.empty

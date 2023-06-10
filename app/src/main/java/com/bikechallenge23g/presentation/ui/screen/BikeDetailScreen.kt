@@ -1,6 +1,5 @@
 package com.bikechallenge23g.presentation.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -37,7 +36,6 @@ fun BikeDetailScreen(
 ) {
     val selectedBike by viewModel.selectedBike.collectAsState()
     val rides = viewModel.rides.collectAsState().value.filter { it.bikeId == selectedBike?.id }
-    Log.e("rides = ", "$rides")
 
     var showBikeDeleteDialog by remember { mutableStateOf(false) }
     var deletedBike by remember { mutableStateOf<Bike?>(null) }
@@ -77,7 +75,6 @@ fun BikeDetailScreen(
                             )
                         }
                     }
-
                     item {
                         TextLabel(
                             modifier = Modifier.padding(start = 5.dp),
@@ -114,7 +111,7 @@ fun BikeDetailScreen(
                             showBikeDeleteDialog = false
                             viewModel.deleteBike(bikeToBeDeleted)
                             deletedBike = null
-                            // Delete all rides as well?
+                            // Delete all corresponding rides as well?
                             navController.popBackStack()
                         }
                     )
@@ -124,7 +121,10 @@ fun BikeDetailScreen(
                 deletedRide?.let { rideToBeDeleted ->
                     CustomDialog(
                         title = rideToBeDeleted.name ?: "",
-                        onCancel = { showRideDeleteDialog = false },
+                        onCancel = {
+                            showRideDeleteDialog = false
+                            deletedRide = null
+                        },
                         onConfirm = {
                             showRideDeleteDialog = false
                             viewModel.deleteRide(rideToBeDeleted)
