@@ -39,10 +39,7 @@ fun RideScreen(
     val rides by viewModel.rides.collectAsState()
     val showTopBarIcon = rides.isNotEmpty()
 
-    LaunchedEffect(key1 = rides) {
-        viewModel.getAllRides()
-        viewModel.getChartData()
-    }
+    LaunchedEffect(key1 = rides) { viewModel.getChartData() }
 
     val chartData by viewModel.chartData.collectAsState()
 

@@ -46,6 +46,11 @@ class MainViewModel @Inject constructor(
     private val calcChartUseCase: CalcChartUseCase
 ) : AndroidViewModel(application) {
 
+    init {
+        getAllBikes()
+        getAllRides()
+    }
+
     fun getAllBikes() = viewModelScope.launch(IO) {
         getBikesUseCase.execute().collect { bikes ->
             bikes.let { sBikes ->
@@ -179,6 +184,7 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch(IO) {
                 Log.e("bikeID", "$it")
                 updateServiceReminderActiveUseCase.execute(isReminderActive, it)
+                getAllBikes()
             }
         }
     }
@@ -191,6 +197,7 @@ class MainViewModel @Inject constructor(
                     it,
                     defaultBike.value?.serviceReminder ?: 100
                 )
+                getAllBikes()
             }
         }
     }
@@ -200,6 +207,7 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch(IO) {
                 updateDistanceUnitUseCase.execute(it, newDistanceUnit)
             }
+            getAllBikes()
         }
     }
 
@@ -243,6 +251,7 @@ class MainViewModel @Inject constructor(
 
     fun saveSelectedRide(clear: Boolean = true) = viewModelScope.launch(IO) {
         selectedRide.value?.let { saveRideUseCase.execute(it) }
+        getAllRides()
         if (clear) {
             clearSelectedRide()
         }
@@ -250,6 +259,7 @@ class MainViewModel @Inject constructor(
 
     fun deleteRide(ride: Ride) = viewModelScope.launch(IO) {
         deleteRideUseCase.execute(ride)
+        getAllRides()
     }
 
     fun getAllRides() = viewModelScope.launch(IO) {
