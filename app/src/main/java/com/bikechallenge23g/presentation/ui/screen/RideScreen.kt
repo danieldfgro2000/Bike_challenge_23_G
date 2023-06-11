@@ -37,6 +37,8 @@ fun RideScreen(
     viewModel: MainViewModel
 ) {
     val rides by viewModel.rides.collectAsState()
+    val bikes by viewModel.bikes.collectAsState()
+    val defaultBike by viewModel.defaultBike.collectAsState()
     val showTopBarIcon = rides.isNotEmpty()
 
     LaunchedEffect(key1 = rides) { viewModel.getChartData() }
@@ -56,7 +58,13 @@ fun RideScreen(
                 iconDescription = if (showTopBarIcon) R.string.add_ride else null,
                 showIconDescription = showTopBarIcon
             ) {
-                viewModel.clearSelectedRide()
+                with(viewModel) {
+                    clearSelectedRide()
+                    defaultBike?.let {
+                        updateSelectedRide(bikeId = it.id)
+                        updateBike(selected = true, bike = it)
+                    }
+                }
                 navController.navigate(NavigationRoutes.AddEditRide.route)
             }
         },
@@ -87,6 +95,8 @@ fun RideScreen(
                             bikeModel = viewModel.bikes.collectAsState().value
                                 .firstOrNull { ride.bikeId == it.id }?.model ?: "",
                             onEditSelected = {
+                                val selectedBike = bikes.firstOrNull { it.id == ride.bikeId }
+                                selectedBike?.let { viewModel.setSelectedBike(selectedBike) }
                                 viewModel.setSelectedRide(ride)
                                 navController.navigate(NavigationRoutes.AddEditRide.route)
                             },

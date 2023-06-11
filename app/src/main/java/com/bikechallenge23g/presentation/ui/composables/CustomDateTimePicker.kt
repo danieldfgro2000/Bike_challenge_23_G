@@ -1,7 +1,6 @@
 package com.bikechallenge23g.presentation.ui.composables
 
 
-import android.util.Log
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -27,15 +26,17 @@ import java.time.LocalTime
 @Composable
 fun customDateTimePicker(
     modifier: Modifier = Modifier,
-    selectedTime: Int? = 0,
-    selectedDate: Long? = 0,
-    isDatePicker: Boolean = false
-): Pair<Int?, Long> {
+    selectedTime: Int? = null,
+    selectedDate: Long? = null,
+    isDatePicker: Boolean = false,
+    onTimeSelected: (Int) -> Unit = {},
+    onDateSelected: (Long) -> Unit = {}
+) {
 
     var showTimePickerDialog by remember { mutableStateOf(false) }
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var date: LocalDate by remember { mutableStateOf(LocalDate.now()) }
-    var calculatedTime by remember { mutableIntStateOf(0) }
+    var calculatedTime by remember { mutableIntStateOf(selectedTime ?: 0) }
 
     val displayedDateTime = if (isDatePicker) {
         longEpochToddMMyyyy(selectedDate ?: LocalDate.now().toEpochDay())
@@ -70,6 +71,7 @@ fun customDateTimePicker(
                 onTimeChange = {
                     showTimePickerDialog = false
                     calculatedTime = it.hour * 60 + it.minute
+                    onTimeSelected(calculatedTime)
                 }
             )
         }
@@ -80,12 +82,10 @@ fun customDateTimePicker(
                 onDateChange = { localDate: LocalDate ->
                     showDatePickerDialog = false
                     date = localDate
-                    Log.e("Date  = ", "${localDate.toEpochDay()}")
+                    onDateSelected(date.toEpochDay())
                 }
             )
         }
     }
-
-    return Pair(calculatedTime, date.toEpochDay())
 }
 

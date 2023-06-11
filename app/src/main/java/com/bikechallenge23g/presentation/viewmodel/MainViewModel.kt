@@ -46,15 +46,15 @@ class MainViewModel @Inject constructor(
     private val calcChartUseCase: CalcChartUseCase
 ) : AndroidViewModel(application) {
 
-    init {
-        getAllBikes()
-        getAllRides()
-    }
+//    init {
+//        getAllBikes()
+//        getAllRides()
+//    }
 
     fun getAllBikes() = viewModelScope.launch(IO) {
         getBikesUseCase.execute().collect { bikes ->
             bikes.let { sBikes ->
-                Log.e("getAllBikes= ", "$bikes")
+                Log.e("getAllBikes(ViewModel):", "$bikes")
                 if (bikes.isNotEmpty()) {
                     _bikes.value = sBikes
                     val default = sBikes.firstOrNull { it.isDefault == true }
@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
                         setServiceReminder()
                     }
                 }
-                Log.e("getAllBikes: ", "default bike= ${defaultBike.value}")
+                Log.e("ViewModel efault bike (getAllbikes)=: ", "d ${defaultBike.value}")
             }
         }
     }
@@ -234,8 +234,8 @@ class MainViewModel @Inject constructor(
         bikeId: Int? = selectedRide.value?.bikeId,
         distance: Double? = selectedRide.value?.distance ?: 0.0,
         distanceUnit: DistanceUnit? = selectedRide.value?.distanceUnit ?: DistanceUnit.KM,
-        duration: Int? = selectedRide.value?.duration ?: 0,
-        date: Long? = selectedRide.value?.date ?: 0
+        duration: Int? = selectedRide.value?.duration,
+        date: Long? = selectedRide.value?.date
     ) {
         _selectedRide.value = Ride(
             id,
@@ -265,7 +265,7 @@ class MainViewModel @Inject constructor(
     fun getAllRides() = viewModelScope.launch(IO) {
         getRidesUseCase.execute().collect { rides ->
             rides.let {
-                Log.e("rides= ", "$rides")
+                Log.e("getAllRides (ViewModel):", "$rides")
                 if (rides.isNotEmpty()) {
                     _rides.value = it
                 }

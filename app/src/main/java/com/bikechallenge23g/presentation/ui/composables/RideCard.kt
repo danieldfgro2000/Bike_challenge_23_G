@@ -1,5 +1,6 @@
 package com.bikechallenge23g.presentation.ui.composables
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,7 +58,8 @@ fun RideCard(
             Column(modifier = Modifier.padding(10.dp)) {
                 Row(
                     modifier = Modifier.padding(5.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
                 ) {
                     Icon(
                         Icons.Default.BikeScooter,
@@ -66,8 +68,12 @@ fun RideCard(
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     TextLabel(
-                        inputText = (longEpochToDayOfWeek(ride.date ?: 0).lowercase(Locale.ROOT)
-                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() } + " " + ride.name),
+                        inputText = (longEpochToDayOfWeek(ride.date ?: 0)
+                            .lowercase(Locale.ROOT)
+                            .replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(Locale.ROOT)
+                                else it.toString()
+                            } + " " + (ride.name ?: "")),
                         height = 30.dp,
                         textStyle = MaterialTheme.typography.titleLarge
                     )

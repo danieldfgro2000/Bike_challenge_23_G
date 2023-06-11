@@ -171,23 +171,21 @@ fun AddEditRideScreen(
                     inputText = stringResource(id = R.string.duration),
                     isRequired = true
                 )
-                viewModel.updateSelectedRide(
-                    duration = customDateTimePicker(
-                        modifier = Modifier.padding(10.dp),
-                        selectedTime = selectedRide?.duration
-                    ).first
+                customDateTimePicker(
+                    modifier = Modifier.padding(10.dp),
+                    selectedTime = selectedRide?.duration,
+                    onTimeSelected = { viewModel.updateSelectedRide(duration = it) }
                 )
                 TextLabel(
                     modifier = Modifier.padding(horizontal = 5.dp),
                     inputText = stringResource(id = R.string.date),
                     isRequired = true
                 )
-                viewModel.updateSelectedRide(
-                    date = customDateTimePicker(
-                        modifier = Modifier.padding(10.dp),
-                        isDatePicker = true,
-                        selectedDate = selectedRide?.date
-                    ).second
+                customDateTimePicker(
+                    modifier = Modifier.padding(10.dp),
+                    isDatePicker = true,
+                    selectedDate = selectedRide?.date,
+                    onDateSelected = { viewModel.updateSelectedRide(date = it) }
                 )
             }
         },

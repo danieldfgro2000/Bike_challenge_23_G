@@ -38,7 +38,7 @@ fun TextLabel(
     modifier: Modifier = Modifier,
     inputText: String,
     isRequired: Boolean = false,
-    height: Dp = 18.dp,
+    height: Dp = 20.dp,
     textStyle: TextStyle = MaterialTheme.typography.labelMedium,
     textColor: Color? = null
 ) {
@@ -49,6 +49,7 @@ fun TextLabel(
         Text(
             modifier = modifier.height(height),
             textAlign = TextAlign.Center,
+            softWrap = false,
             text = inputText,
             style = textStyle,
             color = textColor ?: MaterialTheme.colorScheme.onBackground
