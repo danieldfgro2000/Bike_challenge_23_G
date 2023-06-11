@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -165,11 +166,25 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private var _defaultBikeChanged: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val defaultBikeChanged: MutableStateFlow<Boolean>
+        get() = _defaultBikeChanged
+
+    fun showDefaultBikeChanged() {
+        _defaultBikeChanged.value = true
+    }
+
+    fun hideDefaultBikeChanged() {
+        _defaultBikeChanged.value = false
+    }
+
+
     fun updateDefaultBike(bikeId: Int?) {
         bikeId?.let {
             viewModelScope.launch(IO) {
                 Log.e("update default = ", "${defaultBike.value}")
                 updateDefaultBikeUseCase.execute(bikeId)
+                showDefaultBikeChanged()
                 getAllBikes()
             }
         }
@@ -236,7 +251,7 @@ class MainViewModel @Inject constructor(
         distance: Double? = selectedRide.value?.distance ?: 0.0,
         distanceUnit: DistanceUnit? = selectedRide.value?.distanceUnit ?: DistanceUnit.KM,
         duration: Int? = selectedRide.value?.duration,
-        date: Long? = selectedRide.value?.date
+        date: Long? = selectedRide.value?.date ?: LocalDate.now().toEpochDay()
     ) {
         _selectedRide.value = Ride(
             id,

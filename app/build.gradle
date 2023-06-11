@@ -69,6 +69,7 @@ dependencies {
 
     implementation 'com.google.accompanist:accompanist-pager:0.31.3-beta'
     implementation "com.google.accompanist:accompanist-insets-ui:0.24.7-alpha"
+    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.31.3-beta'
 
     implementation "com.marosseleng.android:compose-material3-datetime-pickers:0.7.0"
 
