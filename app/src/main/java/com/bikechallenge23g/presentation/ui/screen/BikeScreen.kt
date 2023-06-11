@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,12 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.Bike
+import com.bikechallenge23g.data.model.enums.BikeColor
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
 import com.bikechallenge23g.presentation.ui.composables.BikeCardWithDetails
 import com.bikechallenge23g.presentation.ui.composables.CustomDialog
 import com.bikechallenge23g.presentation.ui.composables.NoItemsPlaceholder
 import com.bikechallenge23g.presentation.ui.composables.TopBar
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -29,11 +32,46 @@ fun BikeScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
+
+
+    val defaultBike by viewModel.defaultBike.collectAsState()
+    val defaultBikeChanged by viewModel.defaultBikeChanged.collectAsState()
     val bikes by viewModel.bikes.collectAsState()
     val showTopBarIcon = bikes.isNotEmpty()
 
+//    var showDefaultBike by remember { mutableStateOf(defaultBike != null) }
     var showBikeDeleteDialog by remember { mutableStateOf(false) }
     var deletedBike by remember { mutableStateOf<Bike?>(null) }
+
+    val systemUiController = rememberSystemUiController()
+    val originalNavigationBarColor = MaterialTheme.colorScheme.background
+
+    DisposableEffect(defaultBikeChanged) {
+        if (defaultBikeChanged) {
+            systemUiController.setStatusBarColor(
+                color = BikeColor.ORANGE.color,
+                darkIcons = true
+            )
+        } else {
+            systemUiController.setStatusBarColor(
+                color = originalNavigationBarColor,
+                darkIcons = false
+            )
+        }
+
+
+        systemUiController.setNavigationBarColor(
+            color = originalNavigationBarColor,
+            darkIcons = false
+        )
+
+        onDispose {
+            systemUiController.setStatusBarColor(
+                color = originalNavigationBarColor,
+                darkIcons = false
+            )
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -41,9 +79,17 @@ fun BikeScreen(
         topBar = {
             TopBar(
                 title = R.string.bikes,
+//                titleStr = String.format(
+//                    "%1s service in %2s%3s",
+//                    defaultBike?.model,
+//                    (defaultBike?.serviceIn ?: 0) - (defaultBike?.distance ?: 0.0),
+//                    defaultBike?.distanceUnit?.name
+//                ),
                 icon = if (showTopBarIcon) R.drawable.icon_add else null,
                 iconDescription = if (showTopBarIcon) R.string.add_bike else null,
-                showIconDescription = showTopBarIcon
+                showDefaultBikeChangedBar = defaultBikeChanged,
+                showIconDescription = showTopBarIcon,
+                onHideDefaultBikeBar = { viewModel.hideDefaultBikeChanged() }
             ) {
                 viewModel.clearSelectedBike()
                 navController.navigate(NavigationRoutes.AddEditBike.route)

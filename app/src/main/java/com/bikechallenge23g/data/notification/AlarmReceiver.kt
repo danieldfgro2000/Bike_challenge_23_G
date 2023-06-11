@@ -34,7 +34,9 @@ class AlarmSetter(context: Context, defaultBike: Bike) {
         putExtra(BIKE_MODEL, defaultBike.model)
         putExtra(
             SERVICE_IN,
-            "Service in: ${defaultBike.serviceIn}${defaultBike.distanceUnit?.name}"
+            "Service in: " +
+                    "${(defaultBike.serviceIn ?: 0) - (defaultBike.distance ?: 0.0).toInt()}" +
+                    "${defaultBike.distanceUnit?.name}"
         )
     }
 

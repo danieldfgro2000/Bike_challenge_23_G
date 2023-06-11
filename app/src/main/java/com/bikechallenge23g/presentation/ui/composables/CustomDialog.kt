@@ -60,12 +60,15 @@ fun CustomDialog(
                 Button(
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.secondary,
                         containerColor = Color.Transparent
                     ),
                     shape = RoundedCornerShape(5.dp),
                     onClick = { onCancel() }) {
-                    TextLabel(inputText = stringResource(id = R.string.cancel))
+                    TextLabel(
+                        inputText = stringResource(id = R.string.cancel),
+                        textStyle = MaterialTheme.typography.labelMedium,
+                        textColor = MaterialTheme.colorScheme.secondary
+                    )
                 }
 
                 Button(
@@ -76,7 +79,10 @@ fun CustomDialog(
                     ),
                     shape = RoundedCornerShape(5.dp),
                     onClick = { onConfirm() }) {
-                    TextLabel(inputText = stringResource(id = R.string.delete))
+                    TextLabel(
+                        inputText = stringResource(id = R.string.delete),
+                        textStyle = MaterialTheme.typography.labelMedium
+                    )
                 }
             }
         },
