@@ -27,14 +27,14 @@ class AlarmReceiver : BroadcastReceiver() {
 }
 
 
-class AlarmSetter(context: Context, defaultBike: Bike? = null) {
+class AlarmSetter(context: Context, defaultBike: Bike) {
 
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     private val intent = Intent(context, AlarmReceiver::class.java).apply {
-        putExtra(BIKE_MODEL, defaultBike?.model)
+        putExtra(BIKE_MODEL, defaultBike.model)
         putExtra(
             SERVICE_IN,
-            "Service in: ${defaultBike?.serviceIn}${defaultBike?.distanceUnit?.name}"
+            "Service in: ${defaultBike.serviceIn}${defaultBike.distanceUnit?.name}"
         )
     }
 

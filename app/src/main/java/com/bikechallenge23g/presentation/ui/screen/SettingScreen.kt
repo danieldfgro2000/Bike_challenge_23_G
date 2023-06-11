@@ -34,7 +34,7 @@ fun SettingScreen(
     viewModel: MainViewModel
 ) {
     val scrollState = rememberScrollState()
-    val bikes = viewModel.bikes.collectAsState().value
+    val bikes by viewModel.bikes.collectAsState()
     val defaultBike by viewModel.defaultBike.collectAsState()
 
     val emptyFieldErrorMessage = stringResource(id = R.string.required_field)
@@ -44,10 +44,12 @@ fun SettingScreen(
     val setAlarm by viewModel.setAlarm.collectAsState()
     val context = LocalContext.current
 
-    if (setAlarm) {
-        AlarmSetter(context, defaultBike).scheduleAlarm()
-    } else {
-        AlarmSetter(context).cancelAlarm()
+    defaultBike?.let {
+        if (setAlarm) {
+            AlarmSetter(context, it).scheduleAlarm()
+        } else {
+            AlarmSetter(context, it).cancelAlarm()
+        }
     }
 
     Scaffold(
@@ -70,10 +72,7 @@ fun SettingScreen(
                     modifier = Modifier.padding(10.dp),
                     items = DistanceUnit.values().map { it.name },
                     selectedItem = defaultBike?.distanceUnit?.unit ?: DistanceUnit.KM.unit
-                ) {
-                    viewModel.updateBike(default = true, distanceUnit = DistanceUnit.valueOf(it))
-                    viewModel.updateDistanceUnit(DistanceUnit.valueOf(it))
-                }
+                ) { viewModel.updateDistanceUnit(DistanceUnit.valueOf(it)) }
                 TextLabel(
                     modifier = Modifier.padding(horizontal = 5.dp),
                     inputText = stringResource(id = R.string.service_reminder)
@@ -90,29 +89,18 @@ fun SettingScreen(
                         unit = defaultBike?.distanceUnit ?: DistanceUnit.KM,
                         displayUnit = true
                     ) { newServiceReminderInterval ->
-                        bikeServiceIntervalError =
-                            if (newServiceReminderInterval.isBlank()) {
-                                emptyFieldErrorMessage
-                            } else if (newServiceReminderInterval.toIntOrNull() == null) {
-                                numberErrorMessage
-                            } else null
+                        bikeServiceIntervalError = when {
+                            newServiceReminderInterval.isBlank() -> emptyFieldErrorMessage
+                            newServiceReminderInterval.toIntOrNull() == null -> numberErrorMessage
+                            else -> null
+                        }
                         if (newServiceReminderInterval.toIntOrNull() != null) {
-                            viewModel.updateBike(
-                                default = true,
-                                serviceReminder = newServiceReminderInterval.toInt()
-                            )
                             viewModel.updateServiceReminderInterval()
                         }
                     }
                     CustomSwitch(
                         defaultState = defaultBike?.isServiceReminderActive ?: false
-                    ) { isReminderActive ->
-                        viewModel.updateBike(
-                            default = true,
-                            isServiceReminderActive = isReminderActive
-                        )
-                        viewModel.updateServiceReminderActive(isReminderActive)
-                    }
+                    ) { viewModel.updateServiceReminderActive(it) }
                 }
                 if (bikes.isNotEmpty()) {
                     TextLabel(
@@ -126,12 +114,7 @@ fun SettingScreen(
                         selectedItem = defaultBike?.model ?: ""
                     ) { selectedModel ->
                         val newSelectedBike = bikes.firstOrNull { it.model == selectedModel }
-                        newSelectedBike?.let {
-                            viewModel.updateDefaultBike(newSelectedBike.id)
-                            viewModel.updateBike(
-                                default = true,
-                                bike = bikes.firstOrNull { it.model == selectedModel })
-                        }
+                        newSelectedBike?.let { viewModel.updateDefaultBike(newSelectedBike.id) }
                     }
                 }
             }

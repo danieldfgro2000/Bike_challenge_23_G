@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
                         } else {
                             Log.e("AlarmSetter ", "Cancel alarm")
-                            AlarmSetter(context).cancelAlarm()
+                            AlarmSetter(context = context, defaultBike = defaultBike).cancelAlarm()
                         }
                     }
                 }

@@ -1,6 +1,5 @@
 package com.bikechallenge23g.domain.usecase
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.data.model.Ride
@@ -45,7 +44,6 @@ fun createPair(
         totalKm += sumForType
         val triple = Triple(availableType, sumForType.toFloat(), getRandomColor())
         listOfTriple.add(triple)
-        Log.e("Triple = ", "$triple")
     }
     return Pair(totalKm, listOfTriple)
 }

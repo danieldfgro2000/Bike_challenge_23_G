@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.Bike
 import com.bikechallenge23g.data.model.Ride
+import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.presentation.navigation.NavigationRoutes
 import com.bikechallenge23g.presentation.ui.composables.BikeCardWithDetails
 import com.bikechallenge23g.presentation.ui.composables.CustomDialog
@@ -70,8 +71,13 @@ fun BikeDetailScreen(
                                 bike = thisBike,
                                 isBikeDetailScreen = true,
                                 ridesCount = rides.size.toString(),
-                                totalRidesDistance = rides.sumOf { ride -> ride.distance ?: 0.0 }
-                                    .toString()
+                                totalRidesDistance = rides.sumOf { ride ->
+                                    if (ride.distanceUnit == DistanceUnit.MILES) {
+                                        (ride.distance ?: 0.0) * 1.6
+                                    } else {
+                                        ride.distance ?: 0.0
+                                    }
+                                }.toString()
                             )
                         }
                     }

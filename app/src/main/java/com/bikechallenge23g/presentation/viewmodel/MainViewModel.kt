@@ -46,11 +46,6 @@ class MainViewModel @Inject constructor(
     private val calcChartUseCase: CalcChartUseCase
 ) : AndroidViewModel(application) {
 
-//    init {
-//        getAllBikes()
-//        getAllRides()
-//    }
-
     fun getAllBikes() = viewModelScope.launch(IO) {
         getBikesUseCase.execute().collect { bikes ->
             bikes.let { sBikes ->
@@ -86,7 +81,13 @@ class MainViewModel @Inject constructor(
         val b = defaultBike.value
         _setAlarm.value =
             b?.isServiceReminderActive == true &&
-                    b.serviceIn?.let { due -> b.serviceReminder?.let { reminder -> due < reminder } } == true
+                    b.serviceIn?.let { due ->
+                        b.serviceReminder?.let { reminder ->
+                            b.distance?.let { distance ->
+                                due - distance < reminder
+                            }
+                        }
+                    } == true
     }
 
     private var _selectedBike: MutableStateFlow<Bike?> = MutableStateFlow(Bike())
