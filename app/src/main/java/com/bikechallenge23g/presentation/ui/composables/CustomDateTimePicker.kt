@@ -24,7 +24,7 @@ import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun customDateTimePicker(
+fun CustomDateTimePicker(
     modifier: Modifier = Modifier,
     selectedTime: Int? = null,
     selectedDate: Long? = null,

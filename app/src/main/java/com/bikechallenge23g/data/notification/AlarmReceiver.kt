@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.bikechallenge23g.data.model.Bike
 import java.util.Calendar
 
@@ -18,10 +17,8 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val bikeModel = intent.getStringExtra(BIKE_MODEL)
         val serviceIn = intent.getStringExtra(SERVICE_IN)
-        Log.w("Alarm Receiver", "bike model = $bikeModel")
-        Log.w("Alarm Receiver", "service in = $serviceIn")
         if (bikeModel != null && serviceIn != null) {
-            sendNotification(context, bikeModel, serviceIn)
+            NotificationHelper.sendNotification(context, bikeModel, serviceIn)
         }
     }
 }
@@ -49,7 +46,6 @@ class AlarmSetter(context: Context, defaultBike: Bike) {
     }
 
     fun scheduleAlarm() {
-        Log.d("Alarm setter", "schedule alarm")
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
@@ -60,7 +56,6 @@ class AlarmSetter(context: Context, defaultBike: Bike) {
 
 
     fun cancelAlarm() {
-        Log.d("Alarm setter", "cancel alarm")
         alarmManager.cancel(pendingIntent)
     }
 }

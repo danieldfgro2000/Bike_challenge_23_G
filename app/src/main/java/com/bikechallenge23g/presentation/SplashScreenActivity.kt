@@ -19,10 +19,7 @@ import com.bikechallenge23g.theme.BikeChallenge23GTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-//@AndroidEntryPoint
 class SplashScreenActivity : AppCompatActivity() {
-
-//    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -33,10 +30,6 @@ class SplashScreenActivity : AppCompatActivity() {
                 SplashScreenContent()
             }
         }
-//
-//        viewModel.getAllBikes()
-//        viewModel.getAllRides()
-
         lifecycleScope.launch {
             delay(2000)
             startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))

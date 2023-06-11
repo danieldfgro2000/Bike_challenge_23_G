@@ -39,7 +39,6 @@ fun BikeScreen(
     val bikes by viewModel.bikes.collectAsState()
     val showTopBarIcon = bikes.isNotEmpty()
 
-//    var showDefaultBike by remember { mutableStateOf(defaultBike != null) }
     var showBikeDeleteDialog by remember { mutableStateOf(false) }
     var deletedBike by remember { mutableStateOf<Bike?>(null) }
 
@@ -58,7 +57,6 @@ fun BikeScreen(
                 darkIcons = false
             )
         }
-
 
         systemUiController.setNavigationBarColor(
             color = originalNavigationBarColor,
@@ -141,7 +139,5 @@ fun BikeScreen(
                 }
             }
         })
-
-
 }
 

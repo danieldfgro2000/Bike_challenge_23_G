@@ -20,7 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,8 +55,7 @@ fun CustomBarChart(
     val density = LocalDensity.current
     val axisStrokeWidth = with(density) { 3.dp.toPx() }
     val lineStrokeWidth = with(density) { 1.dp.toPx() }
-    var chartRowHeight by remember { mutableStateOf(0) }
-
+    var chartRowHeight by remember { mutableIntStateOf(0) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -65,7 +64,6 @@ fun CustomBarChart(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onBackground
         )
-
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -227,9 +225,9 @@ private fun Bar(
     }
 }
 
-@Preview()
+@Preview
 @Composable
-fun PreviewCustomBarChart() {
+private fun PreviewCustomBarChart() {
     CustomBarChart(
         totalKm = 25580.0,
         values = listOf(

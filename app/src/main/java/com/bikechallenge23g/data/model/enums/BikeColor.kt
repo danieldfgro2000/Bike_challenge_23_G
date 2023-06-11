@@ -14,5 +14,5 @@ enum class BikeColor(var color: Color) {
     BEIGE(Color(0xFFBEA089)),
     LAVENDER(Color(0xFFF4BBFB)),
     AZURE(Color(0xFF619EB3)),
-    BROWN(Color(0x664C40))
+    BROWN(Color(0xFF664C40))
 }

@@ -53,18 +53,22 @@ fun AddEditBikeScreen(
     viewModel: MainViewModel
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp
-    val screenWidth = LocalConfiguration.current.screenHeightDp
+    val screenWidth = LocalConfiguration.current.screenWidthDp
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
 
     val emptyFieldErrorMessage = stringResource(id = R.string.required_field)
     val numberErrorMessage = stringResource(id = R.string.number_input_error)
-    var bikeNameError by remember { mutableStateOf<String?>(null) }
+    var bikeNameError by remember { mutableStateOf<String?>(emptyFieldErrorMessage) }
     var bikeServiceIntervalError by remember { mutableStateOf<String?>(null) }
 
     val selectedBike by viewModel.selectedBike.collectAsState()
     viewModel.updateBike(selected = true, bike = selectedBike)
+
+    if (selectedBike?.model != null) {
+        bikeNameError = null
+    }
 
     val isInputValid: Boolean =
         selectedBike?.model?.isNotBlank() == true &&
@@ -73,7 +77,7 @@ fun AddEditBikeScreen(
 
     val pagerState = rememberPagerState(
         initialPage = selectedBike?.type?.ordinal ?: BikeType.ELECTRIC.ordinal,
-        initialPageOffsetFraction = -0.16f
+        initialPageOffsetFraction = -0.05f
     ) { BikeType.values().size }
 
     LaunchedEffect(key1 = pagerState.currentPage) {
@@ -163,7 +167,7 @@ fun AddEditBikeScreen(
                         .padding(10.dp)
                         .onGloballyPositioned {
                             coroutineScope.launch {
-                                scrollState.animateScrollTo(screenHeight)
+                                scrollState.animateScrollTo(screenHeight + 50)
                             }
                         },
                     displayUnit = true,

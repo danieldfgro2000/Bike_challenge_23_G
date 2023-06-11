@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.Flow
 class RideRepositoryImpl(
     private val rideLocalDataSource: RideLocalDataSource
 ) : RideRepository {
+
     override suspend fun saveRide(ride: Ride) = rideLocalDataSource.saveRideToDb(ride)
 
     override suspend fun deleteRide(ride: Ride) = rideLocalDataSource.deleteRideFromDb(ride)
+
     override suspend fun getRides(): Flow<List<Ride>> = rideLocalDataSource.getSavedRides()
 
 }

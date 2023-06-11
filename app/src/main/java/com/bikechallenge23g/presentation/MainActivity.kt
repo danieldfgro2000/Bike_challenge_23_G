@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BikeApp(viewModel)
-
         }
     }
 
@@ -40,24 +39,21 @@ class MainActivity : ComponentActivity() {
 
             viewModel.defaultBike.collect { defaultBike ->
                 viewModel.setServiceReminder()
-                Log.e("onStart ", "defaultBike = $defaultBike")
 
                 if (defaultBike != null) {
                     viewModel.setAlarm.collect { setAlarmOn ->
                         if (setAlarmOn) {
-                            Log.e("AlarmSetter ", "Set alarm")
+                            Log.i("AlarmSetter ", "Set alarm")
                             AlarmSetter(
                                 context = context,
                                 defaultBike = defaultBike
                             ).scheduleAlarm()
-
                         } else {
-                            Log.e("AlarmSetter ", "Cancel alarm")
+                            Log.i("AlarmSetter ", "Cancel alarm")
                             AlarmSetter(context = context, defaultBike = defaultBike).cancelAlarm()
                         }
                     }
                 }
-
             }
         }
     }

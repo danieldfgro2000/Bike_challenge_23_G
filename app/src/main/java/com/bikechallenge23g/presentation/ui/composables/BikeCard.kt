@@ -83,39 +83,42 @@ fun BikeView(
 
 @Composable
 fun BikeCard(
+    modifier: Modifier = Modifier,
+    pageSize: Int,
     bikeType: BikeType,
     wheelSize: BikeWheel,
     bikeColor: BikeColor
 ) {
     Card(
-        modifier = Modifier
-            .width(300.dp)
-            .height(200.dp),
+        modifier.width(pageSize.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         )
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height((pageSize * 0.5).dp),
+                contentAlignment = Alignment.Center
+            ) {
                 Image(
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(160.dp),
+                    modifier = Modifier.fillMaxSize(),
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
                             bikeType = bikeType
                         ).first
-                    ), contentDescription = stringResource(id = R.string.bike_wheels)
+                    ),
+                    contentScale = ContentScale.FillBounds,
+                    contentDescription = stringResource(id = R.string.bike_wheels)
                 )
                 Image(
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(160.dp),
+                    modifier = Modifier.fillMaxSize(),
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
@@ -123,25 +126,31 @@ fun BikeCard(
                         ).second
                     ),
                     colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(bikeColor.color),
+                    contentScale = ContentScale.FillBounds,
                     contentDescription = stringResource(id = R.string.bike_middle)
                 )
                 Image(
-                    modifier = Modifier
-                        .width(300.dp)
-                        .height(160.dp),
+                    modifier = Modifier.fillMaxSize(),
                     painter = painterResource(
                         id = imageSelector(
                             wheels = wheelSize,
                             bikeType = bikeType
                         ).third
-                    ), contentDescription = stringResource(id = R.string.bike_over)
+                    ),
+                    contentScale = ContentScale.FillBounds,
+                    contentDescription = stringResource(id = R.string.bike_over)
                 )
             }
-            TextLabel(
-                height = 22.dp,
-                inputText = bikeType.type,
-                textStyle = MaterialTheme.typography.labelLarge
-            )
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TextLabel(
+                    height = 22.dp,
+                    inputText = bikeType.type,
+                    textStyle = MaterialTheme.typography.labelLarge
+                )
+            }
         }
     }
 }
@@ -374,6 +383,7 @@ private fun PreviewBikeCard() {
     BikeCard(
         bikeType = BikeType.ROAD_BIKE,
         wheelSize = BikeWheel.BIG,
+        pageSize = 700,
         bikeColor = BikeColor.BLUE
     )
 }
@@ -384,6 +394,7 @@ private fun PreviewBikeCardSmall() {
     BikeCard(
         bikeType = BikeType.MTB,
         wheelSize = BikeWheel.BIG,
+        pageSize = 700,
         bikeColor = BikeColor.BLUE
     )
 }

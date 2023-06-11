@@ -98,7 +98,6 @@ fun CustomCardWithDropDown(
 @Composable
 private fun PreviewCustomCardWithoutError() {
     CustomCardWithDropDown(text = "Text", error = null) {
-
     }
 }
 

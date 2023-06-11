@@ -1,7 +1,6 @@
 package com.bikechallenge23g.presentation.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -50,7 +49,6 @@ class MainViewModel @Inject constructor(
     fun getAllBikes() = viewModelScope.launch(IO) {
         getBikesUseCase.execute().collect { bikes ->
             bikes.let { sBikes ->
-                Log.e("getAllBikes(ViewModel):", "$bikes")
                 if (bikes.isNotEmpty()) {
                     _bikes.value = sBikes
                     val default = sBikes.firstOrNull { it.isDefault == true }
@@ -60,7 +58,6 @@ class MainViewModel @Inject constructor(
                         setServiceReminder()
                     }
                 }
-                Log.e("ViewModel efault bike (getAllbikes)=: ", "d ${defaultBike.value}")
             }
         }
     }
@@ -100,9 +97,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun saveSelectedBike(clear: Boolean = true) = viewModelScope.launch(IO) {
-        Log.e("Save bike", "${selectedBike.value}")
         selectedBike.value?.let {
-            Log.e("Save bike", "$it")
             saveBikeUseCase.execute(it)
         }
         if (clear) {
@@ -127,7 +122,6 @@ class MainViewModel @Inject constructor(
         distanceUnit: DistanceUnit? = null
     ) {
         selected?.let {
-            Log.e("UPDATING", "SELECTED")
             bike?.let { _selectedBike.value = it }
             _selectedBike.value = Bike(
                 id = id ?: selectedBike.value?.id,
@@ -143,10 +137,8 @@ class MainViewModel @Inject constructor(
                 distance = distance ?: selectedBike.value?.distance ?: 0.0,
                 distanceUnit = distanceUnit ?: selectedBike.value?.distanceUnit ?: DistanceUnit.KM
             )
-            Log.e("selected bike = ", "${_selectedBike.value}")
         }
         default?.let {
-            Log.e("UPDATING", "DEFAULT")
             bike?.let { _defaultBike.value = it }
             _defaultBike.value = Bike(
                 id = id ?: defaultBike.value?.id,
@@ -162,7 +154,6 @@ class MainViewModel @Inject constructor(
                 distance = distance ?: defaultBike.value?.distance,
                 distanceUnit = distanceUnit ?: defaultBike.value?.distanceUnit
             )
-            Log.e("default bike = ", "${_selectedBike.value}")
         }
     }
 
@@ -182,7 +173,6 @@ class MainViewModel @Inject constructor(
     fun updateDefaultBike(bikeId: Int?) {
         bikeId?.let {
             viewModelScope.launch(IO) {
-                Log.e("update default = ", "${defaultBike.value}")
                 updateDefaultBikeUseCase.execute(bikeId)
                 showDefaultBikeChanged()
                 getAllBikes()
@@ -192,13 +182,11 @@ class MainViewModel @Inject constructor(
 
     fun setSelectedBike(bike: Bike) {
         _selectedBike.value = bike
-        Log.e("Selected = ", "${selectedBike.value}")
     }
 
     fun updateServiceReminderActive(isReminderActive: Boolean) {
         defaultBike.value?.id?.let {
             viewModelScope.launch(IO) {
-                Log.e("bikeID", "$it")
                 updateServiceReminderActiveUseCase.execute(isReminderActive, it)
                 getAllBikes()
             }
@@ -208,7 +196,6 @@ class MainViewModel @Inject constructor(
     fun updateServiceReminderInterval() {
         defaultBike.value?.id?.let {
             viewModelScope.launch(IO) {
-                Log.e("Updating", "Service interval = ")
                 updateServiceReminderIntervalUseCase.execute(
                     it,
                     defaultBike.value?.serviceReminder ?: 100
@@ -262,7 +249,6 @@ class MainViewModel @Inject constructor(
             duration,
             date
         )
-        Log.e("Updated ride = ", "${_selectedRide.value}")
     }
 
     fun saveSelectedRide(clear: Boolean = true) = viewModelScope.launch(IO) {
@@ -281,7 +267,6 @@ class MainViewModel @Inject constructor(
     fun getAllRides() = viewModelScope.launch(IO) {
         getRidesUseCase.execute().collect { rides ->
             rides.let {
-                Log.e("getAllRides (ViewModel):", "$rides")
                 if (rides.isNotEmpty()) {
                     _rides.value = it
                 }
@@ -291,7 +276,6 @@ class MainViewModel @Inject constructor(
 
     fun setSelectedRide(ride: Ride) {
         _selectedRide.value = ride
-        Log.e("Selected = ", "${selectedRide.value}")
     }
 
     private var _chartData: MutableStateFlow<Pair<Double, List<Triple<BikeType, Float, Color>>>> =

@@ -1,6 +1,5 @@
 package com.bikechallenge23g.presentation.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,8 +50,7 @@ fun MainScreen(
     var showBottomMenu by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        bottomNavController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.e("Destination route = ", "${destination.route}")
+        bottomNavController.addOnDestinationChangedListener { _, _, _ ->
             bottomNavController.currentDestination?.let {
                 showBottomMenu =
                     it.route != NavigationRoutes.AddEditBike.route &&

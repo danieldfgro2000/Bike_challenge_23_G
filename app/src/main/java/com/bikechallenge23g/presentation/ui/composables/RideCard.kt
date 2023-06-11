@@ -109,7 +109,6 @@ fun RideCard(
                         inputText = ride.distanceUnit?.unit ?: DistanceUnit.KM.name,
                         textStyle = MaterialTheme.typography.titleMedium
                     )
-
                 }
                 Row(
                     modifier = Modifier.padding(5.dp),
@@ -141,9 +140,7 @@ fun RideCard(
                 }
             }
         }
-
     }
-
 }
 
 @Preview
@@ -156,7 +153,5 @@ fun PreviewRideCard() {
         duration = 65,
         date = 14367,
         name = "Ride"
-    ), bikeModel = "Nukeproof Scout 290", onEditSelected = {}) {
-
-    }
+    ), bikeModel = "Nukeproof Scout 290", onEditSelected = {}) { }
 }

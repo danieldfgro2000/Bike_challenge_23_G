@@ -26,11 +26,11 @@ import androidx.navigation.NavController
 import com.bikechallenge23g.R
 import com.bikechallenge23g.data.model.enums.DistanceUnit
 import com.bikechallenge23g.presentation.ui.composables.CustomButton
+import com.bikechallenge23g.presentation.ui.composables.CustomDateTimePicker
 import com.bikechallenge23g.presentation.ui.composables.CustomTextField
 import com.bikechallenge23g.presentation.ui.composables.DropdownSelector
 import com.bikechallenge23g.presentation.ui.composables.TextLabel
 import com.bikechallenge23g.presentation.ui.composables.TopBar
-import com.bikechallenge23g.presentation.ui.composables.customDateTimePicker
 import com.bikechallenge23g.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -171,7 +171,7 @@ fun AddEditRideScreen(
                     inputText = stringResource(id = R.string.duration),
                     isRequired = true
                 )
-                customDateTimePicker(
+                CustomDateTimePicker(
                     modifier = Modifier.padding(10.dp),
                     selectedTime = selectedRide?.duration,
                     onTimeSelected = { viewModel.updateSelectedRide(duration = it) }
@@ -181,7 +181,7 @@ fun AddEditRideScreen(
                     inputText = stringResource(id = R.string.date),
                     isRequired = true
                 )
-                customDateTimePicker(
+                CustomDateTimePicker(
                     modifier = Modifier.padding(10.dp),
                     isDatePicker = true,
                     selectedDate = selectedRide?.date,
